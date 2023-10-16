@@ -1,0 +1,25 @@
+import 'package:disan/View/Screens/auth/login_page.dart';
+import 'package:disan/View/Screens/auth/reset_password.dart';
+import 'package:disan/View/Screens/auth/signup.dart';
+import 'package:get/get.dart';
+
+class Routes {
+  static String login = '/login';
+  static String signup = '/signup';
+  static String reset = '/reset';
+}
+
+final getPages = [
+  GetPage(
+    name: Routes.login,
+    page: () => LoginPage(),
+  ),
+  GetPage(
+    name: Routes.signup,
+    page: () => SignUpPage(),
+  ),
+  GetPage(
+    name: Routes.reset,
+    page: () => ResetPasswordPage(),
+  ),
+];
