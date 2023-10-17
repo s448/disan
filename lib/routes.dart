@@ -1,12 +1,14 @@
 import 'package:disan/View/Screens/auth/login_page.dart';
 import 'package:disan/View/Screens/auth/reset_password.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
+import 'package:disan/View/Screens/navbar/navbar.dart';
 import 'package:get/get.dart';
 
 class Routes {
   static String login = '/login';
   static String signup = '/signup';
   static String reset = '/reset';
+  static String navbar = '/navbar';
 }
 
 final getPages = [
@@ -21,5 +23,9 @@ final getPages = [
   GetPage(
     name: Routes.reset,
     page: () => ResetPasswordPage(),
+  ),
+  GetPage(
+    name: Routes.navbar,
+    page: () => const NavBar(),
   ),
 ];

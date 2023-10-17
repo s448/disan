@@ -1,4 +1,4 @@
-class UserModle {
+class UserModel {
   String? name;
   String? id;
   String? password;
@@ -7,7 +7,7 @@ class UserModle {
   String? profile;
   String? background;
 
-  UserModle(
+  UserModel(
       {this.name,
       this.id,
       this.password,
@@ -16,7 +16,7 @@ class UserModle {
       this.profile,
       this.background});
 
-  UserModle.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     password = json['password'];

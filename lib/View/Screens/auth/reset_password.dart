@@ -31,39 +31,49 @@ class ResetPasswordPage extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (val) {
-                        controller.email.value = val;
-                      },
-                      validator: (val) => (val!.isEmpty || !val.isEmail)
-                          ? "Incorrect email".tr
-                          : null,
-                      decoration: InputDecoration(
-                        labelText: "Email address".tr,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        enabledBorder: enabledBorder,
-                        errorBorder: errorBorder,
-                        focusedBorder: focusedBorder,
-                        focusedErrorBorder: fucsedErrorBorder,
-                        prefixIcon: const Icon(Icons.email),
+                child: Form(
+                  key: controller.resetPasswordFormKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 40,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: primaryButtonStyle,
-                      child: Text("Send code".tr),
-                    ),
-                  ],
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (val) {
+                          controller.email.value = val;
+                        },
+                        validator: (val) => (val!.isEmpty || !val.isEmail)
+                            ? "Incorrect email".tr
+                            : null,
+                        decoration: InputDecoration(
+                          labelText: "Email address".tr,
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          enabledBorder: enabledBorder,
+                          errorBorder: errorBorder,
+                          focusedBorder: focusedBorder,
+                          focusedErrorBorder: fucsedErrorBorder,
+                          prefixIcon: const Icon(Icons.email),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final form =
+                              controller.resetPasswordFormKey.currentState;
+                          if (form!.validate()) {
+                            form.save();
+                            controller.sendResetPasswordLink();
+                          }
+                        },
+                        style: primaryButtonStyle,
+                        child: Text("Send code".tr),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
