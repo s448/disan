@@ -21,7 +21,6 @@ class DisanApp extends StatelessWidget {
     return GetMaterialApp(
       textDirection: TextDirection.ltr,
       debugShowCheckedModeBanner: false,
-      // theme: StyleManager.themeManager,
       initialRoute: _sharedPrefController.userAuthenticated()
           ? Routes.navbar
           : Routes.login,

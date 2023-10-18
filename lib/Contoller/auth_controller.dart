@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Contoller/local_storage.dart';
+import 'package:disan/Core/constants/enums.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
+import 'package:disan/Service/firebase_services.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +30,17 @@ class AuthController extends GetxController {
   var confirmPassword = "".obs;
   var rememberMe = false.obs;
   var textObsecured = true.obs;
-  var type = "USER".obs;
+  var type;
 
   changeObscureTextStatus() {
     textObsecured.value = !textObsecured.value;
     update();
+  }
+
+  setAccountType(int? index) {
+    index == 0
+        ? type.value = userType['user']
+        : type.value = userType['merchant'];
   }
 
   Future<bool> saveUserData() async {
@@ -55,6 +63,39 @@ class AuthController extends GetxController {
     }
   }
 
+  updateUserInfo(String jsonEncoded) async {
+    /*
+    1-get the signed email form local storage
+    2-get the doc id isng the email
+    3-update the doc using the doc id
+    */
+    var userId = '';
+    var signedUserEmail = _sharedPrefController.getItem("userEmail");
+    var userDoc = await _firestore
+        .collection("users")
+        .where('email', isEqualTo: signedUserEmail)
+        .limit(1)
+        .get();
+    if (userDoc.docs.isNotEmpty) {
+      var document = userDoc.docs.first;
+      userId = document.get('id');
+      print(userId);
+    }
+    FirebaseServices().updateDocument("users", userId, jsonEncoded);
+  }
+
+  updateAccountType() async {
+    if (type.value == null) {
+      customSnackbar("Please select your account type".tr, "");
+    } else {
+      var accountTypeDecoded = {
+        "type": type.value,
+      };
+      var accountTypeEncoded = accountTypeDecoded.toString();
+      await updateUserInfo(accountTypeEncoded);
+    }
+  }
+
   createNewUser() async {
     try {
       final credential =
@@ -71,7 +112,7 @@ class AuthController extends GetxController {
         customSnackbar("Register success".tr, "");
 
         // print("auth success >>>>>>>>>>>>>>>>");
-        Get.offAndToNamed(Routes.navbar);
+        Get.offAndToNamed(Routes.selectAccType);
       } else {
         dangerSnackbar("Login error".tr, "");
       }
@@ -154,32 +195,31 @@ class AuthController extends GetxController {
     );
   }
 
-  Future<bool> userExist(String registerEmail) async {
-    // print("call user exist methode >>>>>>>>>>");
-    try {
-      var documentSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('email', isEqualTo: registerEmail)
-          .get();
+  // Future<bool> userExist(String registerEmail) async {
+  //   // print("call user exist methode >>>>>>>>>>");
+  //   try {
+  //     var documentSnapshot = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .where('email', isEqualTo: registerEmail)
+  //         .get();
 
-      if (documentSnapshot.docs.isNotEmpty) {
-        return true;
-      } else {
-        // print('Document does not exist');
-        return false;
-      }
-    } catch (e) {
-      // Error occurred while searching for the document
-      // print('Error searching document: $e');
-      return false;
-    }
-  }
+  //     if (documentSnapshot.docs.isNotEmpty) {
+  //       return true;
+  //     } else {
+  //       // print('Document does not exist');
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     // Error occurred while searching for the document
+  //     // print('Error searching document: $e');
+  //     return false;
+  //   }
+  // }
 
   //google auth
   RxBool isGoogleLoading = false.obs;
   loginWithGoogle() async {
     isGoogleLoading.value = true;
-    bool authSucceess = false;
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleSignInAccount =
@@ -198,6 +238,8 @@ class AuthController extends GetxController {
       User? user = userCredential.user;
       // print(">>>>>103 ${user?.displayName}");
       if (user != null) {
+        await _sharedPrefController.saveUserCredentials(user.uid, user.email!);
+
         if (userCredential.additionalUserInfo!.isNewUser) {
           var userId = user.uid;
           // print(">>>>>>107 >>>>>new user");
@@ -207,7 +249,7 @@ class AuthController extends GetxController {
               email: user.email,
               id: userId,
               type: type.value,
-              profile: "",
+              profile: user.photoURL,
               background: "",
             );
             await _firestore
@@ -215,34 +257,28 @@ class AuthController extends GetxController {
                 .doc(userId)
                 .set(userModel.toJson());
 
-            if (await userExist(user.email!)) {
-              authSucceess = true;
-              customSnackbar("Login success", "");
-            }
+            // if (await userExist(user.email!)) {
+            //   customSnackbar("Login success", "");
+            // }
             isGoogleLoading.value = false;
           } catch (e) {
             // print("?????????can't save the user data");
             isGoogleLoading.value = false;
-            customSnackbar("Login rttot", e.toString());
+            customSnackbar("Login error", e.toString());
           }
+          Get.offAndToNamed(Routes.selectAccType);
         } else {
           isGoogleLoading.value = false;
-          authSucceess = true;
+          Get.offAndToNamed(Routes.navbar);
+
           // print("user is already registerd >>>> login");
         }
-        await _sharedPrefController.saveUserCredentials(user.uid, user.email!);
-
         // print(">>>>>>user is set to shared prefs");
       }
     } catch (e) {
       // print(e);
       customSnackbar("Login error".tr, e.toString());
       isGoogleLoading.value = false;
-      authSucceess = false;
-    }
-    if (authSucceess) {
-      // print("auth success >>>>>>>>>>>>>>>>");
-      Get.offAndToNamed(Routes.navbar);
     }
   }
 
@@ -255,7 +291,6 @@ class AuthController extends GetxController {
   RxBool isFacebookLoading = false.obs;
   loginWithFacebook() async {
     isFacebookLoading.value = true;
-    bool authSucceess = false;
     try {
       // Trigger the sign-in flow
       final LoginResult loginResult = await FacebookAuth.instance.login();
@@ -265,31 +300,42 @@ class AuthController extends GetxController {
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       // Once signed in, return the UserCredential
-      _auth.signInWithCredential(facebookAuthCredential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(facebookAuthCredential);
       // print("credentails ============ $facebookAuthCredential");
       // print("credentails ============ ${_auth.currentUser!.email}");
+      final User user = userCredential.user!;
 
       if (facebookAuthCredential.accessToken == null) {
-        authSucceess = false;
         isFacebookLoading.value = false;
         // print("176 >>>>>> credentials are null");
       } else {
         isFacebookLoading.value = false;
-        authSucceess = true;
-        await _sharedPrefController.saveUserCredentials(
-            facebookAuthCredential.providerId, facebookAuthCredential.idToken!);
         // print(
         //     "the current user after fb auth: >>>>>${_auth.currentUser!.displayName}");
-        Get.toNamed(Routes.navbar);
+        await _sharedPrefController.saveUserCredentials(user.uid, user.email!);
+
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          var userData = UserModel(
+            email: user.email,
+            id: user.uid,
+            name: user.displayName,
+            profile: user.photoURL,
+          );
+          await _firestore
+              .collection("users")
+              .doc(user.uid)
+              .set(userData.toJson());
+
+          Get.toNamed(Routes.selectAccType);
+        } else {
+          Get.toNamed(Routes.navbar);
+        }
       }
     } catch (e) {
       // print(e.toString());
       isFacebookLoading.value = false;
-      // dangerSnackbar("Error facebook login".tr, e.toString());
-    }
-    if (authSucceess) {
-      // print("auth success >>>>>>>>>>>>>>>>");
-      Get.offAndToNamed(Routes.navbar);
+      dangerSnackbar("Error facebook login".tr, e.toString());
     }
   }
 }
