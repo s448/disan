@@ -63,12 +63,14 @@ class AuthController extends GetxController {
         password: password.value,
       );
       if (isUserAuthenticated()) {
-        await _sharedPrefController.saveUserCredentials(
-            credential.user!.uid, credential.user!.email!);
+        if (rememberMe.value) {
+          await _sharedPrefController.saveUserCredentials(
+              credential.user!.uid, credential.user!.email!);
+        }
         saveUserData();
         customSnackbar("Register success".tr, "");
 
-        print("auth success >>>>>>>>>>>>>>>>");
+        // print("auth success >>>>>>>>>>>>>>>>");
         Get.offAndToNamed(Routes.navbar);
       } else {
         dangerSnackbar("Login error".tr, "");
@@ -76,16 +78,16 @@ class AuthController extends GetxController {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         dangerSnackbar('The password provided is too weak'.tr, "");
-        print('The password provided is too weak'.tr);
+        // print('The password provided is too weak'.tr);
       } else if (e.code == 'email-already-in-use') {
         dangerSnackbar('The account already exists for that email'.tr, "");
-        print('The account already exists for that email.');
+        // print('The account already exists for that email.');
       } else {
         dangerSnackbar('Register Error'.tr, e.toString());
       }
     } catch (e) {
       dangerSnackbar("Register error".tr, e.toString());
-      print(e);
+      // print(e);
     }
   }
 
@@ -119,10 +121,12 @@ class AuthController extends GetxController {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email.value, password: password.value);
       if (isUserAuthenticated()) {
-        await _sharedPrefController.saveUserCredentials(
-            credential.user!.uid, credential.user!.email!);
+        if (rememberMe.value) {
+          await _sharedPrefController.saveUserCredentials(
+              credential.user!.uid, credential.user!.email!);
+        }
         customSnackbar("Login success".tr, "");
-        print("auth success >>>>>>>>>>>>>>>>");
+        // print("auth success >>>>>>>>>>>>>>>>");
         Get.offAndToNamed(Routes.navbar);
       } else {
         dangerSnackbar("Login error", "");
@@ -130,10 +134,10 @@ class AuthController extends GetxController {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         dangerSnackbar('No user found for that email'.tr, "");
-        print('No user found for that email'.tr);
+        // print('No user found for that email'.tr);
       } else if (e.code == 'wrong-password') {
         dangerSnackbar('Wrong password provided for that user'.tr, "");
-        print('Wrong password provided for that user'.tr);
+        // print('Wrong password provided for that user'.tr);
       } else {
         dangerSnackbar('Login Error'.tr, e.toString());
       }
@@ -151,7 +155,7 @@ class AuthController extends GetxController {
   }
 
   Future<bool> userExist(String registerEmail) async {
-    print("call user exist methode >>>>>>>>>>");
+    // print("call user exist methode >>>>>>>>>>");
     try {
       var documentSnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -161,12 +165,12 @@ class AuthController extends GetxController {
       if (documentSnapshot.docs.isNotEmpty) {
         return true;
       } else {
-        print('Document does not exist');
+        // print('Document does not exist');
         return false;
       }
     } catch (e) {
       // Error occurred while searching for the document
-      print('Error searching document: $e');
+      // print('Error searching document: $e');
       return false;
     }
   }
@@ -192,11 +196,11 @@ class AuthController extends GetxController {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       User? user = userCredential.user;
-      print(">>>>>103 ${user?.displayName}");
+      // print(">>>>>103 ${user?.displayName}");
       if (user != null) {
         if (userCredential.additionalUserInfo!.isNewUser) {
           var userId = user.uid;
-          print(">>>>>>107 >>>>>new user");
+          // print(">>>>>>107 >>>>>new user");
           try {
             UserModel userModel = UserModel(
               name: user.displayName,
@@ -217,26 +221,27 @@ class AuthController extends GetxController {
             }
             isGoogleLoading.value = false;
           } catch (e) {
-            print("?????????can't save the user data");
+            // print("?????????can't save the user data");
             isGoogleLoading.value = false;
             customSnackbar("Login rttot", e.toString());
           }
         } else {
           isGoogleLoading.value = false;
           authSucceess = true;
-          print("user is already registerd >>>> login");
+          // print("user is already registerd >>>> login");
         }
         await _sharedPrefController.saveUserCredentials(user.uid, user.email!);
+
         // print(">>>>>>user is set to shared prefs");
       }
     } catch (e) {
-      print(e);
+      // print(e);
       customSnackbar("Login error".tr, e.toString());
       isGoogleLoading.value = false;
       authSucceess = false;
     }
     if (authSucceess) {
-      print("auth success >>>>>>>>>>>>>>>>");
+      // print("auth success >>>>>>>>>>>>>>>>");
       Get.offAndToNamed(Routes.navbar);
     }
   }
@@ -261,29 +266,29 @@ class AuthController extends GetxController {
 
       // Once signed in, return the UserCredential
       _auth.signInWithCredential(facebookAuthCredential);
-      print("credentails ============ $facebookAuthCredential");
-      print("credentails ============ ${_auth.currentUser!.email}");
+      // print("credentails ============ $facebookAuthCredential");
+      // print("credentails ============ ${_auth.currentUser!.email}");
 
       if (facebookAuthCredential.accessToken == null) {
         authSucceess = false;
         isFacebookLoading.value = false;
-        print("176 >>>>>> credentials are null");
+        // print("176 >>>>>> credentials are null");
       } else {
         isFacebookLoading.value = false;
         authSucceess = true;
         await _sharedPrefController.saveUserCredentials(
             facebookAuthCredential.providerId, facebookAuthCredential.idToken!);
-        print(
-            "the current user after fb auth: >>>>>${_auth.currentUser!.displayName}");
+        // print(
+        //     "the current user after fb auth: >>>>>${_auth.currentUser!.displayName}");
         Get.toNamed(Routes.navbar);
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       isFacebookLoading.value = false;
       // dangerSnackbar("Error facebook login".tr, e.toString());
     }
     if (authSucceess) {
-      print("auth success >>>>>>>>>>>>>>>>");
+      // print("auth success >>>>>>>>>>>>>>>>");
       Get.offAndToNamed(Routes.navbar);
     }
   }

@@ -1,3 +1,4 @@
+import 'package:disan/Contoller/local_storage.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +9,22 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
-  return runApp(const DisanApp());
+  return runApp(DisanApp());
 }
 
 class DisanApp extends StatelessWidget {
-  const DisanApp({super.key});
+  final _sharedPrefController =
+      Get.put(SharedPrefsController(), permanent: true);
+  DisanApp({super.key});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       textDirection: TextDirection.ltr,
       debugShowCheckedModeBanner: false,
       // theme: StyleManager.themeManager,
-      initialRoute: Routes.login,
+      initialRoute: _sharedPrefController.userAuthenticated()
+          ? Routes.navbar
+          : Routes.login,
       getPages: getPages,
     );
   }

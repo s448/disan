@@ -30,6 +30,22 @@ class _NavBarState extends State<NavBar> {
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: _selectedIndex == 1
+              ? Colors.green
+              : _selectedIndex == 2
+                  ? Colors.pink
+                  : _selectedIndex == 3
+                      ? Colors.red
+                      : Colors.blue,
+          selectedLabelStyle: TextStyle(
+            color: _selectedIndex == 1
+                ? Colors.green
+                : _selectedIndex == 2
+                    ? Colors.pink
+                    : _selectedIndex == 3
+                        ? Colors.red
+                        : Colors.blue,
+          ),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: const Icon(Icons.home),
@@ -73,12 +89,8 @@ class NavBarItemIcon extends StatelessWidget {
 }
 
 var pages = <Widget>[
-  // const NotificationsPage(),
-  // const ProfilePage(),
   const HomePage(),
   const HomePage(),
   const HomePage(),
   const HomePage(),
-  // const FavoritesPage(),
-  // const SettingsPage(),
 ];
