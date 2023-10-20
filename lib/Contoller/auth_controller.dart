@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Contoller/local_storage.dart';
-import 'package:disan/Core/constants/enums.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
-import 'package:disan/Service/firebase_services.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +28,7 @@ class AuthController extends GetxController {
   var confirmPassword = "".obs;
   var rememberMe = false.obs;
   var textObsecured = true.obs;
-  var type;
+  RxString accType = "USER".obs;
 
   changeObscureTextStatus() {
     textObsecured.value = !textObsecured.value;
@@ -38,9 +36,9 @@ class AuthController extends GetxController {
   }
 
   setAccountType(int? index) {
-    index == 0
-        ? type.value = userType['user']
-        : type.value = userType['merchant'];
+    index == 0 ? accType.value = "USER" : accType.value = "MERCHANT";
+    update();
+    print(accType.value.toString());
   }
 
   Future<bool> saveUserData() async {
@@ -53,7 +51,7 @@ class AuthController extends GetxController {
         profile: "",
         background: "",
         id: userId,
-        type: type.value,
+        type: accType.value,
       );
 
       await _firestore.collection('users').doc(userId).set(userModel.toJson());
@@ -63,7 +61,7 @@ class AuthController extends GetxController {
     }
   }
 
-  updateUserInfo(String jsonEncoded) async {
+  updateUserInfo() async {
     /*
     1-get the signed email form local storage
     2-get the doc id isng the email
@@ -79,21 +77,17 @@ class AuthController extends GetxController {
     if (userDoc.docs.isNotEmpty) {
       var document = userDoc.docs.first;
       userId = document.get('id');
-      print(userId);
+      print("user id is >>>>>>>>>>>>>>" + userId);
+      _firestore.collection("users").doc(userId).update({
+        "type": accType.value,
+      });
     }
-    FirebaseServices().updateDocument("users", userId, jsonEncoded);
   }
 
   updateAccountType() async {
-    if (type.value == null) {
-      customSnackbar("Please select your account type".tr, "");
-    } else {
-      var accountTypeDecoded = {
-        "type": type.value,
-      };
-      var accountTypeEncoded = accountTypeDecoded.toString();
-      await updateUserInfo(accountTypeEncoded);
-    }
+    print("Changing acc type >>>>>>>>>>>>>> ${accType.value}");
+    await updateUserInfo();
+    Get.toNamed(Routes.completeUserInfo);
   }
 
   createNewUser() async {
@@ -242,13 +236,13 @@ class AuthController extends GetxController {
 
         if (userCredential.additionalUserInfo!.isNewUser) {
           var userId = user.uid;
-          // print(">>>>>>107 >>>>>new user");
+          print(">>>>>>107 >>>>>new user");
           try {
             UserModel userModel = UserModel(
               name: user.displayName,
               email: user.email,
               id: userId,
-              type: type.value,
+              type: accType.value,
               profile: user.photoURL,
               background: "",
             );
@@ -261,12 +255,12 @@ class AuthController extends GetxController {
             //   customSnackbar("Login success", "");
             // }
             isGoogleLoading.value = false;
+            Get.offAndToNamed(Routes.selectAccType);
           } catch (e) {
             // print("?????????can't save the user data");
             isGoogleLoading.value = false;
-            customSnackbar("Login error", e.toString());
+            dangerSnackbar("Login error", e.toString());
           }
-          Get.offAndToNamed(Routes.selectAccType);
         } else {
           isGoogleLoading.value = false;
           Get.offAndToNamed(Routes.navbar);
@@ -277,7 +271,7 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       // print(e);
-      customSnackbar("Login error".tr, e.toString());
+      dangerSnackbar("Login error".tr, e.toString());
       isGoogleLoading.value = false;
     }
   }

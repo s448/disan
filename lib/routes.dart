@@ -1,3 +1,4 @@
+import 'package:disan/View/Screens/auth/complete_account_info.dart';
 import 'package:disan/View/Screens/auth/login_page.dart';
 import 'package:disan/View/Screens/auth/reset_password.dart';
 import 'package:disan/View/Screens/auth/select_account_type.dart';
@@ -11,6 +12,7 @@ class Routes {
   static String reset = '/reset';
   static String navbar = '/navbar';
   static String selectAccType = "/acctype";
+  static String completeUserInfo = "/CompleteAccountInfo";
 }
 
 final getPages = [
@@ -33,5 +35,9 @@ final getPages = [
   GetPage(
     name: Routes.selectAccType,
     page: () => SelectAccountTypePage(),
+  ),
+  GetPage(
+    name: Routes.completeUserInfo,
+    page: () => CompleteAccountInfo(),
   ),
 ];
