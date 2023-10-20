@@ -4,6 +4,7 @@ import 'package:disan/View/Screens/auth/reset_password.dart';
 import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
+import 'package:disan/View/Widgets/google_maps_window.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -13,6 +14,7 @@ class Routes {
   static String navbar = '/navbar';
   static String selectAccType = "/acctype";
   static String completeUserInfo = "/CompleteAccountInfo";
+  static String maps = "/maps";
 }
 
 final getPages = [
@@ -39,5 +41,9 @@ final getPages = [
   GetPage(
     name: Routes.completeUserInfo,
     page: () => CompleteAccountInfo(),
+  ),
+  GetPage(
+    name: Routes.maps,
+    page: () => MapPicker(),
   ),
 ];

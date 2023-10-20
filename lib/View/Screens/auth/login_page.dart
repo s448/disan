@@ -1,5 +1,5 @@
 import 'package:auth_buttons/auth_buttons.dart';
-import 'package:disan/Contoller/auth_controller.dart';
+import 'package:disan/Controller/auth_controller.dart';
 import 'package:disan/Core/style/button_style.dart';
 import 'package:disan/Core/style/colors.dart';
 import 'package:disan/Core/style/input_style.dart';

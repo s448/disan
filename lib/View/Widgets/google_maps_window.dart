@@ -1,40 +1,111 @@
-import 'package:disan/Contoller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../Controller/location_controller.dart';
 
-class GoogleMapsPage extends StatelessWidget {
-  GoogleMapsPage({super.key});
-  final _mapController = Get.put(UserController());
+class MapPicker extends StatelessWidget {
+  final _mapController = Get.find<MapController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pick a Location'),
-      ),
-      body: GoogleMap(
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(37.422, -122.084), // Initial map center
-            zoom: 15,
+      body: Center(
+        child: SizedBox(
+          height: Get.height,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              var maxWidth = constraints.biggest.width;
+              var maxHeight = constraints.biggest.height;
+
+              return Stack(
+                children: <Widget>[
+                  SizedBox(
+                    height: maxHeight,
+                    width: maxWidth,
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: _mapController.initCoordinates,
+                        zoom: _mapController.initZoom,
+                      ),
+                      onMapCreated: _mapController.onMapCreated,
+                      onCameraMove: (CameraPosition newPosition) {
+                        _mapController.position = newPosition.target;
+                      },
+                      mapType: MapType.normal,
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: false,
+                      zoomGesturesEnabled: true,
+                      padding: EdgeInsets.all(0),
+                      buildingsEnabled: true,
+                      cameraTargetBounds: CameraTargetBounds.unbounded,
+                      compassEnabled: true,
+                      indoorViewEnabled: false,
+                      mapToolbarEnabled: true,
+                      minMaxZoomPreference: MinMaxZoomPreference.unbounded,
+                      rotateGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
+                      tiltGesturesEnabled: true,
+                      trafficEnabled: false,
+                    ),
+                  ),
+                  Positioned(
+                    top: Get.height / 2 - 50,
+                    right: Get.width / 2 - 50 / 2,
+                    child: const Icon(
+                      Icons.person_pin_circle,
+                      size: 50,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 30,
+                    left: 30,
+                    child: Container(
+                      color: Colors.white,
+                      child: IconButton(
+                        onPressed: _mapController.goToCurrentLocation,
+                        icon: const Icon(Icons.my_location),
+                      ),
+                    ),
+                  ),
+                  // Positioned(
+                  //   top: 30,
+                  //   right: 30,
+                  //   child: CircleAvatar(
+                  //     child: IconButton(
+                  //       onPressed: () => Get.back(),
+                  //       icon: const Icon(Icons.arrow_forward_ios,size: 30,),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              );
+            },
           ),
-          onTap: _mapController.selectLocation,
-          markers: <Marker>{
-            Marker(
-              markerId: const MarkerId('picked-location'),
-              position: _mapController.selectedLocation,
-            ),
-          }),
-      bottomNavigationBar: FloatingActionButton.extended(
-        onPressed: () {
-          // Handle the selected location
-          // Do something with _mapController.selectedLocation
-          print(
-              'Selected location: ${_mapController.selectedLocation.latitude}, ${_mapController.selectedLocation.longitude}');
-        },
-        label: Text('Pick Location'),
-        icon: Icon(Icons.location_pin),
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.back(),
+        child: const Icon(
+          Icons.arrow_forward_ios,
+          size: 30,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            if (_mapController.position != null) {
+              Get.back();
+            }
+          },
+          label: Text("Pick Location".tr),
+          icon: const Icon(
+            Icons.location_on_outlined,
+          ),
+        ),
+      ),
     );
   }
 }

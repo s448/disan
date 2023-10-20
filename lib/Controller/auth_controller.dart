@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:disan/Contoller/local_storage.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:disan/routes.dart';
