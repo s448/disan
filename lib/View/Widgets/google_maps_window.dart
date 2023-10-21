@@ -1,3 +1,4 @@
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,7 +36,7 @@ class MapPicker extends StatelessWidget {
                       myLocationButtonEnabled: true,
                       myLocationEnabled: false,
                       zoomGesturesEnabled: true,
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       buildingsEnabled: true,
                       cameraTargetBounds: CameraTargetBounds.unbounded,
                       compassEnabled: true,
@@ -85,6 +86,7 @@ class MapPicker extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "hero 1",
         onPressed: () => Get.back(),
         child: const Icon(
           Icons.arrow_forward_ios,
@@ -98,6 +100,7 @@ class MapPicker extends StatelessWidget {
           onPressed: () {
             if (_mapController.position != null) {
               Get.back();
+              customSnackbar("Position was selected", "");
             }
           },
           label: Text("Pick Location".tr),

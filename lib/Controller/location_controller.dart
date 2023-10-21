@@ -25,13 +25,14 @@ class MapController extends GetxController {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          dangerSnackbar("Location permissions are denied".tr, "please enable it first".tr);
+          dangerSnackbar("Location permissions are denied".tr,
+              "please enable it first".tr);
           throw 'Location permissions are denied.';
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        dangerSnackbar("Location permissions are permanently denied".tr,"");
+        dangerSnackbar("Location permissions are permanently denied".tr, "");
       }
 
       Position position = await Geolocator.getCurrentPosition();
@@ -45,7 +46,7 @@ class MapController extends GetxController {
         ),
       );
     } catch (e) {
-      dangerSnackbar(e.toString(),"");
+      dangerSnackbar(e.toString(), "");
     }
   }
 }

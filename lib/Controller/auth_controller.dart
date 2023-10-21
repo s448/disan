@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
+import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +12,29 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthController extends GetxController {
+  updateCurrentUserInfo() {
+    name.value = _auth.currentUser!.displayName ?? name.value;
+    email.value = _auth.currentUser!.email ?? email.value;
+    profilePicUrl.value = _auth.currentUser!.photoURL ?? "";
+    currUserId.value = _auth.currentUser!.uid;
+    print("name i>>>>>>>>>>>>>" + name.value);
+    print("uid is>>>>>>>>>>>>>" + currUserId.value);
+    update();
+  }
+
   final registerFormKey = GlobalKey<FormState>();
   final loginFormKey = GlobalKey<FormState>();
   final resetPasswordFormKey = GlobalKey<FormState>();
 
+  final _filePicker = ImageUploader();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final _sharedPrefController =
       Get.put(SharedPrefsController(), permanent: true);
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   var uuid = const Uuid();
   var email = "".obs;
   var name = "".obs;
@@ -29,6 +43,14 @@ class AuthController extends GetxController {
   var rememberMe = false.obs;
   var textObsecured = true.obs;
   RxString accType = "USER".obs;
+  var currUserId = ''.obs;
+
+  var whatsappNumber = "".obs;
+  RxString bio = "".obs;
+  RxDouble locationLat = 0.0.obs;
+  RxDouble locationLng = 0.0.obs;
+  var profilePicUrl = "".obs;
+  var backgroundPicUrl = "".obs;
 
   changeObscureTextStatus() {
     textObsecured.value = !textObsecured.value;
@@ -42,53 +64,50 @@ class AuthController extends GetxController {
   }
 
   Future<bool> saveUserData() async {
-    var userId = uuid.v1();
     try {
+      updateCurrentUserInfo();
       UserModel userModel = UserModel(
         email: email.value,
         name: name.value,
-        password: password.value,
         profile: "",
         background: "",
-        id: userId,
+        id: currUserId.value,
         type: accType.value,
       );
 
-      await _firestore.collection('users').doc(userId).set(userModel.toJson());
+      await _firestore
+          .collection('users')
+          .doc(currUserId.value)
+          .set(userModel.toJson());
       return true;
     } catch (e) {
+      dangerSnackbar("cannot save user data".tr, e.toString());
       return false;
     }
   }
 
-  updateUserInfo() async {
-    /*
-    1-get the signed email form local storage
-    2-get the doc id isng the email
-    3-update the doc using the doc id
-    */
-    var userId = '';
-    var signedUserEmail = _sharedPrefController.getItem("userEmail");
-    var userDoc = await _firestore
-        .collection("users")
-        .where('email', isEqualTo: signedUserEmail)
-        .limit(1)
-        .get();
-    if (userDoc.docs.isNotEmpty) {
-      var document = userDoc.docs.first;
-      userId = document.get('id');
-      print("user id is >>>>>>>>>>>>>>" + userId);
-      _firestore.collection("users").doc(userId).update({
-        "type": accType.value,
-      });
-    }
-  }
-
-  updateAccountType() async {
-    print("Changing acc type >>>>>>>>>>>>>> ${accType.value}");
-    await updateUserInfo();
-    Get.toNamed(Routes.completeUserInfo);
-  }
+  // updateUserInfo() async {
+  //   /*
+  //   1-get the signed email form local storage
+  //   2-get the doc id isng the email
+  //   3-update the doc using the doc id
+  //   */
+  //   var userId = '';
+  //   var signedUserEmail = _sharedPrefController.getItem("userEmail");
+  //   var userDoc = await _firestore
+  //       .collection("users")
+  //       .where('email', isEqualTo: signedUserEmail)
+  //       .limit(1)
+  //       .get();
+  //   if (userDoc.docs.isNotEmpty) {
+  //     var document = userDoc.docs.first;
+  //     userId = document.get('id');
+  //     print("user id is >>>>>>>>>>>>>>" + userId);
+  //     _firestore.collection("users").doc(userId).update({
+  //       "type": accType.value,
+  //     });
+  //   }
+  // }
 
   createNewUser() async {
     try {
@@ -102,11 +121,12 @@ class AuthController extends GetxController {
           await _sharedPrefController.saveUserCredentials(
               credential.user!.uid, credential.user!.email!);
         }
-        saveUserData();
-        customSnackbar("Register success".tr, "");
+        if (await saveUserData()) {
+          customSnackbar("Register success".tr, "");
+        }
+        Get.offAllNamed(Routes.selectAccType);
 
         // print("auth success >>>>>>>>>>>>>>>>");
-        Get.offAndToNamed(Routes.selectAccType);
       } else {
         dangerSnackbar("Login error".tr, "");
       }
@@ -162,7 +182,7 @@ class AuthController extends GetxController {
         }
         customSnackbar("Login success".tr, "");
         // print("auth success >>>>>>>>>>>>>>>>");
-        Get.offAndToNamed(Routes.navbar);
+        Get.offAllNamed(Routes.navbar);
       } else {
         dangerSnackbar("Login error", "");
       }
@@ -188,27 +208,6 @@ class AuthController extends GetxController {
       '',
     );
   }
-
-  // Future<bool> userExist(String registerEmail) async {
-  //   // print("call user exist methode >>>>>>>>>>");
-  //   try {
-  //     var documentSnapshot = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .where('email', isEqualTo: registerEmail)
-  //         .get();
-
-  //     if (documentSnapshot.docs.isNotEmpty) {
-  //       return true;
-  //     } else {
-  //       // print('Document does not exist');
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     // Error occurred while searching for the document
-  //     // print('Error searching document: $e');
-  //     return false;
-  //   }
-  // }
 
   //google auth
   RxBool isGoogleLoading = false.obs;
@@ -236,7 +235,6 @@ class AuthController extends GetxController {
 
         if (userCredential.additionalUserInfo!.isNewUser) {
           var userId = user.uid;
-          print(">>>>>>107 >>>>>new user");
           try {
             UserModel userModel = UserModel(
               name: user.displayName,
@@ -255,7 +253,7 @@ class AuthController extends GetxController {
             //   customSnackbar("Login success", "");
             // }
             isGoogleLoading.value = false;
-            Get.offAndToNamed(Routes.selectAccType);
+            Get.offAllNamed(Routes.selectAccType);
           } catch (e) {
             // print("?????????can't save the user data");
             isGoogleLoading.value = false;
@@ -263,7 +261,7 @@ class AuthController extends GetxController {
           }
         } else {
           isGoogleLoading.value = false;
-          Get.offAndToNamed(Routes.navbar);
+          Get.offAllNamed(Routes.navbar);
 
           // print("user is already registerd >>>> login");
         }
@@ -276,10 +274,10 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> logoutGoogle() async {
-    await googleSignIn.signOut();
-    Get.offAllNamed(Routes.login);
-  }
+  // Future<void> logoutGoogle() async {
+  //   await googleSignIn.signOut();
+  //   Get.offAllNamed(Routes.login);
+  // }
 
   //facebook auth
   RxBool isFacebookLoading = false.obs;
@@ -321,15 +319,61 @@ class AuthController extends GetxController {
               .doc(user.uid)
               .set(userData.toJson());
 
-          Get.toNamed(Routes.selectAccType);
+          Get.offAllNamed(Routes.selectAccType);
         } else {
-          Get.toNamed(Routes.navbar);
+          Get.offAllNamed(Routes.navbar);
         }
       }
     } catch (e) {
-      // print(e.toString());
       isFacebookLoading.value = false;
       dangerSnackbar("Error facebook login".tr, e.toString());
+    }
+  }
+
+  selectProfilePic() async {
+    try {
+      profilePicUrl.value = await _filePicker.uploadImage();
+    } catch (e) {
+      dangerSnackbar("Error uploading".tr, e.toString());
+    }
+  }
+
+  selectBackgroundPic() async {
+    try {
+      backgroundPicUrl.value = await _filePicker.uploadImage();
+    } catch (e) {
+      dangerSnackbar("Error uploading".tr, e.toString());
+    }
+  }
+
+  RxBool saveButtonLoading = false.obs;
+  updateUserInfo() async {
+    saveButtonLoading.value = true;
+    try {
+      var userData = UserModel(
+        name: name.value,
+        profile: profilePicUrl.value,
+        background: backgroundPicUrl.value,
+        type: accType.value,
+        whatsappNumber: whatsappNumber.value,
+        id: currUserId.value,
+        email: email.value,
+        lat: locationLat.value,
+        long: locationLng.value,
+      );
+      await _firestore
+          .collection("users")
+          .doc(currUserId.value)
+          .update(userData.toJson());
+      saveButtonLoading.value = false;
+      update();
+      Get.offAllNamed(Routes.navbar);
+      customSnackbar("Saved your info".tr, "");
+    } catch (e) {
+      saveButtonLoading.value = false;
+      print("Errorrrrrrrrrrrr" + e.toString());
+      update();
+      Get.offAllNamed(Routes.navbar);
     }
   }
 }

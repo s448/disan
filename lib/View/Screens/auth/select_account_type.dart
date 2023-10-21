@@ -1,5 +1,6 @@
 import 'package:disan/Controller/auth_controller.dart';
 import 'package:disan/Core/style/button_style.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,10 @@ class SelectAccountTypePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                onPressed: () => controller.updateAccountType(),
+                onPressed: () {
+                  controller.updateCurrentUserInfo();
+                  Get.toNamed(Routes.completeUserInfo);
+                },
                 style: primaryButtonStyle,
                 child: Text("Continue".tr),
               ),
