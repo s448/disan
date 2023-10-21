@@ -33,9 +33,11 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile".tr),
+      ),
       body: Container(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        color: const Color.fromARGB(242, 8, 5, 5),
         constraints: const BoxConstraints.expand(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -74,35 +76,6 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 190),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 55,
-                      ),
-                      const Icon(
-                        Icons.shield,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(
-                        width: 25,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             const SizedBox(
@@ -111,9 +84,10 @@ class Profile extends StatelessWidget {
             Text(
               controller.userModel.name ?? "Unknown",
               style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
             // const SizedBox(
             //   height: 10,
@@ -123,7 +97,11 @@ class Profile extends StatelessWidget {
               child: Text(
                 controller.userModel.bio ?? "unknown",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15, color: Colors.grey),
+                maxLines: 4,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey,
+                ),
               ),
             ),
             Row(
@@ -163,12 +141,6 @@ class Profile extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[900]),
-                  child: const Icon(Icons.more_horiz),
-                )
               ],
             ),
             Divider(
@@ -176,21 +148,6 @@ class Profile extends StatelessWidget {
               height: 10,
               color: Colors.grey[800],
             ),
-            // Container(
-            //   width: MediaQuery.of(context).size.width,
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(10),
-            //     child: ElevatedButton(
-            //       onPressed: () {},
-            //       style: ElevatedButton.styleFrom(
-            //           backgroundColor: Colors.blue.withOpacity(0.1)),
-            //       child: Text(
-            //         'Edit public details',
-            //         style: TextStyle(color: Colors.blue[900]),
-            //       ),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

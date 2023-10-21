@@ -1,3 +1,4 @@
+import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,17 @@ class HomePage extends StatelessWidget {
                     CupertinoIcons.search_circle,
                     size: 40,
                   ),
-                )
+                ),
+                IconButton(
+                  onPressed: () => Get.toNamed(Routes.profile),
+                  icon: const Icon(
+                    CupertinoIcons.person,
+                    size: 40,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
               ],
               bottom: const TabBar(
                 tabs: [

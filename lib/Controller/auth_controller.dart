@@ -360,6 +360,7 @@ class AuthController extends GetxController {
         email: email.value,
         lat: locationLat.value,
         long: locationLng.value,
+        bio: bio.value,
       );
       await _firestore
           .collection("users")

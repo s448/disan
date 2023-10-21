@@ -1,4 +1,3 @@
-import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
