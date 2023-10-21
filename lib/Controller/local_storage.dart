@@ -13,6 +13,14 @@ class SharedPrefsController extends GetxController {
     // }
   }
 
+  markIntroAsDone() async {
+    await prefs.setBool("intro", true);
+  }
+
+  isIntroDone() {
+    prefs.getBool('intro');
+  }
+
   String getItem(String id) {
     return prefs.getString(id) ?? '';
   }

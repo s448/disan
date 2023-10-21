@@ -3,6 +3,7 @@ class UserModel {
   String? id;
   String? whatsappNumber;
   String? token;
+  String? bio;
   String? email;
   String? type;
   String? profile;
@@ -14,6 +15,7 @@ class UserModel {
       {this.name,
       this.id,
       this.token,
+      this.bio,
       this.email,
       this.type,
       this.profile,
@@ -27,6 +29,7 @@ class UserModel {
     id = json['id'];
     whatsappNumber = json['whatsapp'];
     token = json['token'];
+    bio = json['bio'];
     email = json['email'];
     type = json['type'];
     profile = json['profile'];
@@ -41,6 +44,7 @@ class UserModel {
     data['id'] = this.id;
     data['whatsapp'] = this.whatsappNumber;
     data['token'] = this.token;
+    data['bio'] = this.bio;
     data['email'] = this.email;
     data['type'] = this.type;
     data['profile'] = this.profile;

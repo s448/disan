@@ -3,11 +3,14 @@ import 'package:disan/View/Screens/auth/login_page.dart';
 import 'package:disan/View/Screens/auth/reset_password.dart';
 import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
+import 'package:disan/View/Screens/introduction_page.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
+import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
 import 'package:get/get.dart';
 
 class Routes {
+  static String introScreen = "/intro";
   static String login = '/login';
   static String signup = '/signup';
   static String reset = '/reset';
@@ -15,6 +18,7 @@ class Routes {
   static String selectAccType = "/acctype";
   static String completeUserInfo = "/CompleteAccountInfo";
   static String maps = "/maps";
+  static String profile = "/profile";
 }
 
 final getPages = [
@@ -45,5 +49,13 @@ final getPages = [
   GetPage(
     name: Routes.maps,
     page: () => MapPicker(),
+  ),
+  GetPage(
+    name: Routes.introScreen,
+    page: () => IntroductionPage(),
+  ),
+  GetPage(
+    name: Routes.profile,
+    page: () => Profile(),
   ),
 ];

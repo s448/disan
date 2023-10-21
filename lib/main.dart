@@ -21,10 +21,10 @@ class DisanApp extends StatelessWidget {
     return GetMaterialApp(
       textDirection: TextDirection.ltr,
       debugShowCheckedModeBanner: false,
-      initialRoute: _sharedPrefController.userAuthenticated()
-          ? Routes.navbar
-          : Routes.login,
-      // initialRoute: Routes.login,
+      // initialRoute: _sharedPrefController.userAuthenticated()
+      //     ? Routes.navbar
+      //     : Routes.introScreen,
+      initialRoute: Routes.introScreen,
       getPages: getPages,
     );
   }
