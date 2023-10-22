@@ -7,10 +7,10 @@ class NavBar extends StatefulWidget {
   const NavBar({super.key});
 
   @override
-  _NavBarState createState() => _NavBarState();
+  NavBarState createState() => NavBarState();
 }
 
-class _NavBarState extends State<NavBar> {
+class NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -89,8 +89,8 @@ class NavBarItemIcon extends StatelessWidget {
 }
 
 var pages = <Widget>[
-  const HomePage(),
-  const HomePage(),
-  const HomePage(),
-  const HomePage(),
+  HomePage(),
+  HomePage(),
+  HomePage(),
+  HomePage(),
 ];

@@ -1,3 +1,4 @@
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+  HomePage({super.key});
+  final userController = Get.put(UserController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -32,7 +33,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => Get.toNamed(Routes.profile),
+                  onPressed: () => Get.toNamed(Routes.profile,
+                      arguments: {"uid": userController.currentUser!.uid}),
                   icon: const Icon(
                     CupertinoIcons.person,
                     size: 40,

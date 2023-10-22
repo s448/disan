@@ -11,14 +11,13 @@ class UserController extends GetxController {
   @override
   void onInit() async {
     currentUser = _auth.currentUser;
-    userModel = await getCurrentUserModel();
+    // userModel = getUserModel(currentUser!.uid);
     print(userModel.toJson());
     super.onInit();
   }
 
-  getCurrentUserModel() async {
-    var result =
-        await _firestore.collection('users').doc(currentUser!.uid).get();
-    return UserModel.fromJson(result.data()!);
+  Stream<dynamic> getUserModel(String userId) {
+    var result = _firestore.collection('users').doc(userId).snapshots();
+    return result;
   }
 }

@@ -28,6 +28,7 @@ class SelectAccountTypePage extends StatelessWidget {
               cornerRadius: 20.0,
               labels: ["User".tr, "Merchant".tr],
               centerText: true,
+              initialLabelIndex: 0,
               multiLineText: true,
               activeFgColor: Colors.white,
               inactiveBgColor: Colors.grey,

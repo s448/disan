@@ -52,10 +52,10 @@ final getPages = [
   ),
   GetPage(
     name: Routes.introScreen,
-    page: () => IntroductionPage(),
+    page: () => const IntroductionPage(),
   ),
   GetPage(
     name: Routes.profile,
-    page: () => Profile(),
+    page: () => ProfilePage(),
   ),
 ];

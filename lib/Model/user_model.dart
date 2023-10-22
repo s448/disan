@@ -10,19 +10,22 @@ class UserModel {
   String? background;
   double? lat;
   double? long;
+  List<dynamic>? categories;
 
-  UserModel(
-      {this.name,
-      this.id,
-      this.token,
-      this.bio,
-      this.email,
-      this.type,
-      this.profile,
-      this.background,
-      this.whatsappNumber,
-      this.lat,
-      this.long});
+  UserModel({
+    this.name,
+    this.id,
+    this.token,
+    this.bio,
+    this.email,
+    this.type,
+    this.profile,
+    this.background,
+    this.whatsappNumber,
+    this.lat,
+    this.long,
+    this.categories,
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -36,6 +39,7 @@ class UserModel {
     background = json['background'];
     lat = json['lat'];
     long = json['long'];
+    categories = json['categories'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +55,7 @@ class UserModel {
     data['background'] = this.background;
     data['lat'] = this.lat;
     data['long'] = this.long;
+    data['categories'] = this.categories;
     return data;
   }
 }

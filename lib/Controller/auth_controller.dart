@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Core/constants/shop_categories.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
@@ -361,6 +362,7 @@ class AuthController extends GetxController {
         lat: locationLat.value,
         long: locationLng.value,
         bio: bio.value,
+        categories: selectedCategories.value,
       );
       await _firestore
           .collection("users")
@@ -376,5 +378,18 @@ class AuthController extends GetxController {
       update();
       Get.offAllNamed(Routes.navbar);
     }
+  }
+
+  //shop categories
+  RxList<String> selectedCategories = <String>[].obs;
+  RxList<String> shopCategories = shopCatList.obs;
+
+  addCatItem(val) {
+    if (!selectedCategories.contains(val)) {
+      selectedCategories.value = val;
+      print("selected");
+    }
+    update();
+    print(selectedCategories);
   }
 }

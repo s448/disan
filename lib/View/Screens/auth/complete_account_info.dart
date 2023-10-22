@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:chips_choice/chips_choice.dart';
 
 class CompleteAccountInfo extends StatelessWidget {
   CompleteAccountInfo({super.key});
@@ -178,7 +179,40 @@ class CompleteAccountInfo extends StatelessWidget {
                       // subtitle: Text("Select your location on google maps".tr),
                     ),
                   ),
-                )
+                ),
+                const SizedBox(
+                  height: 25.0,
+                ),
+                !isUser
+                    ? SizedBox(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Select your shop categories".tr,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 6.0,
+                            ),
+                            ChipsChoice<String>.multiple(
+                              wrapped: true,
+                              value: controller.selectedCategories.value,
+                              onChanged: (val) => controller.addCatItem(val),
+                              choiceItems: C2Choice.listFrom<String, String>(
+                                source: controller.shopCategories,
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),
