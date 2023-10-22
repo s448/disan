@@ -11,6 +11,7 @@ class UserModel {
   double? lat;
   double? long;
   List<dynamic>? categories;
+  double? rating;
 
   UserModel({
     this.name,
@@ -25,6 +26,7 @@ class UserModel {
     this.lat,
     this.long,
     this.categories,
+    this.rating,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class UserModel {
     lat = json['lat'];
     long = json['long'];
     categories = json['categories'];
+    rating = json['rating'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +59,7 @@ class UserModel {
     data['lat'] = this.lat;
     data['long'] = this.long;
     data['categories'] = this.categories;
+    data['rating'] = this.rating;
     return data;
   }
 }

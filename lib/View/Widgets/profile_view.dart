@@ -1,4 +1,3 @@
-import 'package:chips_choice/chips_choice.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:flutter/material.dart';

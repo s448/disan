@@ -1,4 +1,5 @@
 import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/View/Screens/navbar/shop/shop_page.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         body: CustomScrollView(
+          primary: true,
           slivers: <Widget>[
             SliverAppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
@@ -57,11 +59,11 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            const SliverFillRemaining(
+            SliverFillRemaining(
               child: TabBarView(
                 children: [
-                  Center(child: Text('Tab 1 Content')),
-                  Center(child: Text('Tab 2 Content')),
+                  ShopPage(),
+                  const Center(child: Text('Tab 2 Content')),
                 ],
               ),
             ),
