@@ -8,16 +8,26 @@ class UserController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? currentUser;
   UserModel userModel = UserModel();
+  UserModel curentUserModel = UserModel();
+
   @override
   void onInit() async {
     currentUser = _auth.currentUser;
-    // userModel = getUserModel(currentUser!.uid);
-    print(userModel.toJson());
+    curentUserModel = await getUserModel(currentUser!.uid).first;
+    print("Current user is ====> \n");
+    print(curentUserModel.toJson());
     super.onInit();
   }
 
-  Stream<dynamic> getUserModel(String userId) {
+  Stream<UserModel> getUserModel(String userId) {
     var result = _firestore.collection('users').doc(userId).snapshots();
-    return result;
+    return result.map((snapshot) {
+      if (snapshot.exists) {
+        userModel = UserModel.fromJson(snapshot.data() as Map<String, dynamic>);
+        return userModel;
+      } else {
+        return UserModel();
+      }
+    });
   }
 }

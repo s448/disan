@@ -6,6 +6,7 @@ class ShopTapController extends GetxController {
   @override
   void onInit() async {
     trendingProfiles.value = await getTrendingProfiles();
+    update();
     print(trendingProfiles);
     super.onInit();
   }
@@ -32,9 +33,6 @@ class ShopTapController extends GetxController {
       return [];
     }
   }
-
-  //get the categories
-  getCategories() {}
 
   //best selling products
   getBestSelling() async {}

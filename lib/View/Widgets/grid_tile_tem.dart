@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class GridTileItem extends StatelessWidget {
-  const GridTileItem(
-      {super.key,
-      required this.name,
-      required this.img,
-      required this.networking});
+  const GridTileItem({
+    super.key,
+    required this.name,
+    required this.img,
+    required this.networking,
+  });
   final String name;
   final String img;
   final bool networking;

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthController extends GetxController {
@@ -52,6 +53,8 @@ class AuthController extends GetxController {
   RxDouble locationLng = 0.0.obs;
   var profilePicUrl = "".obs;
   var backgroundPicUrl = "".obs;
+
+  final _picker = ImagePicker();
 
   changeObscureTextStatus() {
     textObsecured.value = !textObsecured.value;
@@ -333,7 +336,8 @@ class AuthController extends GetxController {
 
   selectProfilePic() async {
     try {
-      profilePicUrl.value = await _filePicker.uploadImage();
+      var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      profilePicUrl.value = await _filePicker.uploadImage(pickedFile);
     } catch (e) {
       dangerSnackbar("Error uploading".tr, e.toString());
     }
@@ -341,7 +345,8 @@ class AuthController extends GetxController {
 
   selectBackgroundPic() async {
     try {
-      backgroundPicUrl.value = await _filePicker.uploadImage();
+      var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      backgroundPicUrl.value = await _filePicker.uploadImage(pickedFile);
     } catch (e) {
       dangerSnackbar("Error uploading".tr, e.toString());
     }

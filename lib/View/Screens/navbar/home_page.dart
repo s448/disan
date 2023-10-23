@@ -1,5 +1,6 @@
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/View/Screens/navbar/shop/shop_page.dart';
+import 'package:disan/View/Screens/navbar/timeline/timeline_page.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
               child: TabBarView(
                 children: [
                   ShopPage(),
-                  const Center(child: Text('Tab 2 Content')),
+                  TimelinePage(),
                 ],
               ),
             ),

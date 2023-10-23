@@ -5,13 +5,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageUploader {
-  final _picker = ImagePicker();
   final _storage = FirebaseStorage.instance;
   String imageUrl = '';
 
-  Future<String> uploadImage() async {
+  Future<String> uploadImage(XFile? pickedFile) async {
     // Select image from gallery
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       // Create a unique filename for the image

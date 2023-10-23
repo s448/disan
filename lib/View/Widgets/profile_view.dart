@@ -1,5 +1,4 @@
 import 'package:disan/Controller/user_controller.dart';
-import 'package:disan/Model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +19,11 @@ class ProfilePageTemp extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final userData = UserModel.fromJson(snapshot.data.data());
+        // final userData = UserModel.fromJson(snapshot.data.data());
+        final userData = controller.userModel;
+        print(userData.toJson());
+        bool isUser = userData.type == "USER";
+        bool isMe = userId == controller.currentUser!.uid;
         return Container(
           padding: const EdgeInsets.only(left: 10, right: 10),
           constraints: const BoxConstraints.expand(),
@@ -31,7 +34,7 @@ class ProfilePageTemp extends StatelessWidget {
                 height: 10,
               ),
               Stack(
-                alignment: Alignment.topCenter,
+                alignment: isUser ? Alignment.topCenter : Alignment.topRight,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -48,15 +51,18 @@ class ProfilePageTemp extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 80),
-                    child: CircleAvatar(
-                      radius: 74.0,
-                      backgroundColor: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 80),
                       child: CircleAvatar(
-                        radius: 70.0,
-                        backgroundImage: NetworkImage(
-                          userData.profile ?? "",
+                        radius: 74.0,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 70.0,
+                          backgroundImage: NetworkImage(
+                            userData.profile ?? "",
+                          ),
                         ),
                       ),
                     ),
@@ -77,7 +83,7 @@ class ProfilePageTemp extends StatelessWidget {
               // const SizedBox(
               //   height: 10,
               // ),
-              userData.bio == ""
+              userData.bio == "" || userData.bio == null
                   ? const SizedBox(
                       height: 5,
                     )
@@ -93,11 +99,12 @@ class ProfilePageTemp extends StatelessWidget {
                         ),
                       ),
                     ),
-              userData.type == "MERCHANT"
+
+              !isUser
                   ? Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        for (var c in userData.categories!)
+                        for (var c in userData.categories ?? [])
                           Container(
                             margin: const EdgeInsets.all(5),
                             padding: const EdgeInsets.all(5),
@@ -113,45 +120,47 @@ class ProfilePageTemp extends StatelessWidget {
                       ],
                     )
                   : const SizedBox(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[800]),
-                    child: Row(
+              isMe
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.add_circle_rounded),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[800]),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.add_circle_rounded),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text('Add to story'.tr)
+                            ],
+                          ),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
-                        Text('Add to story'.tr)
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[900]),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.edit),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[900]),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.edit),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text('Edit profile'.tr)
+                            ],
+                          ),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
-                        Text('Edit profile'.tr)
                       ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
+                    )
+                  : const SizedBox(),
               Divider(
                 thickness: 1,
                 height: 10,

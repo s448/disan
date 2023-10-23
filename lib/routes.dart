@@ -5,6 +5,7 @@ import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
 import 'package:disan/View/Screens/introduction_page.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
+import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class Routes {
   static String completeUserInfo = "/CompleteAccountInfo";
   static String maps = "/maps";
   static String profile = "/profile";
+  static String createPost = '/createpost';
 }
 
 final getPages = [
@@ -57,5 +59,9 @@ final getPages = [
   GetPage(
     name: Routes.profile,
     page: () => ProfilePage(),
+  ),
+  GetPage(
+    name: Routes.createPost,
+    page: () => CreatePostPage(),
   ),
 ];
