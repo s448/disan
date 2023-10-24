@@ -2,6 +2,7 @@ import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/style/button_style.dart';
 import 'package:disan/View/Widgets/img_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,8 +50,60 @@ class CreatePostPage extends StatelessWidget {
                   fillColor: const Color.fromARGB(255, 194, 192, 192),
                   filled: true,
                   // border: InputBorder.none,
-                  hintText: "What's on your mind ?".tr,
+                  hintText: !controller.withRecord.value
+                      ? "What's on your mind ?".tr
+                      : "",
                 ),
+              ),
+              const SizedBox(
+                height: 12.0,
+              ),
+              //recording >>>>>>>>>>>>>
+
+              SizedBox(
+                width: Get.width,
+                child: Row(
+                  children: [
+                    const Expanded(
+                        child: Divider(
+                      thickness: 1.4,
+                    )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'Or'.tr,
+                      ),
+                    ),
+                    const Expanded(
+                        child: Divider(
+                      thickness: 1.4,
+                    )),
+                  ],
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: IconButton(
+                      onPressed: () async {
+                        if (controller.isRecording.value) {
+                          await controller.stopRecording();
+                        } else {
+                          await controller.startRecording();
+                        }
+                      },
+                      icon: Icon(
+                        controller.isRecording.value
+                            ? Icons.stop
+                            : CupertinoIcons.mic_circle,
+                        size: 40,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 12.0,
@@ -77,6 +130,7 @@ class CreatePostPage extends StatelessWidget {
                   : SizedBox(
                       height: Get.height * 0.18,
                       child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,

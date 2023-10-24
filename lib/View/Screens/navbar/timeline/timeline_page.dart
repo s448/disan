@@ -1,64 +1,96 @@
+import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Model/dan_model.dart';
+import 'package:disan/View/Widgets/post_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TimelinePage extends StatelessWidget {
-  TimelinePage({super.key});
+  TimelinePage({Key? key});
+
   final userController = Get.find<UserController>();
+  final controller = Get.put(TimelineTapController());
+
   @override
   Widget build(BuildContext context) {
     final currentUserModel = userController.curentUserModel;
     print(currentUserModel.toJson());
-    return
-        // Obx(
-        //   () =>
-        SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          SizedBox(
-            // height: Get.height * 0.23,
-            width: Get.width,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: InkWell(
-                onTap: () => Get.toNamed(Routes.createPost),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 32.0,
-                    backgroundColor: Colors.blue,
-                    backgroundImage: NetworkImage(
-                      currentUserModel.profile.toString(),
-                    ),
+
+    return Container(
+      color: Colors.grey.shade300,
+      child: ListView.builder(
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6.0),
                   ),
-                  title: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        borderRadius: BorderRadius.circular(6.0)),
-                    child: Text(
-                      "Din a Dan .. Here".tr,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
+                  width: Get.width,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: InkWell(
+                      onTap: () => Get.toNamed(Routes.createPost),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 32.0,
+                          backgroundColor: Colors.blue,
+                          backgroundImage: NetworkImage(
+                            currentUserModel.profile.toString(),
+                          ),
+                        ),
+                        title: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black54),
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: Text(
+                            "Din a Dan .. Here".tr,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(
-              thickness: 1.5,
-              color: Colors.black45,
-            ),
-          )
-        ],
+              StreamBuilder<List<DanModel>>(
+                stream: controller.getTimelinePosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final posts = snapshot.data!;
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: posts.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        if (index >= posts.length) {
+                          return Container(); // Return an empty container if the index is out of range
+                        }
+                        final dan = posts[index];
+                        return PostWidget(dan: dan);
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ],
+          );
+        },
       ),
-      // ),
     );
   }
 }

@@ -201,6 +201,7 @@ class CompleteAccountInfo extends StatelessWidget {
                             ),
                             ChipsChoice<String>.multiple(
                               wrapped: true,
+                              // ignore: invalid_use_of_protected_member
                               value: controller.selectedCategories.value,
                               onChanged: (val) => controller.addCatItem(val),
                               choiceItems: C2Choice.listFrom<String, String>(

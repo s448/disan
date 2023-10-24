@@ -367,6 +367,7 @@ class AuthController extends GetxController {
         lat: locationLat.value,
         long: locationLng.value,
         bio: bio.value,
+        // ignore: invalid_use_of_protected_member
         categories: selectedCategories.value,
       );
       await _firestore
@@ -379,7 +380,7 @@ class AuthController extends GetxController {
       customSnackbar("Saved your info".tr, "");
     } catch (e) {
       saveButtonLoading.value = false;
-      print("Errorrrrrrrrrrrr" + e.toString());
+      // print("Errorrrrrrrrrrrr" + e.toString());
       update();
       Get.offAllNamed(Routes.navbar);
     }
