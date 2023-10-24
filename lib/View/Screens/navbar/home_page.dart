@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: CustomScrollView(
           primary: true,
           slivers: <Widget>[

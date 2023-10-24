@@ -34,7 +34,7 @@ class TimelineTapController extends GetxController {
   File? recordFile;
 
   RxString description = "".obs;
-
+  RxString comment = "".obs;
   RxList<String> imgLinks = RxList();
 
   Future<void> pickMultipleImages() async {
@@ -167,14 +167,20 @@ class TimelineTapController extends GetxController {
 
   updatePost() async {}
 
-  Future<void> addCommentToPost(String postId, Comment comment) async {
+  Future<void> addCommentToPost(String postId) async {
     try {
       await FirebaseFirestore.instance.collection('posts').doc(postId).update({
         'comments': FieldValue.arrayUnion([
-          comment.toJson(),
+          Comment(
+            comment: comment.value,
+            date: Timestamp.now(),
+            user: userController.curentUserModel,
+          ).toJson(),
         ])
       });
+      customSnackbar("Your comment was sent", '');
     } catch (e) {
+      print(e);
       dangerSnackbar(
           "Cannot add the comment".tr, "check your internet connection".tr);
     }

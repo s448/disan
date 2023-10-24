@@ -1,4 +1,5 @@
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,6 +15,8 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMerchant = dan.user!.type == "MERCHANT";
+    // final currentUserModel = userController.curentUserModel;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -107,64 +110,28 @@ class PostWidget extends StatelessWidget {
                               color: Colors.blue,
                             ),
                           ),
-                          Text("${dan.likes}")
+                          // Text("${dan.likes!.toDouble()}")
                         ],
                       ),
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        print(dan.description);
-                        showModalBottomSheet<void>(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.0),
-                              topRight: Radius.circular(10.0),
-                            ),
-                          ),
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                    height: Get.height * 0.9,
-                                    child: ListView.builder(
-                                      itemCount: 2,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: ListTile(
-                                          leading: CircleAvatar(
-                                            radius: 20.0,
-                                            backgroundColor: Colors.blue,
-                                            backgroundImage: NetworkImage(
-                                              dan.user!.profile.toString(),
-                                            ),
-                                          ),
-                                          title: Text(
-                                            dan.user!.name.toString(),
-                                            maxLines: 1,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                          subtitle: Text(
-                                            dan.description.toString(),
-                                            maxLines: 3,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.black54),
-                                          ),
-                                        ),
-                                      ),
-                                    )),
-                              ],
-                            );
-                          },
-                        );
-                      },
+                      onPressed: () =>
+                          Get.toNamed(Routes.comments, arguments: {"dan": dan}),
+                      // print(dan.description);
+                      // showModalBottomSheet<void>(
+                      //   shape: const RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.only(
+                      //       topLeft: Radius.circular(10.0),
+                      //       topRight: Radius.circular(10.0),
+                      //     ),
+                      //   ),
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return
+                      //   },
+                      // );
+
                       icon: const Icon(
                         Icons.comment,
                         color: Colors.blue,
