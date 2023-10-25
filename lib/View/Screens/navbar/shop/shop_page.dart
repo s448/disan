@@ -81,17 +81,17 @@ class ShopPage extends StatelessWidget {
               width: Get.width,
               child: GridView.count(
                 primary: false,
-                padding: const EdgeInsets.all(6),
-                mainAxisSpacing: 10,
+                padding: const EdgeInsets.all(1),
+                mainAxisSpacing: 2,
                 crossAxisCount: 3,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   for (var category in shopCategories)
                     Container(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       width: Get.width / 2,
                       // height: Get.height / 6,

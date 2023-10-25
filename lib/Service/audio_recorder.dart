@@ -31,4 +31,9 @@ class AudioRecordService {
 
     _recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
+
+  openRecord(String url) async {
+    final FlutterSoundPlayer player = FlutterSoundPlayer();
+    await player.startPlayer(fromURI: url);
+  }
 }

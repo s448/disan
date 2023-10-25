@@ -15,9 +15,9 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: CustomScrollView(
-          primary: true,
+          physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
@@ -26,8 +26,8 @@ class HomePage extends StatelessWidget {
               ),
               title: const Text('Disan'),
               pinned: false,
-              floating: false,
-              expandedHeight: Get.height * 0.15,
+              floating: true,
+              // expandedHeight: Get.height * 0.15,
               actions: [
                 IconButton(
                   onPressed: () {},

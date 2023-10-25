@@ -10,9 +10,12 @@ import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:toast/toast.dart';
+
+import 'package:http/http.dart' as http;
 
 class TimelineTapController extends GetxController {
   final ImageUploader _imageUploader = ImageUploader();
@@ -165,8 +168,6 @@ class TimelineTapController extends GetxController {
     });
   }
 
-  updatePost() async {}
-
   Future<void> addCommentToPost(String postId) async {
     try {
       await FirebaseFirestore.instance.collection('posts').doc(postId).update({
@@ -183,6 +184,70 @@ class TimelineTapController extends GetxController {
       print(e);
       dangerSnackbar(
           "Cannot add the comment".tr, "check your internet connection".tr);
+    }
+  }
+
+  RxBool liked = false.obs;
+
+  likePost(String postId) async {
+    try {
+      var result = await _firestore.collection('posts').doc(postId).get();
+
+      DanModel danModel = DanModel.fromJson(result.data()!);
+
+      print(danModel.id);
+
+      if (danModel.likers!.contains(userController.userModel.id)) {
+        danModel.likes = (danModel.likes! - 1);
+        danModel.likers!.remove(userController.userModel.id!);
+        update();
+      } else {
+        danModel.likes = danModel.likes! + 1;
+        danModel.likers!.add(userController.userModel.id!);
+        update();
+      }
+      await _firestore
+          .collection("posts")
+          .doc(postId)
+          .update(danModel.toJson());
+      liked.value = true;
+      update();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getPost(String postId) {
+    return _firestore.collection('posts').doc(postId).snapshots();
+  }
+
+  ////////
+  Future<String> downloadFileToCache(
+      String fileUrl, String fileExtension) async {
+    try {
+      // Send an HTTP request to download the file.
+      final response = await http.get(Uri.parse(fileUrl));
+
+      if (response.statusCode == 200) {
+        // Get the cache directory path.
+        Directory cacheDirectory = await getTemporaryDirectory();
+
+        // Create a file in the cache directory with a unique name and the specified extension.
+        String uniqueFileName =
+            DateTime.now().millisecondsSinceEpoch.toString();
+        File localFile =
+            File('${cacheDirectory.path}/$uniqueFileName.$fileExtension');
+
+        // Write the downloaded content to the local file.
+        await localFile.writeAsBytes(response.bodyBytes);
+
+        return localFile.path;
+      } else {
+        throw Exception('Failed to download the file');
+      }
+    } catch (e) {
+      print("Error downloading file: $e");
+      return "";
     }
   }
 }
