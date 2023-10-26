@@ -17,9 +17,21 @@ class PostController extends GetxController {
     await player.play(UrlSource(url!));
   }
 
+  pause() async {
+    await player.pause();
+  }
+
   triggerPlayBtn() {
     isPlaying.value = !isPlaying.value;
     update();
+  }
+
+  triggerSource(String? url) async {
+    if (isPlaying.value) {
+      await pause();
+    } else {
+      await playSource(url);
+    }
   }
 
   getLikeStatus() => isLiked.value;

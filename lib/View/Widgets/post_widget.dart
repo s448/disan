@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:disan/Controller/audio_player_Controller.dart';
 import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
+// ignore: must_be_immutable
 class PostWidget extends StatelessWidget {
   PostWidget({super.key, required this.dan});
   final DanModel dan;
@@ -23,7 +23,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMerchant = dan.user!.type == "MERCHANT";
-    final player = postController.player;
+    // final player = postController.player;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -123,21 +123,23 @@ class PostWidget extends StatelessWidget {
                       postController.triggerPlayBtn();
                       try {
                         print("----------------------START-----------------");
-                        await postController.playSource(dan.description);
+                        await postController.triggerSource(dan.description);
                       } catch (e) {
                         print("---------------");
                         print(e);
                       }
                     },
-                    child: Icon(
-                      postController.getPlayBtnStatus()
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                      size: 40,
-                      color: postController.getPlayBtnStatus()
-                          ? Colors.red
-                          : Colors.blue,
-                    ),
+                    child: Obx(() {
+                      return Icon(
+                        postController.getPlayBtnStatus()
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        size: 40,
+                        color: postController.getPlayBtnStatus()
+                            ? Colors.red
+                            : Colors.blue,
+                      );
+                    }),
                   )
                 : Text(
                     dan.description ?? "",
