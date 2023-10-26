@@ -12,7 +12,7 @@ class DanModel {
   List<Comment>? comments;
   double? rating;
   bool? withRecord;
-  List<dynamic>? likers;
+  List<dynamic> likers = [];
 
   DanModel({
     this.id,
@@ -24,7 +24,7 @@ class DanModel {
     this.comments,
     this.rating,
     this.withRecord,
-    this.likers,
+    required this.likers,
   });
 
   DanModel.fromJson(Map<String, dynamic> json) {

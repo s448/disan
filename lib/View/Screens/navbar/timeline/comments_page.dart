@@ -96,10 +96,12 @@ class CommentsPage extends StatelessWidget {
           ),
         ),
         trailing: IconButton(
-          onPressed: () {},
+          onPressed: () => controller.addCommentToPost(
+            dan.id!,
+          ),
           icon: const Icon(
-            Icons.mic,
-            color: Colors.red,
+            Icons.send,
+            color: Colors.blue,
             size: 40,
           ),
         ),

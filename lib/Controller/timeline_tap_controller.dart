@@ -115,6 +115,7 @@ class TimelineTapController extends GetxController {
         // ignore: invalid_use_of_protected_member
         imgs: imgLinks.value,
         likes: 0,
+        likers: [],
         rating: 0.0,
         withRecord: withRecord.value,
         user: userController.curentUserModel,

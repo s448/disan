@@ -12,6 +12,10 @@ class UserModel {
   double? long;
   List<dynamic>? categories;
   double? rating;
+  List<dynamic>? followers;
+  List<dynamic>? following;
+  List<dynamic>? muted;
+  List<dynamic>? blocked;
 
   UserModel({
     this.name,
@@ -27,6 +31,10 @@ class UserModel {
     this.long,
     this.categories,
     this.rating,
+    this.followers,
+    this.following,
+    this.muted,
+    this.blocked,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -43,6 +51,10 @@ class UserModel {
     long = json['long'];
     categories = json['categories'];
     rating = json['rating'];
+    following = json['following'];
+    followers = json['followers'];
+    muted = json['muted'];
+    blocked = json['blocked'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +72,11 @@ class UserModel {
     data['long'] = this.long;
     data['categories'] = this.categories;
     data['rating'] = this.rating;
+    data['followers'] = this.followers;
+    data['following'] = this.following;
+    data['muted'] = this.muted;
+    data['blocked'] = this.blocked;
+
     return data;
   }
 }

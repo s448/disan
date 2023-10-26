@@ -1,15 +1,23 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Model/dan_model.dart';
 import 'package:get/get.dart';
 
 class PostController extends GetxController {
   RxBool isPlaying = false.obs;
   final player = AudioPlayer();
 
-  // final userController = Get.find<UserController>();
+  final userController = Get.find<UserController>();
   RxBool isLiked = false.obs;
 
-  triggerLike() {
-    isLiked.value = !isLiked.value;
+  triggerLike(DanModel dan) {
+    String myId = userController.curentUserModel.id!;
+
+    if (dan.likers!.contains(myId)) {
+      isLiked.value = true;
+    } else {
+      isLiked.value = false;
+    }
     update();
   }
 
@@ -34,6 +42,19 @@ class PostController extends GetxController {
     }
   }
 
-  getLikeStatus() => isLiked.value;
+  getLikeStatus(DanModel dan) {
+    String myId = userController.curentUserModel.id!;
+
+    if (dan.likers!.contains(myId)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getPlayBtnStatus() => isPlaying.value;
+
+  isItMyPost(String userId) {
+    return userId == userController.curentUserModel.id;
+  }
 }

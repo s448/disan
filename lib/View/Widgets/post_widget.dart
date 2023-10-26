@@ -3,6 +3,7 @@ import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/View/Widgets/popup_menu_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,9 +51,10 @@ class PostWidget extends StatelessWidget {
                               ),
                               child: Text(dateTimeManager
                                   .getTimeDifference(dan.date!))),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.more_vert_rounded)),
+                          PostPopUpMenu(
+                            dan: dan,
+                            isMe: postController.isItMyPost(dan.user!.id!),
+                          )
                         ],
                       ),
                     ),
@@ -107,9 +109,10 @@ class PostWidget extends StatelessWidget {
                               ),
                               child: Text(dateTimeManager
                                   .getTimeDifference(dan.date!))),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.more_vert_rounded)),
+                          PostPopUpMenu(
+                            dan: dan,
+                            isMe: postController.isItMyPost(dan.user!.id!),
+                          )
                         ],
                       ),
                     ],
@@ -212,21 +215,18 @@ class PostWidget extends StatelessWidget {
                       )
                     : Row(
                         children: [
-                          Obx(() {
-                            return IconButton(
-                              onPressed: () {
-                                postController.triggerLike();
-
-                                controller.likePost(dan.id!);
-                              },
-                              icon: Icon(
-                                postController.getLikeStatus()
-                                    ? Ionicons.heart
-                                    : Ionicons.heart_outline,
-                                color: Colors.blue,
-                              ),
-                            );
-                          }),
+                          IconButton(
+                            onPressed: () {
+                              postController.triggerLike(dan);
+                              controller.likePost(dan.id!);
+                            },
+                            icon: Icon(
+                              postController.getLikeStatus(dan)
+                                  ? Ionicons.heart
+                                  : Ionicons.heart_outline,
+                              color: Colors.blue,
+                            ),
+                          ),
                           Text("${dan.likes}")
                         ],
                       ),

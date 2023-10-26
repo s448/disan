@@ -1,7 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
 
 class UserController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,5 +37,130 @@ class UserController extends GetxController {
         return UserModel();
       }
     });
+  }
+
+  follow(String? userId) async {
+    try {
+      final myUserId = currentUser!.uid;
+
+      // Update the other user's list of followers
+      await _firestore.collection('users').doc(userId).update({
+        'followers': FieldValue.arrayUnion([myUserId]),
+      });
+
+      // Update the current user's list of following
+      await _firestore.collection('users').doc(myUserId).update({
+        'following': FieldValue.arrayUnion([userId]),
+      });
+
+      customSnackbar("you are following him".tr, "");
+    } catch (error) {
+      print('Error following user: $error');
+    }
+  }
+
+  mute(String? userId) async {
+    try {
+      final myUserId = currentUser!.uid;
+
+      // Update the current user's list of following
+      await _firestore.collection('users').doc(myUserId).update({
+        'muted': FieldValue.arrayUnion([userId]),
+      });
+      customSnackbar("user is muted".tr, "");
+    } catch (error) {
+      print('Error muting user: $error');
+    }
+  }
+
+  block(String? userId) async {
+    try {
+      final myUserId = currentUser!.uid;
+
+      // Update the current user's list of following
+      await _firestore.collection('users').doc(myUserId).update({
+        'blocked': FieldValue.arrayUnion([userId]),
+      });
+      customSnackbar("user is blocked".tr, "");
+    } catch (error) {
+      print('Error blocking user: $error');
+    }
+  }
+
+  save(List<String> imgs) async {
+    final status = await Permission.storage.request();
+
+    if (status != PermissionStatus.granted) {
+      dangerSnackbar("Microphone permission not granted", "");
+      return;
+    }
+    try {
+      for (var img in imgs) {
+        var response = await Dio()
+            .get(img, options: Options(responseType: ResponseType.bytes));
+        final result = await ImageGallerySaver.saveImage(
+          Uint8List.fromList(response.data),
+          quality: 60,
+          name: const Uuid().v1(),
+        );
+        customSnackbar("Post images was saved to gallery", "");
+        print(result);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  delete(String? postId) async {
+    try {
+      // delete the post
+      await _firestore.collection('posts').doc(postId).delete();
+      customSnackbar("post is deleted".tr, "");
+    } catch (error) {
+      print('Error blocking user: $error');
+    }
+  }
+
+  // save(List<String> imageUrls) async {
+  // try {
+  //   for (String imageUrl in imageUrls) {
+  //     // Download the image from Firebase Storage
+  //     final ref = FirebaseStorage.instance.ref(imageUrl);
+  //     final fileData = await ref.getData();
+
+  //     // Save the image to the device's gallery
+  //     final result = await ImageGallerySaver.saveFile(Uint8List.fromList(fileData!));
+
+  //     if (result['isSuccess']) {
+  //       print('Image saved to gallery: $imageUrl');
+  //     } else {
+  //       print('Failed to save image to gallery: $imageUrl');
+  //     }
+  //   }
+  // } catch (e) {
+  //   print('Error downloading and saving images: $e');
+  // }
+  // }
+
+  makePopupAction(
+      String ex, String userId, String postId, List<String> imgs) async {
+    switch (ex) {
+      case "1":
+        await save(imgs);
+        break;
+      case "2":
+        await follow(userId);
+        break;
+      case "3":
+        await mute(userId);
+        break;
+      case "4":
+        await block(userId);
+        break;
+      case "5":
+        await delete(postId);
+        break;
+      default:
+    }
   }
 }
