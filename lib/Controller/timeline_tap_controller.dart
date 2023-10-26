@@ -131,7 +131,6 @@ class TimelineTapController extends GetxController {
 
   startRecording() async {
     print("start record");
-
     withRecord.value = true;
     isRecording.value = true;
     update();
