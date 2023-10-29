@@ -19,7 +19,6 @@ class ProfilePageTemp extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        // final userData = UserModel.fromJson(snapshot.data.data());
         final userData = controller.userModel;
         print(userData.toJson());
         bool isUser = userData.type == "USER";

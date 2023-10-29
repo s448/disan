@@ -12,7 +12,10 @@ class DanModel {
   List<Comment>? comments;
   double? rating;
   bool? withRecord;
-  List<dynamic> likers = [];
+  bool? isReDaned;
+  String? reDanner;
+  List<dynamic>? likers = [];
+  List<dynamic>? raters = [];
 
   DanModel({
     this.id,
@@ -25,6 +28,9 @@ class DanModel {
     this.rating,
     this.withRecord,
     required this.likers,
+    required this.raters,
+    this.isReDaned,
+    this.reDanner,
   });
 
   DanModel.fromJson(Map<String, dynamic> json) {
@@ -43,6 +49,9 @@ class DanModel {
     rating = json['rating'];
     withRecord = json['withrecord'];
     likers = json['likers'];
+    raters = json['raters'];
+    isReDaned = json['isredan'];
+    reDanner = json['redanner'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +70,9 @@ class DanModel {
     data['rating'] = this.rating;
     data['withrecord'] = this.withRecord;
     data['likers'] = this.likers;
+    data['raters'] = this.raters;
+    data['isredan'] = this.isReDaned;
+    data['redanner'] = this.reDanner;
     return data;
   }
 }

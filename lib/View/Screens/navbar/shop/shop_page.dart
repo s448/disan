@@ -12,7 +12,7 @@ class ShopPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        // physics: const NeverScrollableScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,6 +105,57 @@ class ShopPage extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Best selling".tr,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            // const SizedBox(height: 6),
+            // ignore: invalid_use_of_protected_member
+            controller.bestSellingProducts.value.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : SizedBox(
+                    width: Get.width,
+                    height: Get.height * 0.2,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      // ignore: invalid_use_of_protected_member
+                      itemCount: controller.trendingProfiles.value.length,
+                      itemBuilder: (context, index) {
+                        final product =
+                            // ignore: invalid_use_of_protected_member
+                            controller.bestSellingProducts.value[index];
+                        final productImgUrl = product.imgs![0];
+                        final name = product.description;
+                        print("name is???????????????????????????????????" +
+                            name!);
+                        return InkWell(
+                          onTap: () => Get.toNamed(Routes.productDetails,
+                              arguments: {"dan": product}),
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            width: Get.width / 2.3,
+                            height: Get.height / 6.5,
+                            child: GridTileItem(
+                              networking: true,
+                              name: name.toString(),
+                              img: productImgUrl.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+            const SizedBox(height: 6),
           ],
         ),
       );

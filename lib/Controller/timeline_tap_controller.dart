@@ -10,12 +10,9 @@ import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:toast/toast.dart';
-
-import 'package:http/http.dart' as http;
 
 class TimelineTapController extends GetxController {
   final ImageUploader _imageUploader = ImageUploader();
@@ -107,7 +104,7 @@ class TimelineTapController extends GetxController {
     String postId = uuid.v1();
     print(postId);
     try {
-      DanModel userModel = DanModel(
+      DanModel dan = DanModel(
         id: postId,
         comments: [],
         date: Timestamp.now(),
@@ -116,15 +113,34 @@ class TimelineTapController extends GetxController {
         imgs: imgLinks.value,
         likes: 0,
         likers: [],
+        raters: [],
         rating: 0.0,
         withRecord: withRecord.value,
         user: userController.curentUserModel,
+        isReDaned: false,
+        reDanner: "",
       );
 
-      await _firestore.collection('posts').doc(postId).set(userModel.toJson());
+      await _firestore.collection('posts').doc(postId).set(dan.toJson());
       return true;
     } catch (e) {
       dangerSnackbar("cannot save the post".tr, e.toString());
+      print(e);
+      return false;
+    }
+  }
+
+  redanPost(DanModel dan) async {
+    String postId = uuid.v1();
+
+    try {
+      dan.isReDaned = true;
+      dan.reDanner = userController.userModel.name;
+      await _firestore.collection('posts').doc(postId).set(dan.toJson());
+      customSnackbar("You shared the dan".tr, "");
+      return true;
+    } catch (e) {
+      dangerSnackbar("cannot redan the post".tr, e.toString());
       print(e);
       return false;
     }
@@ -217,37 +233,38 @@ class TimelineTapController extends GetxController {
     }
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getPost(String postId) {
-    return _firestore.collection('posts').doc(postId).snapshots();
+  RxDouble rate = 0.0.obs;
+
+  ratePost(String postId) async {
+    try {
+      var result = await _firestore.collection('posts').doc(postId).get();
+
+      DanModel danModel = DanModel.fromJson(result.data()!);
+
+      print(danModel.id);
+
+      if (danModel.raters!.contains(userController.userModel.id)) {
+        customSnackbar("You rated this Dan before".tr, "");
+        return;
+      } else {
+        var currentRating = danModel.rating ?? 0.0;
+        var totalRaters = danModel.raters!.length + 1;
+        var totalRating = (rate.value + currentRating) / totalRaters;
+        danModel.raters!.add(userController.userModel.id!);
+        danModel.rating = totalRating;
+      }
+      await _firestore
+          .collection("posts")
+          .doc(postId)
+          .update(danModel.toJson());
+      customSnackbar("Rating is applied", "");
+      update();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
-  ////////
-  Future<String> downloadFileToCache(
-      String fileUrl, String fileExtension) async {
-    try {
-      // Send an HTTP request to download the file.
-      final response = await http.get(Uri.parse(fileUrl));
-
-      if (response.statusCode == 200) {
-        // Get the cache directory path.
-        Directory cacheDirectory = await getTemporaryDirectory();
-
-        // Create a file in the cache directory with a unique name and the specified extension.
-        String uniqueFileName =
-            DateTime.now().millisecondsSinceEpoch.toString();
-        File localFile =
-            File('${cacheDirectory.path}/$uniqueFileName.$fileExtension');
-
-        // Write the downloaded content to the local file.
-        await localFile.writeAsBytes(response.bodyBytes);
-
-        return localFile.path;
-      } else {
-        throw Exception('Failed to download the file');
-      }
-    } catch (e) {
-      print("Error downloading file: $e");
-      return "";
-    }
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getPost(String postId) {
+    return _firestore.collection('posts').doc(postId).snapshots();
   }
 }

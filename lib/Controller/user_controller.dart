@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dio/dio.dart';
@@ -91,7 +90,7 @@ class UserController extends GetxController {
     final status = await Permission.storage.request();
 
     if (status != PermissionStatus.granted) {
-      dangerSnackbar("Microphone permission not granted", "");
+      dangerSnackbar("Microphone permission not granted".tr, "");
       return;
     }
     try {
@@ -120,27 +119,6 @@ class UserController extends GetxController {
       print('Error blocking user: $error');
     }
   }
-
-  // save(List<String> imageUrls) async {
-  // try {
-  //   for (String imageUrl in imageUrls) {
-  //     // Download the image from Firebase Storage
-  //     final ref = FirebaseStorage.instance.ref(imageUrl);
-  //     final fileData = await ref.getData();
-
-  //     // Save the image to the device's gallery
-  //     final result = await ImageGallerySaver.saveFile(Uint8List.fromList(fileData!));
-
-  //     if (result['isSuccess']) {
-  //       print('Image saved to gallery: $imageUrl');
-  //     } else {
-  //       print('Failed to save image to gallery: $imageUrl');
-  //     }
-  //   }
-  // } catch (e) {
-  //   print('Error downloading and saving images: $e');
-  // }
-  // }
 
   makePopupAction(
       String ex, String userId, String postId, List<String> imgs) async {

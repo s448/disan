@@ -7,10 +7,6 @@ class SharedPrefsController extends GetxController {
   Future<void> saveUserCredentials(String userId, String userEmail) async {
     await prefs.setString('userId', userId);
     await prefs.setString('userEmail', userEmail);
-    // if (kDebugMode) {
-    //   print(
-    //       "<<..shared prefs..>>credentials $phoneNumber -- $verificationId  was saved successfully");
-    // }
   }
 
   markIntroAsDone() async {
