@@ -12,7 +12,7 @@ class ShopPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return SingleChildScrollView(
-        // physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,9 +23,9 @@ class ShopPage extends StatelessWidget {
               child: Text(
                 "Trending profile".tr,
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.yellow),
               ),
             ),
             // const SizedBox(height: 6),
@@ -72,9 +72,9 @@ class ShopPage extends StatelessWidget {
               child: Text(
                 "Categories".tr,
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.blue),
               ),
             ),
             SizedBox(
@@ -113,6 +113,7 @@ class ShopPage extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
+                  color: Colors.red,
                 ),
               ),
             ),
@@ -128,6 +129,7 @@ class ShopPage extends StatelessWidget {
                       // ignore: invalid_use_of_protected_member
                       itemCount: controller.trendingProfiles.value.length,
                       itemBuilder: (context, index) {
+                        print(controller.bestSellingProducts.length);
                         final product =
                             // ignore: invalid_use_of_protected_member
                             controller.bestSellingProducts.value[index];

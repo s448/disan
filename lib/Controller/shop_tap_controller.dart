@@ -48,7 +48,7 @@ class ShopTapController extends GetxController {
           .collection('posts')
           .where('isredan', isEqualTo: false)
           .where('user.type', isEqualTo: 'MERCHANT')
-          // .orderBy('rating', descending: true)
+          .orderBy('rating', descending: true)
           .get();
       final List<DanModel> bestSellingProducts = querySnapshot.docs.map((doc) {
         return DanModel.fromJson(doc.data());
