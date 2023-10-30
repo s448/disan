@@ -1,4 +1,5 @@
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,9 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Get.put(UserController(), permanent: true);
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
+  print("before notify fcm");
   await FcmServices().initNotification();
-
+  print('after notify fcm');
   return runApp(DisanApp());
 }
 

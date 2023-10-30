@@ -11,7 +11,7 @@ class TimelinePage extends StatelessWidget {
     super.key,
   });
 
-  final userController = Get.find<UserController>();
+  final userController = Get.put(UserController(), permanent: true);
   final controller = Get.put(TimelineTapController());
 
   @override

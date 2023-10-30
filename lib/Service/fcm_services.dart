@@ -1,9 +1,15 @@
 // import 'package:cityinpocket/Controller/shared_prefs_controller.dart';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Model/notification_model.dart';
+import 'package:disan/Service/firebase_services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 handleBackgroundMessage(RemoteMessage msg) async {
   // if (kDebugMode) {
@@ -14,8 +20,8 @@ handleBackgroundMessage(RemoteMessage msg) async {
 }
 
 class FcmServices {
-  //final _prefs = Get.put(SharedPrefsController());
-
+  final userController = Get.find<UserController>();
+  final _firebaseService = FirebaseServices();
   final _fcm = FirebaseMessaging.instance;
   static var _token = '';
 
@@ -32,9 +38,9 @@ class FcmServices {
       sound: true,
     );
     final fcmToken = await _fcm.getToken();
-    // if (kDebugMode) {
-    //   print(fcmToken);
-    // }
+    if (kDebugMode) {
+      print(fcmToken);
+    }
     _token = fcmToken ?? 'unknown';
     FirebaseMessaging.onBackgroundMessage(
         (message) => handleBackgroundMessage(message));
@@ -44,13 +50,26 @@ class FcmServices {
         print(data);
       }
     });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      //save the notification to the local storage
-      // _prefs.saveNotificationToLocal(
-      //     message.notification?.title, message.notification?.body);
-      // Handle the notification when the app is in the foreground
-      // print(
-      //     'Received a notification: ${message.notification?.title} - ${message.notification?.body}');
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      String docid = const Uuid().v1();
+      String title = message.notification?.title ?? '';
+      String body = message.notification?.body ?? '';
+      Timestamp date = Timestamp.now();
+
+      NotificationModel model = NotificationModel(
+        id: docid,
+        title: title,
+        body: body,
+        date: date,
+        user: userController.curentUserModel,
+      );
+      if (title.toLowerCase().contains('order')) {
+        model.topic = "order";
+        await _firebaseService.saveNotificationToFirebase(model);
+      } else {
+        model.topic = "other";
+        await _firebaseService.saveNotificationToFirebase(model);
+      }
     });
   }
 

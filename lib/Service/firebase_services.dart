@@ -1,18 +1,33 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:disan/Model/notification_model.dart';
 
 class FirebaseServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  updateDocument(String collection, String docId, String jsonEncoded) async {
+  // updateDocument(String collection, String docId, String jsonEncoded) async {
+  //   try {
+  //     var value = jsonDecode(jsonEncoded);
+  //     print("Firestore services >>>>>> $value");
+  //     await _firestore.collection(collection).doc(docId).set(value);
+  //     return true;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
+
+  Future<void> saveNotificationToFirebase(
+      NotificationModel notification) async {
     try {
-      var value = jsonDecode(jsonEncoded);
-      print("Firestore services >>>>>> $value");
-      await _firestore.collection(collection).doc(docId).set(value);
-      return true;
-    } catch (e) {
-      return false;
+      // Save the notification to Firebase Realtime Database
+      // notification.order = order;
+      await _firestore
+          .collection('notifications')
+          .doc(notification.id)
+          .set(notification.toJson());
+
+      print('Notification saved to Firebase');
+    } catch (error) {
+      print('Error saving notification to Firebase: $error');
     }
   }
 }

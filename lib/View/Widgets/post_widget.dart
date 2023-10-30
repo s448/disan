@@ -159,7 +159,7 @@ class PostWidget extends StatelessWidget {
         ),
       ),
     );
-
+    int imgsLength = dan.imgs!.length;
     var LikeButton = Row(
       children: [
         IconButton(
@@ -329,7 +329,11 @@ class PostWidget extends StatelessWidget {
             dan.imgs!.isNotEmpty
                 ? SizedBox(
                     child: StaggeredGrid.count(
-                      crossAxisCount: 4,
+                      crossAxisCount: imgsLength == 3
+                          ? 4
+                          : imgsLength == 2
+                              ? 2
+                              : 1,
                       mainAxisSpacing: 2,
                       crossAxisSpacing: 2,
                       children: [
