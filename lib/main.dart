@@ -1,4 +1,5 @@
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
+  await FcmServices().initNotification();
+
   return runApp(DisanApp());
 }
 

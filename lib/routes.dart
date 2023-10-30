@@ -5,6 +5,8 @@ import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
 import 'package:disan/View/Screens/introduction_page.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
+import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
+import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
 import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
@@ -25,6 +27,8 @@ class Routes {
   static String createPost = '/createpost';
   static String comments = '/comments';
   static String productDetails = '/pdetails';
+  static String cart = '/cart';
+  static String orders = '/orders';
 }
 
 final getPages = [
@@ -75,5 +79,13 @@ final getPages = [
   GetPage(
     name: Routes.productDetails,
     page: () => ProductDetailsPage(),
-  )
+  ),
+  GetPage(
+    name: Routes.cart,
+    page: () => CartPage(),
+  ),
+  GetPage(
+    name: Routes.orders,
+    page: () => OrdersPage(),
+  ),
 ];

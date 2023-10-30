@@ -14,9 +14,14 @@ import 'package:ionicons/ionicons.dart';
 
 // ignore: must_be_immutable
 class PostWidget extends StatelessWidget {
-  PostWidget({super.key, required this.dan, this.usedInCartPage});
+  PostWidget(
+      {super.key,
+      required this.dan,
+      required this.usedInCartPage,
+      required this.usedInOrdersPage});
   final DanModel dan;
-  final usedInCartPage;
+  final bool usedInCartPage;
+  final bool usedInOrdersPage;
   final controller = Get.put(TimelineTapController());
   final audioContrller = Get.put(AudioController());
   final postController = Get.put(PostController());
@@ -27,6 +32,151 @@ class PostWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMerchant = dan.user!.type == "MERCHANT";
     // final player = postController.player;
+    var RatingButton = InkWell(
+      onTap: () => Get.bottomSheet(
+        Container(
+          height: Get.height * 0.3,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
+          ),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              RatingBar.builder(
+                initialRating: dan.rating ?? 0.0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  controller.rate.value = rating;
+                  controller.update();
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  controller.ratePost(dan.id!);
+                  Get.back();
+                  Get.back();
+                },
+                child: Text("Save".tr),
+              )
+            ],
+          )),
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.yellow,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            Text(
+              "${dan.rating}",
+              style: const TextStyle(color: Colors.black),
+            ),
+            const Icon(
+              Icons.star,
+              color: Colors.black,
+            ),
+            Text("Rating".tr)
+          ],
+        ),
+      ),
+    );
+    var CommentsButton = Row(
+      children: [
+        IconButton(
+          onPressed: () =>
+              Get.toNamed(Routes.comments, arguments: {"dan": dan}),
+          icon: const Icon(
+            Icons.comment,
+            color: Colors.blue,
+          ),
+        ),
+        Text("${dan.comments?.length ?? 0}")
+      ],
+    );
+    var InCartPage_ConformOrder = InkWell(
+      onTap: () => postController.addRemoveOrderItem(dan),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.indigo,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.white,
+            ),
+            Text(
+              usedInOrdersPage ? "Back to cart".tr : "Confirm order".tr,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    var inOrdersPageBackToCart = InkWell(
+      onTap: () => postController.backToCart(dan.id),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.indigo,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.white,
+            ),
+            Text(
+              "Back to cart".tr,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    var LikeButton = Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            postController.triggerLike(dan);
+            controller.likePost(dan.id!);
+          },
+          icon: Icon(
+            postController.getLikeStatus(dan)
+                ? Ionicons.heart
+                : Ionicons.heart_outline,
+            color: Colors.blue,
+          ),
+        ),
+        Text("${dan.likes}")
+      ],
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -41,30 +191,8 @@ class PostWidget extends StatelessWidget {
             ///
             ///if the post is a reshare show this rich text
             ///
-            dan.isReDaned!
-                ? RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: dan.reDanner,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                            text: " Shared this Dan:".tr,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.black,
-                            ))
-                      ],
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  )
+            dan.isReDaned! && !usedInCartPage
+                ? ShareSign(dan: dan)
                 : const SizedBox(),
             const SizedBox(
               height: 6,
@@ -241,234 +369,260 @@ class PostWidget extends StatelessWidget {
               thickness: 1.5,
             ),
 
-            ///
-            ///recation row
-            ///
             usedInCartPage
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      //remove from cart
-                      InkWell(
-                        onTap: () => postController.addRemoveCartItem(dan.id),
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
+                      //first position
+                      InCartWidgetRemoveFromCart(
+                          postController: postController, dan: dan),
+                      //second pos
+                      CommentsButton,
+                      //third pos
+                      InCartPage_ConformOrder
+                    ],
+                  )
+                : usedInOrdersPage
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          //first position
+                          InOrdersWidgetRemoveFromCart(
+                              postController: postController, dan: dan),
+                          //second pos
+                          CommentsButton,
+                          //third pos
+                          inOrdersPageBackToCart
+                        ],
+                      )
+                    : isMerchant
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                "Delete".tr,
-                                style: const TextStyle(color: Colors.white),
-                              )
+                              RatingButton,
+                              CommentsButton,
+                              AddToCartButton(
+                                  postController: postController, dan: dan),
                             ],
-                          ),
-                        ),
-                      ),
-                      //no of comments
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => Get.toNamed(Routes.comments,
-                                arguments: {"dan": dan}),
-                            icon: const Icon(
-                              Icons.comment,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          Text("${dan.comments?.length ?? 0}")
-                        ],
-                      ),
-                      //confirm order
-                      Obx(() {
-                        return InkWell(
-                          onTap: () =>
-                              postController.addRemoveOrderItem(dan.id),
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  "Confirm order".tr,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      })
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ///
-                      ///rating
-                      ///
-                      isMerchant
-                          ? InkWell(
-                              onTap: () => Get.bottomSheet(
-                                Container(
-                                  height: Get.height * 0.3,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                  ),
-                                  child: Center(
-                                      child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      RatingBar.builder(
-                                        initialRating: dan.rating ?? 0.0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemPadding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          controller.rate.value = rating;
-                                          controller.update();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          controller.ratePost(dan.id!);
-                                          Get.back();
-                                          Get.back();
-                                        },
-                                        child: Text("Save".tr),
-                                      )
-                                    ],
-                                  )),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "${dan.rating}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.black,
-                                    ),
-                                    Text("Rating".tr)
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    postController.triggerLike(dan);
-                                    controller.likePost(dan.id!);
-                                  },
-                                  icon: Icon(
-                                    postController.getLikeStatus(dan)
-                                        ? Ionicons.heart
-                                        : Ionicons.heart_outline,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                Text("${dan.likes}")
-                              ],
-                            ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => Get.toNamed(Routes.comments,
-                                arguments: {"dan": dan}),
-                            icon: const Icon(
-                              Icons.comment,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          Text("${dan.comments?.length ?? 0}")
-                        ],
-                      ),
-                      isMerchant
-                          ? Obx(() {
-                              return InkWell(
-                                onTap: () =>
-                                    postController.addRemoveCartItem(dan.id),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.indigo,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.shopping_cart_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        postController.isAddedToCart(dan.id!)
-                                            ? "Added"
-                                            : "Add to cart".tr,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            })
-                          : InkWell(
-                              onTap: () => controller.redanPost(dan),
-                              child: const Column(
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.arrow_turn_up_right,
-                                    color: Colors.blue,
-                                  ),
-                                  Text(
-                                    "ReDan",
-                                  ),
-                                ],
-                              ),
-                            )
-                    ],
-                  )
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              LikeButton,
+                              CommentsButton,
+                              shareButton(),
+                            ],
+                          )
+
+            ///
+            ///recation row
+            ///
+            // usedInCartPage
+            //     ? Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //         children: [
+            //           //remove from cart
+            //           InCartWidgetRemoveFromCart(
+            //               postController: postController, dan: dan),
+            //           //no of comments
+            //           CommentsButton,
+            //           //confirm order
+            //           InCartPage_ConformOrder
+            //         ],
+            //       )
+            //     : Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //         children: [
+            //           ///
+            //           ///rating
+            //           ///
+            //           isMerchant
+            //               ? RatingButton
+            //               //like button
+            //               : LikeButton,
+            //           //comments
+            //           CommentsButton,
+            //           //add to cart
+            //           isMerchant
+            //               ? AddToCartButton(
+            //                   postController: postController, dan: dan)
+            //               //share
+            //               : shareButton()
+            //         ],
+            //       ),
           ],
         ),
       ),
+    );
+  }
+
+  InkWell shareButton() {
+    return InkWell(
+      onTap: () => controller.redanPost(dan),
+      child: const Column(
+        children: [
+          Icon(
+            CupertinoIcons.arrow_turn_up_right,
+            color: Colors.blue,
+          ),
+          Text(
+            "ReDan",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InCartWidgetRemoveFromCart extends StatelessWidget {
+  const InCartWidgetRemoveFromCart({
+    super.key,
+    required this.postController,
+    required this.dan,
+  });
+
+  final PostController postController;
+  final DanModel dan;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => postController.addRemoveCartItem(dan.id),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            Text(
+              "Delete".tr,
+              style: const TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InOrdersWidgetRemoveFromCart extends StatelessWidget {
+  const InOrdersWidgetRemoveFromCart({
+    super.key,
+    required this.postController,
+    required this.dan,
+  });
+
+  final PostController postController;
+  final DanModel dan;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => postController.addRemoveOrderItem(dan),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            Text(
+              "Delete".tr,
+              style: const TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AddToCartButton extends StatelessWidget {
+  const AddToCartButton({
+    super.key,
+    required this.postController,
+    required this.dan,
+  });
+
+  final PostController postController;
+  final DanModel dan;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return InkWell(
+        onTap: () => postController.addRemoveCartItem(dan.id),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: Colors.indigo,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.white,
+              ),
+              Text(
+                postController.isAddedToCart(dan.id!)
+                    ? "Added"
+                    : "Add to cart".tr,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class ShareSign extends StatelessWidget {
+  const ShareSign({
+    super.key,
+    required this.dan,
+  });
+
+  final DanModel dan;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: dan.reDanner,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+          TextSpan(
+              text: " Shared this Dan:".tr,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w300,
+                color: Colors.black,
+              ))
+        ],
+      ),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/Service/fcm_services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,10 +11,10 @@ class PostController extends GetxController {
   RxBool isPlaying = false.obs;
   final player = AudioPlayer();
   final prefs = Get.find<SharedPreferences>();
-  final CollectionReference buySellRef =
+  final CollectionReference postRef =
       FirebaseFirestore.instance.collection('posts');
-
-  RxList<String> favorites = <String>[].obs;
+  FcmServices _fcm = FcmServices();
+  RxList<String> cart = <String>[].obs;
   RxList<String> orders = <String>[].obs;
 
   final String _favoritesKey = 'cart';
@@ -79,33 +80,55 @@ class PostController extends GetxController {
   ///cart
 
   void addRemoveCartItem(String? documentId) {
-    if (!favorites.contains(documentId)) {
-      favorites.add(documentId!);
+    if (!cart.contains(documentId)) {
+      cart.add(documentId!);
       customSnackbar("Post added to cart", "");
     } else {
-      favorites.remove(documentId);
+      cart.remove(documentId);
       customSnackbar("Post removed from cart", "");
     }
     saveCartTiems();
     update();
   }
 
-  void addRemoveOrderItem(String? documentId) {
-    if (!orders.contains(documentId)) {
-      orders.add(documentId!);
-      customSnackbar("Post added to Orders", "");
-    } else {
-      orders.remove(documentId);
-      customSnackbar("Post removed from Orders", "");
-    }
+  notifyMerchant(DanModel dan) async {
+    //TODO send notification to merchant
+    String title = "New order".tr;
+    String body = "${dan.user!.name} orderd your product".tr;
+    await _fcm.sendNotification(dan.user!.token!, title, body);
+  }
+
+  backToCart(String? documentId) {
+    orders.remove(documentId);
+    cart.add(documentId!);
     saveCartTiems();
+    saveOrderItems();
     update();
   }
 
-  isAddedToCart(String item) => favorites.contains(item);
+  void addRemoveOrderItem(DanModel dan) async {
+    var documentId = dan.id;
+    if (!orders.contains(documentId)) {
+      await notifyMerchant(dan);
+      orders.add(documentId!);
+      cart.remove(documentId);
+      customSnackbar("Post added to Orders".tr, "");
+    } else {
+      cart.add(documentId!);
+      orders.remove(documentId);
+      customSnackbar("Post removed from Orders".tr, "");
+    }
+    saveCartTiems();
+    saveOrderItems();
+    print("orders========");
+    print(orders);
+    update();
+  }
+
+  isAddedToCart(String item) => cart.contains(item);
 
   Future<void> saveCartTiems() async {
-    await prefs.setStringList(_favoritesKey, favorites.toList());
+    await prefs.setStringList(_favoritesKey, cart.toList());
   }
 
   Future<void> saveOrderItems() async {
@@ -113,24 +136,26 @@ class PostController extends GetxController {
   }
 
   Future<void> loadCart() async {
+    print("cart loaded========");
+    print(cart);
     final savedFavorites = prefs.getStringList(_favoritesKey);
     if (savedFavorites != null) {
-      favorites.addAll(savedFavorites);
+      cart.addAll(savedFavorites);
     }
   }
 
   Future<void> loadOrders() async {
+    print("orders loaded========");
+    print(this.orders);
     final orders = prefs.getStringList(_ordersKey);
     if (orders != null) {
-      favorites.addAll(orders);
+      cart.addAll(orders);
     }
   }
 
   Stream<List<DanModel>> fetchCartItems() {
-    return buySellRef.snapshots().map((snapshot) {
-      return snapshot.docs
-          .where((e) => favorites.contains(e['docid']))
-          .map((doc) {
+    return postRef.snapshots().map((snapshot) {
+      return snapshot.docs.where((e) => cart.contains(e['id'])).map((doc) {
         Map<String, dynamic> data = (doc.data() as Map<String, dynamic>);
         return DanModel.fromJson(data);
       }).toList();
@@ -138,8 +163,8 @@ class PostController extends GetxController {
   }
 
   Stream<List<DanModel>> fetchOrdersItems() {
-    return buySellRef.snapshots().map((snapshot) {
-      return snapshot.docs.where((e) => orders.contains(e['docid'])).map((doc) {
+    return postRef.snapshots().map((snapshot) {
+      return snapshot.docs.where((e) => orders.contains(e['id'])).map((doc) {
         Map<String, dynamic> data = (doc.data() as Map<String, dynamic>);
         return DanModel.fromJson(data);
       }).toList();

@@ -3,6 +3,7 @@ import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/constants/shop_categories.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
+import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,8 +20,6 @@ class AuthController extends GetxController {
     email.value = _auth.currentUser!.email ?? email.value;
     profilePicUrl.value = _auth.currentUser!.photoURL ?? "";
     currUserId.value = _auth.currentUser!.uid;
-    print("name i>>>>>>>>>>>>>" + name.value);
-    print("uid is>>>>>>>>>>>>>" + currUserId.value);
     update();
   }
 
@@ -77,6 +76,7 @@ class AuthController extends GetxController {
         background: "",
         id: currUserId.value,
         type: accType.value,
+        token: FcmServices().getToken(),
       );
 
       await _firestore
@@ -89,29 +89,6 @@ class AuthController extends GetxController {
       return false;
     }
   }
-
-  // updateUserInfo() async {
-  //   /*
-  //   1-get the signed email form local storage
-  //   2-get the doc id isng the email
-  //   3-update the doc using the doc id
-  //   */
-  //   var userId = '';
-  //   var signedUserEmail = _sharedPrefController.getItem("userEmail");
-  //   var userDoc = await _firestore
-  //       .collection("users")
-  //       .where('email', isEqualTo: signedUserEmail)
-  //       .limit(1)
-  //       .get();
-  //   if (userDoc.docs.isNotEmpty) {
-  //     var document = userDoc.docs.first;
-  //     userId = document.get('id');
-  //     print("user id is >>>>>>>>>>>>>>" + userId);
-  //     _firestore.collection("users").doc(userId).update({
-  //       "type": accType.value,
-  //     });
-  //   }
-  // }
 
   createNewUser() async {
     try {
@@ -247,6 +224,7 @@ class AuthController extends GetxController {
               type: accType.value,
               profile: user.photoURL,
               background: "",
+              token: FcmServices().getToken(),
             );
             await _firestore
                 .collection('users')
@@ -277,11 +255,6 @@ class AuthController extends GetxController {
       isGoogleLoading.value = false;
     }
   }
-
-  // Future<void> logoutGoogle() async {
-  //   await googleSignIn.signOut();
-  //   Get.offAllNamed(Routes.login);
-  // }
 
   //facebook auth
   RxBool isFacebookLoading = false.obs;
@@ -317,6 +290,7 @@ class AuthController extends GetxController {
             id: user.uid,
             name: user.displayName,
             profile: user.photoURL,
+            token: FcmServices().getToken(),
           );
           await _firestore
               .collection("users")
@@ -367,6 +341,7 @@ class AuthController extends GetxController {
         lat: locationLat.value,
         long: locationLng.value,
         bio: bio.value,
+        token: FcmServices().getToken(),
         // ignore: invalid_use_of_protected_member
         categories: selectedCategories.value,
       );

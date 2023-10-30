@@ -11,7 +11,8 @@ class ProductDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Product details".tr),
       ),
-      body: PostWidget(dan: dan),
+      body:
+          PostWidget(dan: dan, usedInCartPage: false, usedInOrdersPage: false),
     );
   }
 }

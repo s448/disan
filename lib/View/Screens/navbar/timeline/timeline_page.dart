@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TimelinePage extends StatelessWidget {
-  TimelinePage({Key? key});
+  TimelinePage({
+    super.key,
+  });
 
   final userController = Get.find<UserController>();
   final controller = Get.put(TimelineTapController());
@@ -15,7 +17,6 @@ class TimelinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserModel = userController.curentUserModel;
-    print(currentUserModel.toJson());
 
     return Container(
       color: Colors.grey.shade300,
@@ -77,7 +78,11 @@ class TimelinePage extends StatelessWidget {
                           return Container(); // Return an empty container if the index is out of range
                         }
                         final dan = posts[index];
-                        return PostWidget(dan: dan);
+                        return PostWidget(
+                          dan: dan,
+                          usedInCartPage: false,
+                          usedInOrdersPage: false,
+                        );
                       },
                     );
                   } else if (snapshot.hasError) {
