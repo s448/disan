@@ -10,6 +10,13 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: ProfilePageTemp(userId: userId),
     );

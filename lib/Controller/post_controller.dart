@@ -97,6 +97,7 @@ class PostController extends GetxController {
   }
 
   notifyMerchant(DanModel dan) async {
+    print("Notify------merch and save order");
     String docid = const Uuid().v1();
     String title = "New order".tr;
     String body = "${dan.user!.name} orderd your product".tr;
@@ -127,7 +128,7 @@ class PostController extends GetxController {
       await notifyMerchant(dan);
       orders.add(documentId!);
       cart.remove(documentId);
-      customSnackbar("Post added to Orders".tr, "");
+      customSnackbar("Good news".tr, "Your order is sent to the merchant".tr);
     } else {
       cart.add(documentId!);
       orders.remove(documentId);
@@ -136,6 +137,13 @@ class PostController extends GetxController {
     saveCartTiems();
     saveOrderItems();
     update();
+  }
+
+  void removeFromOrders(String docid) async {
+    if (orders.contains(docid)) {
+      orders.remove(docid);
+      customSnackbar("Order is removed".tr, "");
+    }
   }
 
   isAddedToCart(String item) => cart.contains(item);

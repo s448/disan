@@ -19,11 +19,10 @@ class TimelinePage extends StatelessWidget {
     final currentUserModel = userController.curentUserModel;
 
     return Container(
-      color: Colors.grey.shade300,
-      child: ListView.builder(
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return Column(
+        color: Colors.grey.shade300,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -75,13 +74,14 @@ class TimelinePage extends StatelessWidget {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         if (index >= posts.length) {
-                          return Container(); // Return an empty container if the index is out of range
+                          return Container();
                         }
                         final dan = posts[index];
                         return PostWidget(
                           dan: dan,
                           usedInCartPage: false,
                           usedInOrdersPage: false,
+                          usedInRatingPage: false,
                         );
                       },
                     );
@@ -94,9 +94,7 @@ class TimelinePage extends StatelessWidget {
                 },
               ),
             ],
-          );
-        },
-      ),
-    );
+          ),
+        ));
   }
 }

@@ -5,6 +5,8 @@ import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
 import 'package:disan/View/Screens/introduction_page.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
+import 'package:disan/View/Screens/navbar/notifications/order_notifications_page.dart';
+import 'package:disan/View/Screens/navbar/notifications/rating_notifications_page.dart';
 import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
 import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
@@ -29,6 +31,8 @@ class Routes {
   static String productDetails = '/pdetails';
   static String cart = '/cart';
   static String orders = '/orders';
+  static String myOrders = '/myorders';
+  static String myRatings = '/myratings';
 }
 
 final getPages = [
@@ -87,5 +91,13 @@ final getPages = [
   GetPage(
     name: Routes.orders,
     page: () => OrdersPage(),
+  ),
+  GetPage(
+    name: Routes.myOrders,
+    page: () => MyOrdersPage(),
+  ),
+  GetPage(
+    name: Routes.myRatings,
+    page: () => MyRatingsPage(),
   ),
 ];

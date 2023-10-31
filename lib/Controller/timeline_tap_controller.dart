@@ -192,22 +192,25 @@ class TimelineTapController extends GetxController {
 
   Future<void> addCommentToPost(String postId) async {
     try {
-      await FirebaseFirestore.instance.collection('posts').doc(postId).update({
-        'comments': FieldValue.arrayUnion([
-          Comment(
-            comment: comment.value,
-            date: Timestamp.now(),
-            user: userController.curentUserModel,
-          ).toJson(),
-        ])
-      });
+      if (comment.value.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .update({
+          'comments': FieldValue.arrayUnion([
+            Comment(
+              comment: comment.value,
+              date: Timestamp.now(),
+              user: userController.curentUserModel,
+            ).toJson(),
+          ])
+        });
+      }
       //get the post
       var result = await _firestore.collection('posts').doc(postId).get();
       DanModel danModel = DanModel.fromJson(result.data()!);
-
-      notifyPostOwner(danModel, "comment", "New comment".tr,
+      await notifyPostOwner(danModel, "comment", "New comment".tr,
           "${danModel.user!.name} commented on your post".tr);
-      customSnackbar("Your comment was sent", '');
     } catch (e) {
       print(e);
       dangerSnackbar(

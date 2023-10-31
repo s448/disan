@@ -14,6 +14,13 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Cart".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: GetBuilder<PostController>(
         builder: (c) => Padding(
@@ -35,6 +42,7 @@ class CartPage extends StatelessWidget {
                     dan: dans[index],
                     usedInCartPage: true,
                     usedInOrdersPage: false,
+                    usedInRatingPage: false,
                   ),
                 );
               } else if (snapshot.hasError) {

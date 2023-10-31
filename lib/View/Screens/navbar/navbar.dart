@@ -1,4 +1,5 @@
 import 'package:disan/View/Screens/navbar/home_page.dart';
+import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -91,6 +92,6 @@ class NavBarItemIcon extends StatelessWidget {
 var pages = <Widget>[
   HomePage(),
   HomePage(),
-  HomePage(),
+  NotificationsPage(),
   HomePage(),
 ];

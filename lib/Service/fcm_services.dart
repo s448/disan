@@ -18,7 +18,6 @@ handleBackgroundMessage(RemoteMessage msg) async {
 
 class FcmServices {
   final userController = Get.find<UserController>();
-  final _firebaseService = FirebaseServices();
   final _fcm = FirebaseMessaging.instance;
   static var _token = '';
 

@@ -14,14 +14,17 @@ import 'package:ionicons/ionicons.dart';
 
 // ignore: must_be_immutable
 class PostWidget extends StatelessWidget {
-  PostWidget(
-      {super.key,
-      required this.dan,
-      required this.usedInCartPage,
-      required this.usedInOrdersPage});
+  PostWidget({
+    super.key,
+    required this.dan,
+    required this.usedInCartPage,
+    required this.usedInOrdersPage,
+    required this.usedInRatingPage,
+  });
   final DanModel dan;
   final bool usedInCartPage;
   final bool usedInOrdersPage;
+  final bool usedInRatingPage;
   final controller = Get.put(TimelineTapController());
   final audioContrller = Get.put(AudioController());
   final postController = Get.put(PostController());
@@ -328,6 +331,7 @@ class PostWidget extends StatelessWidget {
             ///
             dan.imgs!.isNotEmpty
                 ? SizedBox(
+                    height: Get.height * 0.4,
                     child: StaggeredGrid.count(
                       crossAxisCount: imgsLength == 3
                           ? 4
@@ -391,7 +395,7 @@ class PostWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           //first position
-                          InOrdersWidgetRemoveFromCart(
+                          InOrdersWidgetRemoveFromOrders(
                               postController: postController, dan: dan),
                           //second pos
                           CommentsButton,
@@ -399,61 +403,42 @@ class PostWidget extends StatelessWidget {
                           inOrdersPageBackToCart
                         ],
                       )
-                    : isMerchant
+                    : usedInRatingPage
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               RatingButton,
                               CommentsButton,
-                              AddToCartButton(
-                                  postController: postController, dan: dan),
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text("${dan.raters!.length} Rater".tr),
+                              ),
                             ],
                           )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              LikeButton,
-                              CommentsButton,
-                              shareButton(),
-                            ],
-                          )
-
-            ///
-            ///recation row
-            ///
-            // usedInCartPage
-            //     ? Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //         children: [
-            //           //remove from cart
-            //           InCartWidgetRemoveFromCart(
-            //               postController: postController, dan: dan),
-            //           //no of comments
-            //           CommentsButton,
-            //           //confirm order
-            //           InCartPage_ConformOrder
-            //         ],
-            //       )
-            //     : Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //         children: [
-            //           ///
-            //           ///rating
-            //           ///
-            //           isMerchant
-            //               ? RatingButton
-            //               //like button
-            //               : LikeButton,
-            //           //comments
-            //           CommentsButton,
-            //           //add to cart
-            //           isMerchant
-            //               ? AddToCartButton(
-            //                   postController: postController, dan: dan)
-            //               //share
-            //               : shareButton()
-            //         ],
-            //       ),
+                        : isMerchant
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  RatingButton,
+                                  CommentsButton,
+                                  AddToCartButton(
+                                      postController: postController, dan: dan),
+                                ],
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  LikeButton,
+                                  CommentsButton,
+                                  shareButton(),
+                                ],
+                              )
           ],
         ),
       ),
@@ -529,6 +514,43 @@ class InOrdersWidgetRemoveFromCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => postController.addRemoveOrderItem(dan),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            Text(
+              "Delete".tr,
+              style: const TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InOrdersWidgetRemoveFromOrders extends StatelessWidget {
+  const InOrdersWidgetRemoveFromOrders({
+    super.key,
+    required this.postController,
+    required this.dan,
+  });
+
+  final PostController postController;
+  final DanModel dan;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => postController.removeFromOrders(dan.id!),
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(

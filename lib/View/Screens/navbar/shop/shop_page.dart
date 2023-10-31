@@ -137,7 +137,9 @@ class ShopPage extends StatelessWidget {
                             final product =
                                 // ignore: invalid_use_of_protected_member
                                 controller.bestSellingProducts.value[index];
-                            final productImgUrl = product.imgs![0];
+                            final productImgUrl = product.imgs!.length != 0
+                                ? product.imgs![0]
+                                : "";
                             final name = product.description;
 
                             return InkWell(

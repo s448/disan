@@ -22,7 +22,7 @@ class OrderModel {
     id = json['id'];
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
     date = json['date'];
-    dan = json['dan'];
+    dan = json['dan'] != null ? DanModel.fromJson(json['dan']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -33,7 +33,9 @@ class OrderModel {
       data['user'] = user!.toJson();
     }
     data['date'] = this.date;
-    data['dan'] = this.dan;
+    if (user != null) {
+      data['dan'] = dan!.toJson();
+    }
     return data;
   }
 }

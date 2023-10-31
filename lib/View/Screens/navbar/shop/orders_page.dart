@@ -14,6 +14,13 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Orders".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: GetBuilder<PostController>(
         builder: (c) => Padding(
@@ -34,6 +41,7 @@ class OrdersPage extends StatelessWidget {
                     dan: dans[index],
                     usedInCartPage: false,
                     usedInOrdersPage: true,
+                    usedInRatingPage: false,
                   ),
                 );
               } else if (snapshot.hasError) {

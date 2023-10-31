@@ -10,9 +10,20 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Product details".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
       ),
-      body:
-          PostWidget(dan: dan, usedInCartPage: false, usedInOrdersPage: false),
+      body: PostWidget(
+        dan: dan,
+        usedInCartPage: false,
+        usedInOrdersPage: false,
+        usedInRatingPage: false,
+      ),
     );
   }
 }
