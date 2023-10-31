@@ -3,9 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/Model/notification_model.dart';
+import 'package:disan/Model/order_model.dart';
 import 'package:disan/Service/fcm_services.dart';
+import 'package:disan/Service/firebase_services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class PostController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -13,7 +17,8 @@ class PostController extends GetxController {
   final prefs = Get.find<SharedPreferences>();
   final CollectionReference postRef =
       FirebaseFirestore.instance.collection('posts');
-  FcmServices _fcm = FcmServices();
+  final FcmServices _fcm = FcmServices();
+  final FirebaseServices _firebaseServices = FirebaseServices();
   RxList<String> cart = <String>[].obs;
   RxList<String> orders = <String>[].obs;
 
@@ -92,10 +97,20 @@ class PostController extends GetxController {
   }
 
   notifyMerchant(DanModel dan) async {
-    //TODO send notification to merchant
+    String docid = const Uuid().v1();
     String title = "New order".tr;
     String body = "${dan.user!.name} orderd your product".tr;
+    //send a notification to the publisher
     await _fcm.sendNotification(dan.user!.token!, title, body);
+    OrderModel order = OrderModel(
+      id: docid,
+      dan: dan,
+      date: Timestamp.now(),
+      topic: "order",
+      user: userController.curentUserModel,
+    );
+    //save the notification on firestore
+    await _firebaseServices.saveOrderToFirebase(order);
   }
 
   backToCart(String? documentId) {
@@ -120,8 +135,6 @@ class PostController extends GetxController {
     }
     saveCartTiems();
     saveOrderItems();
-    print("orders========");
-    print(orders);
     update();
   }
 
@@ -136,8 +149,6 @@ class PostController extends GetxController {
   }
 
   Future<void> loadCart() async {
-    print("cart loaded========");
-    print(cart);
     final savedFavorites = prefs.getStringList(_favoritesKey);
     if (savedFavorites != null) {
       cart.addAll(savedFavorites);
@@ -145,8 +156,6 @@ class PostController extends GetxController {
   }
 
   Future<void> loadOrders() async {
-    print("orders loaded========");
-    print(this.orders);
     final orders = prefs.getStringList(_ordersKey);
     if (orders != null) {
       cart.addAll(orders);

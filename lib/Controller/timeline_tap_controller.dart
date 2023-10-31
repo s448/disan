@@ -5,7 +5,10 @@ import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/comment_model.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/Model/notification_model.dart';
 import 'package:disan/Service/audio_recorder.dart';
+import 'package:disan/Service/fcm_services.dart';
+import 'package:disan/Service/firebase_services.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +21,9 @@ class TimelineTapController extends GetxController {
   final ImageUploader _imageUploader = ImageUploader();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final uuid = const Uuid();
+
+  final FcmServices _fcm = FcmServices();
+  final FirebaseServices _firebaseServices = FirebaseServices();
 
   final recorder = AudioRecordService();
   RxBool isRecording = false.obs;
@@ -195,6 +201,12 @@ class TimelineTapController extends GetxController {
           ).toJson(),
         ])
       });
+      //get the post
+      var result = await _firestore.collection('posts').doc(postId).get();
+      DanModel danModel = DanModel.fromJson(result.data()!);
+
+      notifyPostOwner(danModel, "comment", "New comment".tr,
+          "${danModel.user!.name} commented on your post".tr);
       customSnackbar("Your comment was sent", '');
     } catch (e) {
       print(e);
@@ -241,8 +253,6 @@ class TimelineTapController extends GetxController {
 
       DanModel danModel = DanModel.fromJson(result.data()!);
 
-      print(danModel.id);
-
       if (danModel.raters!.contains(userController.userModel.id)) {
         customSnackbar("You rated this Dan before".tr, "");
         return;
@@ -257,11 +267,37 @@ class TimelineTapController extends GetxController {
           .collection("posts")
           .doc(postId)
           .update(danModel.toJson());
+      await notifyPostOwner(
+        danModel,
+        "rate",
+        "New rating".tr,
+        "${danModel.user!.name} rated your product".tr,
+      );
       customSnackbar("Rating is applied", "");
       update();
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  notifyPostOwner(
+      DanModel dan, String topic, String notTitle, String notBody) async {
+    String docid = const Uuid().v1();
+    String title = notTitle;
+    String body = notBody;
+    //send a notification to the publisher
+    await _fcm.sendNotification(dan.user!.token!, title, body);
+    NotificationModel notificationModel = NotificationModel(
+      id: docid,
+      body: body,
+      title: title,
+      dan: dan,
+      date: Timestamp.now(),
+      topic: topic,
+      user: userController.curentUserModel,
+    );
+    //save the notification on firestore
+    await _firebaseServices.saveNotificationToFirebase(notificationModel);
   }
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> getPost(String postId) {

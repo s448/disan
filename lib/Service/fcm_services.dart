@@ -1,15 +1,12 @@
 // import 'package:cityinpocket/Controller/shared_prefs_controller.dart';
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:disan/Controller/user_controller.dart';
-import 'package:disan/Model/notification_model.dart';
 import 'package:disan/Service/firebase_services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
 handleBackgroundMessage(RemoteMessage msg) async {
   // if (kDebugMode) {
@@ -51,25 +48,25 @@ class FcmServices {
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      String docid = const Uuid().v1();
-      String title = message.notification?.title ?? '';
-      String body = message.notification?.body ?? '';
-      Timestamp date = Timestamp.now();
+      // String docid = const Uuid().v1();
+      // String title = message.notification?.title ?? '';
+      // String body = message.notification?.body ?? '';
+      // Timestamp date = Timestamp.now();
 
-      NotificationModel model = NotificationModel(
-        id: docid,
-        title: title,
-        body: body,
-        date: date,
-        user: userController.curentUserModel,
-      );
-      if (title.toLowerCase().contains('order')) {
-        model.topic = "order";
-        await _firebaseService.saveNotificationToFirebase(model);
-      } else {
-        model.topic = "other";
-        await _firebaseService.saveNotificationToFirebase(model);
-      }
+      // NotificationModel model = NotificationModel(
+      //   id: docid,
+      //   title: title,
+      //   body: body,
+      //   date: date,
+      //   user: userController.curentUserModel,
+      // );
+      // if (title.toLowerCase().contains('comment')) {
+      //   model.topic = "comment";
+      //   await _firebaseService.saveNotificationToFirebase(model);
+      // } else {
+      //   model.topic = "rate";
+      //   await _firebaseService.saveNotificationToFirebase(model);
+      // }
     });
   }
 
@@ -101,6 +98,7 @@ class FcmServices {
 
       print('Notification sent. Response: ${response.statusCode}');
     } catch (error) {
+      print("in fcm page ========");
       print('Error sending notification: $error');
     }
   }
