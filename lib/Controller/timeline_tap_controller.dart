@@ -11,7 +11,6 @@ import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/firebase_services.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -20,7 +19,7 @@ import 'package:uuid/uuid.dart';
 import 'package:toast/toast.dart';
 
 class TimelineTapController extends GetxController {
-  final ImageUploader _imageUploader = ImageUploader();
+  final FileUploader _imageUploader = FileUploader();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final uuid = const Uuid();
 
@@ -49,7 +48,6 @@ class TimelineTapController extends GetxController {
   Future<void> pickMultipleImages() async {
     List<Asset> resultList = <Asset>[];
     await requestPermissions();
-    // selectedImages.clear();
     if (permissionGranted.value == true) {
       try {
         images!.value = await _picker.pickMultiImage();
@@ -64,7 +62,7 @@ class TimelineTapController extends GetxController {
       }
     } else {
       dangerSnackbar("Permissions for Camera & Gallery required".tr,
-          "please allow Disan to use them");
+          "please allow Disan to use them".tr);
     }
   }
 
@@ -87,11 +85,11 @@ class TimelineTapController extends GetxController {
     try {
       if (withRecord.value) {
         recordLink.value =
-            await _imageUploader.uploadImage(XFile(recordFile!.path));
+            await _imageUploader.uploadFile(XFile(recordFile!.path), "voice");
       }
       // ignore: invalid_use_of_protected_member
       for (var photo in images?.value ?? []) {
-        var link = await _imageUploader.uploadImage(photo);
+        var link = await _imageUploader.uploadFile(photo, "images");
         imgLinks.add(link);
       }
       print(imgLinks);

@@ -19,7 +19,14 @@ class CommentsPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("Dan comments"),
+        title: Text("Dan comments".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -115,8 +122,6 @@ class CommentsPage extends StatelessWidget {
           ),
         ],
       ),
-
-      // bottomNavigationBar:
     );
   }
 }

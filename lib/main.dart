@@ -12,9 +12,7 @@ void main(List<String> args) async {
   await Firebase.initializeApp();
   Get.put(UserController(), permanent: true);
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
-  print("before notify fcm");
   await FcmServices().initNotification();
-  print('after notify fcm');
   return runApp(DisanApp());
 }
 

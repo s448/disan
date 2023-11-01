@@ -1,3 +1,4 @@
+import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Model/dan_model.dart';
@@ -13,6 +14,7 @@ class TimelinePage extends StatelessWidget {
 
   final userController = Get.put(UserController(), permanent: true);
   final controller = Get.put(TimelineTapController());
+  final storyController = Get.put(StoryController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,40 @@ class TimelinePage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () => storyController.pickStoryMedia(),
+                      child: const CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.cyan,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_a_photo_sharp,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Add",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
               ),
               StreamBuilder<List<DanModel>>(
                 stream: controller.getTimelinePosts(),

@@ -4,11 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImageUploader {
+class FileUploader {
   final _storage = FirebaseStorage.instance;
   String imageUrl = '';
 
-  Future<String> uploadImage(XFile? pickedFile) async {
+  Future<String> uploadFile(XFile? pickedFile, String folder) async {
     // Select image from gallery
 
     if (pickedFile != null) {
@@ -16,7 +16,7 @@ class ImageUploader {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
       // Create a reference to the Firebase Storage location
-      Reference storageReference = _storage.ref().child('images/$fileName');
+      Reference storageReference = _storage.ref().child('$folder/$fileName');
 
       // Upload the file to Firebase Storage
       UploadTask uploadTask = storageReference.putFile(File(pickedFile.path));
@@ -30,7 +30,7 @@ class ImageUploader {
       // Return the download URL
       return imageUrl;
     }
-    dangerSnackbar("Cannot pick the image".tr, 'please try again'.tr);
+    dangerSnackbar("Cannot pick the File".tr, 'please try again'.tr);
     return '';
   }
 }

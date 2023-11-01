@@ -17,6 +17,13 @@ class CreatePostPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create post".tr),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
+        ),
       ),
       body: Obx(() {
         return SingleChildScrollView(

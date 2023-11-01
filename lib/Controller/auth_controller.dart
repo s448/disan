@@ -27,7 +27,7 @@ class AuthController extends GetxController {
   final loginFormKey = GlobalKey<FormState>();
   final resetPasswordFormKey = GlobalKey<FormState>();
 
-  final _filePicker = ImageUploader();
+  final _filePicker = FileUploader();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -311,7 +311,7 @@ class AuthController extends GetxController {
   selectProfilePic() async {
     try {
       var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      profilePicUrl.value = await _filePicker.uploadImage(pickedFile);
+      profilePicUrl.value = await _filePicker.uploadFile(pickedFile, "images");
     } catch (e) {
       dangerSnackbar("Error uploading".tr, e.toString());
     }
@@ -320,7 +320,8 @@ class AuthController extends GetxController {
   selectBackgroundPic() async {
     try {
       var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      backgroundPicUrl.value = await _filePicker.uploadImage(pickedFile);
+      backgroundPicUrl.value =
+          await _filePicker.uploadFile(pickedFile, "images");
     } catch (e) {
       dangerSnackbar("Error uploading".tr, e.toString());
     }
