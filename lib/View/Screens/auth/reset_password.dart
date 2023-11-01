@@ -16,7 +16,7 @@ class ResetPasswordPage extends StatelessWidget {
         height: Get.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/bckgound.jpg"),
+            image: AssetImage("assets/bckground.jpg"),
             fit: BoxFit.fill,
           ),
         ),

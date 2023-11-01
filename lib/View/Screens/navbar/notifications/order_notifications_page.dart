@@ -1,5 +1,6 @@
 import 'package:disan/Controller/notifications_page_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
+import 'package:disan/Core/extension/url_launch_service.dart';
 import 'package:disan/Model/order_model.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
@@ -90,9 +91,8 @@ class MyOrdersPage extends StatelessWidget {
                                       ),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () => {
-                                        //TODO handle whatsapp message
-                                      },
+                                      onPressed: () => UrlLauncherService.launch(
+                                          'https://api.whatsapp.com/send?phone=${order.user!.whatsappNumber}&text=${Uri.encodeComponent("")}'),
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(

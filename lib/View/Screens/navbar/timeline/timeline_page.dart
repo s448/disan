@@ -19,7 +19,12 @@ class TimelinePage extends StatelessWidget {
     final currentUserModel = userController.curentUserModel;
 
     return Container(
-        color: Colors.grey.shade300,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/bckground.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(

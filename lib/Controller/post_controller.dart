@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
-import 'package:disan/Model/notification_model.dart';
 import 'package:disan/Model/order_model.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/firebase_services.dart';
@@ -100,7 +99,8 @@ class PostController extends GetxController {
     print("Notify------merch and save order");
     String docid = const Uuid().v1();
     String title = "New order".tr;
-    String body = "${dan.user!.name} orderd your product".tr;
+    String body =
+        "${userController.curentUserModel.name}${"orderd your product".tr}";
     //send a notification to the publisher
     await _fcm.sendNotification(dan.user!.token!, title, body);
     OrderModel order = OrderModel(

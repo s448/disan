@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        // resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[

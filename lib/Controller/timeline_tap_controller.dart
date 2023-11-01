@@ -10,6 +10,8 @@ import 'package:disan/Service/audio_recorder.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/firebase_services.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -39,6 +41,7 @@ class TimelineTapController extends GetxController {
 
   File? recordFile;
 
+  TextEditingController commentController = TextEditingController();
   RxString description = "".obs;
   RxString comment = "".obs;
   RxList<String> imgLinks = RxList();
@@ -209,8 +212,12 @@ class TimelineTapController extends GetxController {
       //get the post
       var result = await _firestore.collection('posts').doc(postId).get();
       DanModel danModel = DanModel.fromJson(result.data()!);
-      await notifyPostOwner(danModel, "comment", "New comment".tr,
-          "${danModel.user!.name} commented on your post".tr);
+      await notifyPostOwner(
+          danModel,
+          "comment",
+          "New comment".tr,
+          "${userController.curentUserModel.name} " "commented on your post"
+              .tr);
     } catch (e) {
       print(e);
       dangerSnackbar(
@@ -274,7 +281,7 @@ class TimelineTapController extends GetxController {
         danModel,
         "rate",
         "New rating".tr,
-        "${danModel.user!.name} rated your product".tr,
+        "${userController.curentUserModel.name} " "rated your product".tr,
       );
       customSnackbar("Rating is applied", "");
       update();

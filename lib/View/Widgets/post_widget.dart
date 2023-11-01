@@ -12,7 +12,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
-// ignore: must_be_immutable
 class PostWidget extends StatelessWidget {
   PostWidget({
     super.key,
@@ -29,13 +28,13 @@ class PostWidget extends StatelessWidget {
   final audioContrller = Get.put(AudioController());
   final postController = Get.put(PostController());
 
-  DateTimeManager dateTimeManager = DateTimeManager();
+  final DateTimeManager dateTimeManager = DateTimeManager();
 
   @override
   Widget build(BuildContext context) {
     bool isMerchant = dan.user!.type == "MERCHANT";
     // final player = postController.player;
-    var RatingButton = InkWell(
+    var ratingButton = InkWell(
       onTap: () => Get.bottomSheet(
         Container(
           height: Get.height * 0.3,
@@ -100,7 +99,7 @@ class PostWidget extends StatelessWidget {
         ),
       ),
     );
-    var CommentsButton = Row(
+    var commentsButton = Row(
       children: [
         IconButton(
           onPressed: () =>
@@ -113,7 +112,7 @@ class PostWidget extends StatelessWidget {
         Text("${dan.comments?.length ?? 0}")
       ],
     );
-    var InCartPage_ConformOrder = InkWell(
+    var incartpageConformorder = InkWell(
       onTap: () => postController.addRemoveOrderItem(dan),
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -137,7 +136,6 @@ class PostWidget extends StatelessWidget {
         ),
       ),
     );
-
     var inOrdersPageBackToCart = InkWell(
       onTap: () => postController.backToCart(dan.id),
       child: Container(
@@ -163,7 +161,7 @@ class PostWidget extends StatelessWidget {
       ),
     );
     int imgsLength = dan.imgs!.length;
-    var LikeButton = Row(
+    var likeButton = Row(
       children: [
         IconButton(
           onPressed: () {
@@ -204,7 +202,7 @@ class PostWidget extends StatelessWidget {
             ///
             ///user info row
             ///
-            !isMerchant
+            isMerchant
                 ? ListTile(
                     trailing: SizedBox(
                       width: 110,
@@ -226,13 +224,20 @@ class PostWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Image.network(
-                        dan.user!.profile.toString(),
-                      ),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: dan.user!.profile == ''
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: const Icon(
+                                Ionicons.person_circle_outline,
+                                color: Colors.grey,
+                                size: 50,
+                              ),
+                            )
+                          : Image.network(
+                              dan.user!.profile.toString(),
+                            ),
                     ),
                     title: Text(dan.user!.name.toString()),
                     subtitle: Text(dateTimeManager.getDateTime(dan.date!)),
@@ -248,12 +253,24 @@ class PostWidget extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.blue,
-                            backgroundImage: NetworkImage(
-                              dan.user!.profile.toString(),
-                            ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: dan.user!.profile == ''
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: const Icon(
+                                      Ionicons.person_circle_outline,
+                                      color: Colors.grey,
+                                      size: 50,
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    radius: 32.0,
+                                    backgroundColor: Colors.blue,
+                                    backgroundImage: NetworkImage(
+                                      dan.user!.profile.toString(),
+                                    ),
+                                  ),
                           ),
                           const SizedBox(
                             height: 4,
@@ -297,11 +314,10 @@ class PostWidget extends StatelessWidget {
                     onTap: () async {
                       postController.triggerPlayBtn();
                       try {
-                        print("----------------------START-----------------");
                         await postController.triggerSource(dan.description);
                       } catch (e) {
-                        print("---------------");
-                        print(e);
+                        // print("---------------");
+                        // print(e);
                       }
                     },
                     child: Obx(() {
@@ -385,9 +401,9 @@ class PostWidget extends StatelessWidget {
                       InCartWidgetRemoveFromCart(
                           postController: postController, dan: dan),
                       //second pos
-                      CommentsButton,
+                      commentsButton,
                       //third pos
-                      InCartPage_ConformOrder
+                      incartpageConformorder
                     ],
                   )
                 : usedInOrdersPage
@@ -398,7 +414,7 @@ class PostWidget extends StatelessWidget {
                           InOrdersWidgetRemoveFromOrders(
                               postController: postController, dan: dan),
                           //second pos
-                          CommentsButton,
+                          commentsButton,
                           //third pos
                           inOrdersPageBackToCart
                         ],
@@ -407,8 +423,8 @@ class PostWidget extends StatelessWidget {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              RatingButton,
-                              CommentsButton,
+                              ratingButton,
+                              commentsButton,
                               Container(
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(
@@ -424,8 +440,8 @@ class PostWidget extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  RatingButton,
-                                  CommentsButton,
+                                  ratingButton,
+                                  commentsButton,
                                   AddToCartButton(
                                       postController: postController, dan: dan),
                                 ],
@@ -434,8 +450,8 @@ class PostWidget extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  LikeButton,
-                                  CommentsButton,
+                                  likeButton,
+                                  commentsButton,
                                   shareButton(),
                                 ],
                               )
@@ -592,7 +608,7 @@ class AddToCartButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: Colors.indigo,
+            color: Colors.teal,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
