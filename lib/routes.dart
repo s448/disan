@@ -12,6 +12,7 @@ import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
 import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
+import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';
 import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,7 @@ class Routes {
   static String orders = '/orders';
   static String myOrders = '/myorders';
   static String myRatings = '/myratings';
+  static String viewStory = '/viewstory';
 }
 
 final getPages = [
@@ -99,5 +101,9 @@ final getPages = [
   GetPage(
     name: Routes.myRatings,
     page: () => MyRatingsPage(),
+  ),
+  GetPage(
+    name: Routes.viewStory,
+    page: () => StoryViewPage(),
   ),
 ];

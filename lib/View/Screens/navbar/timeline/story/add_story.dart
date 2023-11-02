@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:photo_view/photo_view.dart';
 
-class MediaViewerPage extends GetView<StoryController> {
+class MediaViewerPage extends GetView<StoryManageController> {
   MediaViewerPage({super.key});
   @override
-  final controller = Get.find<StoryController>();
+  final controller = Get.find<StoryManageController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

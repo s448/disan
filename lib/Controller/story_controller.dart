@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
-class StoryController extends GetxController {
+class StoryManageController extends GetxController {
   final FileUploader _uploader = FileUploader();
   final _picker = ImagePicker();
   final userController = Get.find<UserController>();
@@ -27,6 +27,57 @@ class StoryController extends GetxController {
   // List<Asset> selectedImages = <Asset>[];
   var permissionGranted = false.obs;
   //get stories
+
+  /// 1 get all stories
+  /// 2 sort stories and group them
+  /// 3 return list<List<story>>
+
+  _getStories() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('story')
+          .orderBy('date', descending: true)
+          .get();
+      final List<Story> bestSellingProducts = querySnapshot.docs.map((doc) {
+        return Story.fromJson(doc.data());
+      }).toList();
+      return bestSellingProducts;
+    } catch (e) {
+      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      print(e.toString());
+      return [];
+    }
+  }
+
+  ///every item of the return of this method is a list named after the user id
+  ///who shared this story
+  Future<List<List<Story>>> getGroupOfStories() async {
+    try {
+      var stories = await _getStories();
+      // Create a map to store the grouped stories
+      Map<String, List<Story>> groupedStories = {};
+
+      // Iterate over the list of stories
+      for (var story in stories) {
+        // Check if the user already has a list of stories
+        if (groupedStories.containsKey(story.user!.id)) {
+          // Add the current story to the existing list
+          groupedStories[story.user!.id]!.add(story);
+        } else {
+          // Create a new list for the user and add the current story
+          groupedStories[story.user!.id!] = [story];
+        }
+      }
+
+      // Convert the map values to a list
+      List<List<Story>> result = groupedStories.values.toList();
+
+      return result;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
 
   //add story
 
