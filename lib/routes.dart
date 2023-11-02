@@ -10,6 +10,7 @@ import 'package:disan/View/Screens/navbar/notifications/rating_notifications_pag
 import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
 import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
+import 'package:disan/View/Screens/navbar/timeline/clip/add_clip.dart';
 import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';
@@ -35,6 +36,7 @@ class Routes {
   static String myOrders = '/myorders';
   static String myRatings = '/myratings';
   static String viewStory = '/viewstory';
+  static String createClip = '/createclip';
 }
 
 final getPages = [
@@ -105,5 +107,9 @@ final getPages = [
   GetPage(
     name: Routes.viewStory,
     page: () => StoryViewPage(),
+  ),
+  GetPage(
+    name: Routes.createClip,
+    page: () => AddClipPage(),
   ),
 ];

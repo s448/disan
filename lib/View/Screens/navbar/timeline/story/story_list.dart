@@ -27,7 +27,7 @@ class StoryBar extends StatelessWidget {
                     onTap: () => storyController.pickStoryMedia(),
                     child: const CircleAvatar(
                       radius: 30,
-                      backgroundColor: Colors.cyan,
+                      backgroundColor: Colors.blue,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,22 +68,10 @@ class StoryBar extends StatelessWidget {
                             padding: const EdgeInsets.all(4.0),
                             child: CircleAvatar(
                               radius: 29,
-                              backgroundColor: Colors.cyan,
+                              backgroundColor: Colors.blue,
                               backgroundImage: NetworkImage(
                                 stories[0].img.toString(),
                               ),
-                              // child: Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   crossAxisAlignment:
-                              //       CrossAxisAlignment.center,
-                              //   children: [
-                              //     Text(
-                              //       stories[0].user!.name!,
-                              //       style: const TextStyle(
-                              //           color: Colors.white, fontSize: 8),
-                              //     )
-                              //   ],
-                              // ),
                             ),
                           ),
                         );

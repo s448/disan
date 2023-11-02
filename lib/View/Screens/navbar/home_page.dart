@@ -51,12 +51,12 @@ class HomePage extends StatelessWidget {
               bottom: const TabBar(
                 tabs: [
                   Tab(
-                    text: 'Shop',
-                    icon: Icon(Icons.shopping_bag_sharp),
-                  ),
-                  Tab(
                     text: 'Timeline',
                     icon: Icon(Icons.home),
+                  ),
+                  Tab(
+                    text: 'Shop',
+                    icon: Icon(Icons.shopping_bag_sharp),
                   ),
                 ],
               ),
@@ -64,8 +64,8 @@ class HomePage extends StatelessWidget {
             SliverFillRemaining(
               child: TabBarView(
                 children: [
-                  ShopPage(),
                   TimelinePage(),
+                  ShopPage(),
                 ],
               ),
             ),

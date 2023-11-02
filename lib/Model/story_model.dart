@@ -7,9 +7,10 @@ class Story {
   Timestamp? date;
   String? img;
   String? caption;
+  bool? isVideo;
   // List<String>? mediaList;
 
-  Story({this.user, this.date, this.img, this.id, this.caption});
+  Story({this.user, this.date, this.img, this.id, this.caption, this.isVideo});
 
   Story.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -17,6 +18,7 @@ class Story {
     date = json['date'];
     img = json['img'];
     caption = json['caption'];
+    isVideo = json['isvideo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Story {
     data['date'] = this.date;
     data['img'] = this.img;
     data['caption'] = this.caption;
+    data['isvideo'] = this.isVideo;
     return data;
   }
 }

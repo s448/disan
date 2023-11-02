@@ -34,8 +34,13 @@ class StoryManageController extends GetxController {
 
   _getStories() async {
     try {
+      final currentTime = DateTime.now();
+      final twentyFourHoursAgo =
+          currentTime.subtract(const Duration(hours: 24));
+
       final querySnapshot = await _firestore
           .collection('story')
+          .where('date', isGreaterThan: twentyFourHoursAgo)
           .orderBy('date', descending: true)
           .get();
       final List<Story> bestSellingProducts = querySnapshot.docs.map((doc) {
@@ -100,6 +105,10 @@ class StoryManageController extends GetxController {
     }
   }
 
+  // getMediaType(String url) {
+
+  // }
+
   Future<void> pickStoryMedia() async {
     await requestPermissions();
     if (permissionGranted.value == true) {
@@ -127,6 +136,7 @@ class StoryManageController extends GetxController {
         img: imgLink,
         id: storyId,
         caption: caption.value,
+        isVideo: mediaType.value == MediaType.image ? false : true,
       );
       await _firestore.collection('story').doc(storyId).set(story.toJson());
       storyUploading.value = false;

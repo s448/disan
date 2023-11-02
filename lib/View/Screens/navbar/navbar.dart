@@ -1,5 +1,6 @@
 import 'package:disan/View/Screens/navbar/home_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
+import 'package:disan/View/Screens/navbar/timeline/clip/clip_page_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,6 +59,10 @@ class NavBarState extends State<NavBar> {
               label: 'Chat'.tr,
             ),
             BottomNavigationBarItem(
+              icon: const Icon(Icons.videocam_rounded),
+              label: 'Clips'.tr,
+            ),
+            BottomNavigationBarItem(
               icon: const Icon(Icons.notifications),
               label: 'Notifications'.tr,
             ),
@@ -93,6 +98,7 @@ class NavBarItemIcon extends StatelessWidget {
 var pages = <Widget>[
   HomePage(),
   HomePage(),
+  ClipTimeline(),
   NotificationsPage(),
   HomePage(),
 ];

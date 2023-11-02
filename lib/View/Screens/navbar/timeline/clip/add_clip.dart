@@ -1,22 +1,20 @@
 import 'dart:io';
 
-import 'package:disan/Controller/story_controller.dart';
-import 'package:disan/Core/enum/media_types.dart';
+import 'package:disan/Controller/clip_controller.dart';
+import 'package:disan/View/Screens/navbar/timeline/story/add_story.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:photo_view/photo_view.dart';
 
-class MediaViewerPage extends GetView<StoryManageController> {
-  MediaViewerPage({super.key});
-  @override
-  final controller = Get.find<StoryManageController>();
+class AddClipPage extends StatelessWidget {
+  AddClipPage({super.key});
+  final controller = Get.find<ClipController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Create story'),
+        title: const Text('Create clip'),
         // centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -37,20 +35,12 @@ class MediaViewerPage extends GetView<StoryManageController> {
                     padding: const EdgeInsets.all(0),
                     child: Center(
                       child: Obx(() {
-                        final mediaType = controller.mediaType.value;
                         final file = controller.file.value;
-                        if (mediaType == MediaType.image) {
-                          return PhotoView(
-                            imageProvider: FileImage(File(file!.path)),
-                          );
-                        } else if (mediaType == MediaType.video) {
-                          return VideoPlayerWidget(
-                            videoPlayerController:
-                                VideoPlayerController.file(File(file!.path)),
-                          );
-                        } else {
-                          return Container(); // Placeholder for unsupported media types
-                        }
+                        return VideoPlayerWidget(
+                          videoPlayerController: VideoPlayerController.file(
+                            File(file!.path),
+                          ),
+                        );
                       }),
                     ),
                   ),
@@ -65,7 +55,7 @@ class MediaViewerPage extends GetView<StoryManageController> {
                             controller.caption.value = value;
                           },
                           textInputAction: TextInputAction.send,
-                          onFieldSubmitted: (value) => controller.uploadStory(),
+                          onFieldSubmitted: (value) => controller.uploadClip(),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(50.0),
@@ -87,18 +77,18 @@ class MediaViewerPage extends GetView<StoryManageController> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => controller.uploadStory(),
+                        onTap: () => controller.uploadClip(),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Column(
                             children: [
                               const Icon(
-                                Icons.check_circle_outlined,
+                                Icons.upload_outlined,
                                 color: Colors.green,
                                 size: 35,
                               ),
                               Text(
-                                "Save".tr,
+                                "Upload".tr,
                                 style: const TextStyle(color: Colors.green),
                               )
                             ],
@@ -129,42 +119,3 @@ class MediaViewerPage extends GetView<StoryManageController> {
     );
   }
 }
-
-class VideoPlayerWidget extends StatefulWidget {
-  final VideoPlayerController videoPlayerController;
-
-  const VideoPlayerWidget({super.key, required this.videoPlayerController});
-
-  @override
-  VideoPlayerWidgetState createState() => VideoPlayerWidgetState();
-}
-
-class VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.videoPlayerController;
-    _controller.initialize().then((_) {
-      setState(() {});
-      _controller.play();
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
-    );
-  }
-}
-
-class MediaViewerController extends GetxController {}

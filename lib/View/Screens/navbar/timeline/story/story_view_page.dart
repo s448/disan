@@ -37,19 +37,28 @@ class StoryViewPage extends StatelessWidget {
       body: StoryView(
         onComplete: () => Get.back(),
         storyItems: [
-          StoryItem.pageImage(
-            shown: true,
-            url:
-                "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
-            caption: "Still sampling",
-            controller: controller,
-          ),
-          StoryItem.pageImage(
-            shown: true,
-            url: stories[0].img!,
-            caption: stories[0].caption,
-            controller: controller,
-          ),
+          // StoryItem.pageImage(
+          //   shown: true,
+          //   url:
+          //       "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
+          //   caption: "Still sampling",
+          //   controller: controller,
+          // ),
+          for (var story in stories)
+            story.isVideo == true
+                ? StoryItem.pageVideo(
+                    story.img!,
+                    shown: true,
+                    caption: story.caption,
+                    controller: controller,
+                  )
+                : StoryItem.pageImage(
+                    url: story.img!,
+                    duration: const Duration(seconds: 8),
+                    shown: true,
+                    caption: story.caption,
+                    controller: controller,
+                  ),
         ],
         controller: controller,
       ),

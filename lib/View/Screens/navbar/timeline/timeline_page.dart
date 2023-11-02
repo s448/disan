@@ -1,3 +1,4 @@
+import 'package:disan/Controller/clip_controller.dart';
 import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
@@ -16,6 +17,7 @@ class TimelinePage extends StatelessWidget {
   final userController = Get.put(UserController(), permanent: true);
   final controller = Get.put(TimelineTapController());
   final storyController = Get.put(StoryManageController(), permanent: true);
+  final clipController = Get.put(ClipController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
