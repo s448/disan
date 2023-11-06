@@ -1,112 +1,98 @@
-import 'dart:developer';
-
+import 'package:card_swiper/card_swiper.dart';
 import 'package:disan/Controller/clip_controller.dart';
-import 'package:disan/Core/extension/url_launch_service.dart';
+import 'package:disan/Model/clip_model.dart';
+import 'package:disan/View/Widgets/reelsWidgets/reel_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reels_viewer/reels_viewer.dart';
-import 'package:card_swiper/card_swiper.dart';
 
 class ClipTimeline extends StatelessWidget {
   ClipTimeline({super.key});
   final controller = Get.put(ClipController(), permanent: true);
-  final SwiperController swController = SwiperController();
+  // final SwiperController swController = SwiperController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Clips".tr),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+    return GetBuilder<ClipController>(
+        // init: ClipController(),
+        builder: (context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Clips".tr),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        // leading: IconButton(
-        //   onPressed: () => controller.pickClipMedia(),
-        //   icon: const Icon(
-        //     Icons.add_a_photo_rounded,
-        //     color: Colors.black,
-        //   ),
-        // ),
-      ),
-      body: controller.reels.isEmpty
-          ? GetBuilder<ClipController>(
-              init: ClipController(),
-              builder: (context) {
-                return Center(
-                  child: Text("No clips for now".tr),
-                );
-              })
-          : Stack(
-              children: [
-                ReelsViewer(
-                  reelsList: controller.reels,
-                  appbarTitle: 'Clips'.tr,
-                  onShare: (url) {
-                    UrlLauncherService.launch(url);
-                  },
-                  onLike: (url) => {
-                    log('======> Clicked on follow <======'),
-                    controller.likeReel(),
-                  },
-                  onFollow: () {
-                    log('======> Clicked on follow <======');
-                  },
-                  onComment: (comment) {
-                    controller.addComment(comment);
-                  },
-                  onClickMoreBtn: () {
-                    log('======> Clicked on more option <======');
-                  },
-                  onClickBackArrow: () {
-                    log('======> Clicked on back arrow <======');
-                  },
-                  onIndexChanged: (index) {
-                    controller.changeIndex(index);
-                  },
-                  showProgressIndicator: true,
-                  showVerifiedTick: false,
-                  showAppbar: false,
-                ),
-                Positioned(
-                  top: 10,
-                  left: (Get.width / 2) - 75,
-                  child: Center(
-                    child: InkWell(
-                      onTap: () => controller.pickClipMedia(),
-                      child: Container(
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.blue,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Add Clip ".tr,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Icon(
-                                Icons.add_a_photo_outlined,
-                                color: Colors.white,
-                              )
-                            ],
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Stack(
+                children: [
+                  //We need swiper for every content
+
+                  StreamBuilder<List<ClipModel>>(
+                    stream: controller.getClips(),
+                    builder: (context, snapshot) {
+                      return Swiper(
+                        itemBuilder: (BuildContext context, int index) {
+                          return StreamBuilder<List<ClipModel>>(
+                            stream: controller.getClips(),
+                            builder: (context, snapshot) {
+                              return ContentScreen(
+                                clipModel: snapshot.data![index],
+                              );
+                            },
+                          );
+                        },
+                        itemCount: snapshot.data!.length,
+                        scrollDirection: Axis.vertical,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: 10,
+              left: (Get.width / 2) - 75,
+              child: Center(
+                child: InkWell(
+                  onTap: () => controller.pickClipMedia(),
+                  child: Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.blue,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Add Clip ".tr,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
+                          const Icon(
+                            Icons.add_a_photo_outlined,
+                            color: Colors.white,
+                          )
+                        ],
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-    );
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -155,4 +141,14 @@ List<ReelModel> reelsList = [
     'https://assets.mixkit.co/videos/preview/mixkit-mother-with-her-little-daughter-eating-a-marshmallow-in-nature-39764-large.mp4',
     'Rahul',
   ),
+];
+
+final List<String> videos = [
+  'https://assets.mixkit.co/videos/preview/mixkit-taking-photos-from-different-angles-of-a-model-34421-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-young-mother-with-her-little-daughter-decorating-a-christmas-tree-39745-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-mother-with-her-little-daughter-eating-a-marshmallow-in-nature-39764-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-1232-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-winter-fashion-cold-looking-woman-concept-video-39874-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-womans-feet-splashing-in-the-pool-1261-large.mp4',
+  'https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4'
 ];
