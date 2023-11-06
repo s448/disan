@@ -139,12 +139,13 @@ class ShopPage extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             // ignore: invalid_use_of_protected_member
                             itemCount:
+                                // ignore: invalid_use_of_protected_member
                                 controller.bestSellingProducts.value.length,
                             itemBuilder: (context, index) {
                               final product =
                                   // ignore: invalid_use_of_protected_member
                                   controller.bestSellingProducts.value[index];
-                              final productImgUrl = product.imgs!.length != 0
+                              final productImgUrl = product.imgs!.isNotEmpty
                                   ? product.imgs![0]
                                   : "";
                               final name = product.description;

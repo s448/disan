@@ -154,7 +154,7 @@ packages:
     source: hosted
     version: "1.1.0"
   card_swiper:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: card_swiper
       sha256: "0c94c538f47be1dab52d018d4900a7046b4cb0700dc7f95b8628da89d1212b35"

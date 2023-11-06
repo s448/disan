@@ -49,6 +49,7 @@ dependencies:
   video_player: ^2.8.1
   photo_view: ^0.14.0
   reels_viewer: ^1.0.0+3
+  card_swiper: ^2.0.4
 
   
 

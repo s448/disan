@@ -1,14 +1,16 @@
 import 'dart:developer';
 
 import 'package:disan/Controller/clip_controller.dart';
-import 'package:disan/routes.dart';
+import 'package:disan/Core/extension/url_launch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reels_viewer/reels_viewer.dart';
+import 'package:card_swiper/card_swiper.dart';
 
 class ClipTimeline extends StatelessWidget {
   ClipTimeline({super.key});
-  final controller = Get.put(ClipController());
+  final controller = Get.put(ClipController(), permanent: true);
+  final SwiperController swController = SwiperController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,45 +23,88 @@ class ClipTimeline extends StatelessWidget {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        leading: IconButton(
-          onPressed: () => controller.pickClipMedia(),
-          icon: const Icon(
-            Icons.add_a_photo_rounded,
-            color: Colors.black,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: () => controller.pickClipMedia(),
+        //   icon: const Icon(
+        //     Icons.add_a_photo_rounded,
+        //     color: Colors.black,
+        //   ),
+        // ),
       ),
       body: controller.reels.isEmpty
-          ? Center(
-              child: Text("No clips for now".tr),
-            )
-          : ReelsViewer(
-              reelsList: controller.reels,
-              appbarTitle: 'Clips'.tr,
-              onShare: (url) {
-                log('Shared reel url ==> $url');
-              },
-              onLike: (url) {
-                log('Liked reel url ==> $url');
-              },
-              onFollow: () {
-                log('======> Clicked on follow <======');
-              },
-              onComment: (comment) {
-                log('Comment on reel ==> $comment');
-              },
-              onClickMoreBtn: () {
-                log('======> Clicked on more option <======');
-              },
-              onClickBackArrow: () {
-                log('======> Clicked on back arrow <======');
-              },
-              onIndexChanged: (index) {
-                log('======> Current Index ======> $index <========');
-              },
-              showProgressIndicator: true,
-              showVerifiedTick: false,
-              showAppbar: false,
+          ? GetBuilder<ClipController>(
+              init: ClipController(),
+              builder: (context) {
+                return Center(
+                  child: Text("No clips for now".tr),
+                );
+              })
+          : Stack(
+              children: [
+                ReelsViewer(
+                  reelsList: controller.reels,
+                  appbarTitle: 'Clips'.tr,
+                  onShare: (url) {
+                    UrlLauncherService.launch(url);
+                  },
+                  onLike: (url) => {
+                    log('======> Clicked on follow <======'),
+                    controller.likeReel(),
+                  },
+                  onFollow: () {
+                    log('======> Clicked on follow <======');
+                  },
+                  onComment: (comment) {
+                    controller.addComment(comment);
+                  },
+                  onClickMoreBtn: () {
+                    log('======> Clicked on more option <======');
+                  },
+                  onClickBackArrow: () {
+                    log('======> Clicked on back arrow <======');
+                  },
+                  onIndexChanged: (index) {
+                    controller.changeIndex(index);
+                  },
+                  showProgressIndicator: true,
+                  showVerifiedTick: false,
+                  showAppbar: false,
+                ),
+                Positioned(
+                  top: 10,
+                  left: (Get.width / 2) - 75,
+                  child: Center(
+                    child: InkWell(
+                      onTap: () => controller.pickClipMedia(),
+                      child: Container(
+                        width: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.blue,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Add Clip ".tr,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.add_a_photo_outlined,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
     );
   }
