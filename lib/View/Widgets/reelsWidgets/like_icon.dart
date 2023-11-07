@@ -4,7 +4,7 @@ class LikeIcon extends StatelessWidget {
   const LikeIcon({super.key});
 
   Future<int> tempFuture() async {
-    return Future.delayed(const Duration(seconds: 1));
+    return Future.delayed(const Duration(seconds: 3));
   }
 
   @override

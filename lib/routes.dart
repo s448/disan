@@ -10,7 +10,7 @@ import 'package:disan/View/Screens/navbar/notifications/rating_notifications_pag
 import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
 import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
-import 'package:disan/View/Screens/navbar/timeline/clip/add_clip.dart';
+import 'package:disan/View/Screens/navbar/clip/add_clip.dart';
 import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';

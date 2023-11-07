@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,8 +22,8 @@ class UserController extends GetxController {
   void onInit() async {
     currentUser = _auth.currentUser;
     curentUserModel = await getUserModel(currentUser!.uid).first;
-    print("Current user is ====> \n");
-    print(curentUserModel.toJson());
+    log("Current user is ====> \n");
+    log(curentUserModel.toJson().toString());
     super.onInit();
   }
 
@@ -82,7 +83,7 @@ class UserController extends GetxController {
       });
       customSnackbar("user is blocked".tr, "");
     } catch (error) {
-      print('Error blocking user: $error');
+      log('Error blocking user: $error');
     }
   }
 
@@ -103,25 +104,25 @@ class UserController extends GetxController {
           name: const Uuid().v1(),
         );
         customSnackbar("Post images was saved to gallery", "");
-        print(result);
+        log(result);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
-  delete(String? postId) async {
+  delete(String? postId, String collection) async {
     try {
       // delete the post
-      await _firestore.collection('posts').doc(postId).delete();
-      customSnackbar("post is deleted".tr, "");
+      await _firestore.collection(collection).doc(postId).delete();
+      customSnackbar("item is deleted".tr, "");
     } catch (error) {
-      print('Error blocking user: $error');
+      log('Error deleteing item: $error');
     }
   }
 
-  makePopupAction(
-      String ex, String userId, String postId, List<String> imgs) async {
+  makePopupAction(String ex, String userId, String postId, List<String> imgs,
+      collection) async {
     switch (ex) {
       case "1":
         await save(imgs);
@@ -136,7 +137,7 @@ class UserController extends GetxController {
         await block(userId);
         break;
       case "5":
-        await delete(postId);
+        await delete(postId, collection);
         break;
       default:
     }

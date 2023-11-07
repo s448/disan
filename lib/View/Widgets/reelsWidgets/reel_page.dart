@@ -70,10 +70,10 @@ class _ContentScreenState extends State<ContentScreen> {
                   ],
                 ),
               ),
-        if (_liked)
-          const Center(
-            child: LikeIcon(),
-          ),
+        // if (_liked)
+        //   const Center(
+        //     child: LikeIcon(),
+        //   ),
         OptionsScreen(
           clipModel: widget.clipModel,
         )

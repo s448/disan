@@ -1,6 +1,6 @@
 import 'package:disan/View/Screens/navbar/home_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
-import 'package:disan/View/Screens/navbar/timeline/clip/clip_page_timeline.dart';
+import 'package:disan/View/Screens/navbar/clip/clip_page_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -209,14 +209,16 @@ class PostWidget extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(color: Colors.yellow),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(dateTimeManager
-                                  .getTimeDifference(dan.date!))),
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              border: Border.all(color: Colors.yellow),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              dateTimeManager.getTimeDifference(dan.date!),
+                            ),
+                          ),
                           PostPopUpMenu(
                             dan: dan,
                             isMe: postController.isItMyPost(dan.user!.id!),

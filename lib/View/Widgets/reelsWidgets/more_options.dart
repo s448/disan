@@ -1,17 +1,21 @@
 import 'package:disan/Controller/user_controller.dart';
-import 'package:disan/Model/dan_model.dart';
+import 'package:disan/Model/clip_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PostPopUpMenu extends StatelessWidget {
-  PostPopUpMenu({super.key, required this.isMe, required this.dan});
+class ClipMoreOptionsButton extends StatelessWidget {
+  ClipMoreOptionsButton({super.key, required this.isMe, required this.clip});
+
   final bool isMe;
-  final DanModel dan;
+  final ClipModel clip;
   final controller = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert_rounded),
+      icon: const Icon(
+        Icons.more_vert_rounded,
+        color: Colors.white,
+      ),
       iconSize: 35,
       itemBuilder: (BuildContext context) {
         var list = <PopupMenuEntry<String>>[
@@ -58,7 +62,12 @@ class PostPopUpMenu extends StatelessWidget {
       },
       onSelected: (String result) async {
         await controller.makePopupAction(
-            result, dan.user!.id!, dan.id!, dan.imgs!, "posts");
+          result,
+          clip.user!.id!,
+          clip.id!,
+          [clip.media ?? ""],
+          "clip",
+        );
       },
     );
   }

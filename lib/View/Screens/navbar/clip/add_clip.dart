@@ -53,6 +53,9 @@ class AddClipPage extends StatelessWidget {
                           onChanged: (value) {
                             controller.caption.value = value;
                           },
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
                           textInputAction: TextInputAction.send,
                           onFieldSubmitted: (value) => controller.uploadClip(),
                           decoration: InputDecoration(
