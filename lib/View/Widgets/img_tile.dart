@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageTile extends StatelessWidget {
   final XFile xFile;
 
-  ImageTile({required this.xFile});
+  const ImageTile({required this.xFile});
 
   @override
   Widget build(BuildContext context) {

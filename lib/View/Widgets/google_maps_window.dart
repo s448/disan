@@ -7,6 +7,8 @@ import '../../Controller/location_controller.dart';
 class MapPicker extends StatelessWidget {
   final _mapController = Get.find<MapController>();
 
+  MapPicker({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,16 +71,6 @@ class MapPicker extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Positioned(
-                  //   top: 30,
-                  //   right: 30,
-                  //   child: CircleAvatar(
-                  //     child: IconButton(
-                  //       onPressed: () => Get.back(),
-                  //       icon: const Icon(Icons.arrow_forward_ios,size: 30,),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               );
             },

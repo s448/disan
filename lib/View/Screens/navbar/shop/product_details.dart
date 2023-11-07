@@ -1,4 +1,4 @@
-import 'package:disan/View/Widgets/post_widget.dart';
+import 'package:disan/View/Widgets/timelineWidgets/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

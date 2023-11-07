@@ -3,7 +3,7 @@ import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Model/dan_model.dart';
-import 'package:disan/View/Widgets/popup_menu_widget.dart';
+import 'package:disan/View/Widgets/timelineWidgets/popup_menu_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
+import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -22,8 +23,7 @@ class UserController extends GetxController {
   void onInit() async {
     currentUser = _auth.currentUser;
     curentUserModel = await getUserModel(currentUser!.uid).first;
-    log("Current user is ====> \n");
-    log(curentUserModel.toJson().toString());
+    await getMyActiveDans();
     super.onInit();
   }
 
@@ -140,6 +140,61 @@ class UserController extends GetxController {
         await delete(postId, collection);
         break;
       default:
+    }
+  }
+
+  getMyFollowers() => curentUserModel.followers!.length;
+  getMyFollowing() => curentUserModel.following!.length;
+
+  int activeDansLength = 0;
+  List<DanModel> myActiveDans = [];
+  getMyActiveDans() async {
+    try {
+      final currentTime = DateTime.now();
+
+      //the target date when the dan be unactive
+      final fifteenDaysAgo = currentTime.subtract(const Duration(days: 15));
+
+      var result = await _firestore
+          .collection('posts')
+          .where('user.id', isEqualTo: curentUserModel.id)
+          .where('date', isGreaterThan: fifteenDaysAgo)
+          .get();
+      myActiveDans = result.docs.map((doc) {
+        return DanModel.fromJson(doc.data());
+      }).toList();
+      activeDansLength = myActiveDans.length;
+    } catch (e) {
+      activeDansLength = 0;
+      log(e.toString());
+    }
+  }
+
+  RxBool isListView = true.obs;
+  changeActiveDansView() => isListView.value = !isListView.value;
+  RxDouble rate = 0.0.obs;
+
+  rateShop(String postId) async {
+    try {
+      var result = await _firestore.collection('users').doc(postId).get();
+
+      UserModel shop = UserModel.fromJson(result.data()!);
+
+      if (shop.raters!.contains(userModel.id)) {
+        customSnackbar("You rated this Shop before".tr, "");
+        return;
+      } else {
+        var currentRating = shop.rating ?? 0.0;
+        var totalRaters = shop.raters!.length + 1;
+        var totalRating = (rate.value + currentRating) / totalRaters;
+        shop.raters!.add(userModel.id!);
+        shop.rating = totalRating;
+      }
+      await _firestore.collection("users").doc(postId).update(shop.toJson());
+      customSnackbar("Rating is applied", "");
+      update();
+    } catch (e) {
+      log(e.toString());
     }
   }
 }

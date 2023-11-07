@@ -7,6 +7,7 @@ import 'package:disan/View/Screens/introduction_page.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
 import 'package:disan/View/Screens/navbar/notifications/order_notifications_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/rating_notifications_page.dart';
+import 'package:disan/View/Screens/navbar/search_page.dart';
 import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
 import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
@@ -37,6 +38,7 @@ class Routes {
   static String myRatings = '/myratings';
   static String viewStory = '/viewstory';
   static String createClip = '/createclip';
+  static String search = '/search';
 }
 
 final getPages = [
@@ -111,5 +113,9 @@ final getPages = [
   GetPage(
     name: Routes.createClip,
     page: () => AddClipPage(),
+  ),
+  GetPage(
+    name: Routes.search,
+    page: () => SearchPage(),
   ),
 ];

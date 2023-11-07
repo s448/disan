@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
               // expandedHeight: Get.height * 0.15,
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => Get.toNamed(Routes.search),
                   icon: const Icon(
                     CupertinoIcons.search_circle,
                     size: 40,

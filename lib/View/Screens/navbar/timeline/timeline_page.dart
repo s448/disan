@@ -4,7 +4,7 @@ import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_list.dart';
-import 'package:disan/View/Widgets/post_widget.dart';
+import 'package:disan/View/Widgets/timelineWidgets/post_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

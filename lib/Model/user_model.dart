@@ -12,6 +12,7 @@ class UserModel {
   double? long;
   List<dynamic>? categories;
   double? rating;
+  List<dynamic>? raters = [];
   List<dynamic>? followers;
   List<dynamic>? following;
   List<dynamic>? muted;
@@ -31,6 +32,7 @@ class UserModel {
     this.long,
     this.categories,
     this.rating,
+    this.raters,
     this.followers,
     this.following,
     this.muted,
@@ -51,6 +53,7 @@ class UserModel {
     long = json['long'];
     categories = json['categories'];
     rating = json['rating'];
+    raters = json['raters'];
     following = json['following'];
     followers = json['followers'];
     muted = json['muted'];
@@ -72,6 +75,7 @@ class UserModel {
     data['long'] = this.long;
     data['categories'] = this.categories;
     data['rating'] = this.rating;
+    data['raters'] = this.raters;
     data['followers'] = this.followers;
     data['following'] = this.following;
     data['muted'] = this.muted;

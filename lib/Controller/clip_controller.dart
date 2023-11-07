@@ -20,7 +20,7 @@ import 'package:uuid/uuid.dart';
 class ClipController extends GetxController {
   @override
   void onInit() async {
-    await getClips();
+    getClips();
     super.onInit();
   }
 
@@ -45,7 +45,7 @@ class ClipController extends GetxController {
         file.value = await _picker.pickVideo(source: ImageSource.camera);
         Get.to(() => AddClipPage());
       } on Exception catch (e) {
-        print(e);
+        log(e.toString());
       }
     } else {
       dangerSnackbar(
