@@ -68,4 +68,5 @@ flutter:
   assets:
     - assets/
     - assets/categories/
+    - assets/games/
     

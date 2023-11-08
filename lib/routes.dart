@@ -15,6 +15,8 @@ import 'package:disan/View/Screens/navbar/clip/add_clip.dart';
 import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';
+import 'package:disan/View/Screens/user/block_list.dart';
+import 'package:disan/View/Screens/user/settings.dart';
 import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
 import 'package:get/get.dart';
@@ -39,6 +41,8 @@ class Routes {
   static String viewStory = '/viewstory';
   static String createClip = '/createclip';
   static String search = '/search';
+  static String settings = '/settings';
+  static String block = '/block';
 }
 
 final getPages = [
@@ -117,5 +121,13 @@ final getPages = [
   GetPage(
     name: Routes.search,
     page: () => SearchPage(),
+  ),
+  GetPage(
+    name: Routes.settings,
+    page: () => SettingsPage(),
+  ),
+  GetPage(
+    name: Routes.block,
+    page: () => BlockList(),
   ),
 ];

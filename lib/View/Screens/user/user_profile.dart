@@ -1,4 +1,5 @@
 import 'package:disan/View/Widgets/profileWidgets/profile_view.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,17 @@ class ProfilePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        actions: [
+          InkWell(
+            onTap: () => Get.toNamed(Routes.settings),
+            child: const Icon(
+              Icons.settings,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: ProfilePageTemp(userId: userId),
     );

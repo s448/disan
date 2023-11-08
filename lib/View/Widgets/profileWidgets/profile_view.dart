@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Core/extension/url_launch_service.dart';
 import 'package:disan/View/Widgets/profileWidgets/active_dans_grid_view.dart';
 import 'package:disan/View/Widgets/profileWidgets/shop_location.dart';
 import 'package:disan/View/Widgets/profileWidgets/user_info_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ProfilePageTemp extends StatelessWidget {
   ProfilePageTemp({
@@ -267,10 +269,26 @@ class ProfilePageTemp extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
+                        userData.whatsappNumber!.isEmpty
+                            ? const SizedBox()
+                            : InkWell(
+                                onTap: () => UrlLauncherService.launch(
+                                  'https://api.whatsapp.com/send?phone=${userData.whatsappNumber}&text=${Uri.encodeComponent("")}',
+                                ),
+                                child: UserInfoTile(
+                                  ic: const Icon(
+                                    Ionicons.logo_whatsapp,
+                                    color: Colors.green,
+                                    size: 32,
+                                  ),
+                                  title: "".tr,
+                                  num: userData.whatsappNumber.toString(),
+                                ),
+                              ),
                         UserInfoTile(
                           ic: const Icon(
                             Icons.podcasts,
-                            color: Colors.red,
+                            color: Colors.black,
                             size: 32,
                           ),
                           title: "Follower".tr,
@@ -280,7 +298,7 @@ class ProfilePageTemp extends StatelessWidget {
                         UserInfoTile(
                           ic: const Icon(
                             Icons.read_more_sharp,
-                            color: Colors.red,
+                            color: Colors.black,
                             size: 32,
                           ),
                           title: "Following".tr,
@@ -290,7 +308,7 @@ class ProfilePageTemp extends StatelessWidget {
                         UserInfoTile(
                           ic: const Icon(
                             Icons.post_add,
-                            color: Colors.red,
+                            color: Colors.black,
                             size: 32,
                           ),
                           title: "Active dan".tr,

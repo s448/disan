@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:developer';
 import 'dart:typed_data';
 
@@ -24,6 +26,11 @@ class UserController extends GetxController {
     currentUser = _auth.currentUser;
     curentUserModel = await getUserModel(currentUser!.uid).first;
     await getMyActiveDans();
+    await fetchBlockedUsers();
+    ever(
+      blockedUsers,
+      (callback) => fetchBlockedUsers(),
+    );
     super.onInit();
   }
 
@@ -195,6 +202,56 @@ class UserController extends GetxController {
       update();
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  RxList<UserModel> blockedUsers = <UserModel>[].obs;
+
+  fetchBlockedUsers() async {
+    try {
+      blockedUsers.value.clear();
+      for (String userId in curentUserModel.blocked ?? []) {
+        var userDoc = await _firestore.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          var userData = userDoc.data() as Map<String, dynamic>;
+          var item = UserModel.fromJson(userData);
+          if (!blockedUsers.value.contains(item)) {
+            blockedUsers.value.add(item);
+          }
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> unblockUser(String userId) async {
+    // Remove the user from the GetX controller list
+    blockedUsers.value.removeWhere((user) => user.id == userId);
+    update();
+    // Get the current user's ID or any means to identify the current user
+    String currentUserId = curentUserModel.id ??
+        ""; // Replace with your actual logic to get the current user's ID
+
+    // Reference to the current user's Firestore document
+    DocumentReference currentUserDoc =
+        _firestore.collection('users').doc(currentUserId);
+
+    // Get the current user's "blocked" list from Firestore
+    DocumentSnapshot currentUserSnapshot = await currentUserDoc.get();
+    if (currentUserSnapshot.exists) {
+      Map<String, dynamic> currentUserData =
+          currentUserSnapshot.data() as Map<String, dynamic>;
+      List<String> blockedList =
+          List<String>.from(currentUserData['blocked'] ?? []);
+
+      // Remove the user ID from the "blocked" list
+      blockedList.remove(userId);
+
+      // Update the "blocked" list in Firestore
+      await currentUserDoc.update({'blocked': blockedList});
+      await fetchBlockedUsers();
+      print("List after unblock >>>>>>>" + blockedList.toString());
     }
   }
 }
