@@ -51,6 +51,7 @@ dependencies:
   reels_viewer: ^1.0.0+3
   card_swiper: ^2.0.4
   flutter_share: ^2.0.0
+  flutter_swipe_detector: ^2.0.0
 
   
 

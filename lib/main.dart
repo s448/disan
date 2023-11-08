@@ -28,7 +28,6 @@ class DisanApp extends StatelessWidget {
       initialRoute: _sharedPrefController.userAuthenticated()
           ? Routes.navbar
           : Routes.introScreen,
-      //initialRoute: Routes.introScreen,
       getPages: getPages,
     );
   }

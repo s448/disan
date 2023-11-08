@@ -1,3 +1,4 @@
+import 'package:disan/View/Screens/navbar/gamesPage/games_page.dart';
 import 'package:disan/View/Screens/navbar/home_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
 import 'package:disan/View/Screens/navbar/clip/clip_page_timeline.dart';
@@ -100,5 +101,5 @@ var pages = <Widget>[
   HomePage(),
   ClipTimeline(),
   NotificationsPage(),
-  HomePage(),
+  const GamesPage(),
 ];
