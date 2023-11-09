@@ -10,13 +10,15 @@ class UserModel {
   String? background;
   double? lat;
   double? long;
-  List<dynamic>? categories;
+  List<dynamic>? categories = [];
   double? rating;
   List<dynamic>? raters = [];
-  List<dynamic>? followers;
-  List<dynamic>? following;
-  List<dynamic>? muted;
-  List<dynamic>? blocked;
+  List<dynamic>? followers = [];
+  List<dynamic>? following = [];
+  List<dynamic>? muted = [];
+  List<dynamic>? blocked = [];
+  bool? waHiden;
+  List<dynamic>? waAllowed = [];
 
   UserModel({
     this.name,
@@ -37,6 +39,8 @@ class UserModel {
     this.following,
     this.muted,
     this.blocked,
+    this.waAllowed,
+    this.waHiden,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,8 @@ class UserModel {
     followers = json['followers'];
     muted = json['muted'];
     blocked = json['blocked'];
+    waAllowed = json['waallowed'];
+    waHiden = json['wahiden'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,7 +86,8 @@ class UserModel {
     data['following'] = this.following;
     data['muted'] = this.muted;
     data['blocked'] = this.blocked;
-
+    data['waallowed'] = this.waAllowed;
+    data['wahiden'] = this.waHiden;
     return data;
   }
 }

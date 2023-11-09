@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:flutter/material.dart';

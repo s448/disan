@@ -101,13 +101,57 @@ class NotificationsPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         NotificationModel notification = notifications[index];
                         return InkWell(
-                          onTap: () => Get.toNamed(Routes.productDetails,
-                              arguments: {'dan': notification.dan}),
+                          onTap: () {
+                            if (notification.topic == "connection") {
+                              return;
+                            } else {
+                              Get.toNamed(Routes.productDetails,
+                                  arguments: {'dan': notification.dan});
+                            }
+                          },
                           child: ListTile(
                             title: Text(notification.title ?? ''),
                             subtitle: Column(
                               children: [
                                 Text(notification.body ?? ''),
+                                Row(
+                                  children: [
+                                    notification.topic == "connection"
+                                        ? TextButton(
+                                            onPressed: () =>
+                                                controller.acceptConnection(
+                                                  notification.user!,
+                                                  notification.id ?? "",
+                                                ),
+                                            child: Text(
+                                              "Accept".tr,
+                                              style: const TextStyle(
+                                                  color: Colors.blue),
+                                            ))
+                                        : TextButton(
+                                            onPressed: () =>
+                                                controller.deleteNotification(
+                                                    notification.id ?? ""),
+                                            child: Text(
+                                              "Delete".tr,
+                                              style: const TextStyle(
+                                                color: Colors.red,
+                                              ),
+                                            )),
+                                    notification.topic == "connection"
+                                        ? TextButton(
+                                            onPressed: () =>
+                                                controller.deleteNotification(
+                                                    notification.id ?? ""),
+                                            child: Text(
+                                              "Decline".tr,
+                                              style: const TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                          )
+                                        : const SizedBox()
+                                  ],
+                                ),
                                 const Divider(
                                   thickness: 1.4,
                                 )

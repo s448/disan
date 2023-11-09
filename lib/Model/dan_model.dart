@@ -7,7 +7,7 @@ class DanModel {
   UserModel? user;
   Timestamp? date;
   String? description;
-  List<String>? imgs;
+  List<dynamic>? imgs;
   int? likes;
   List<Comment>? comments;
   double? rating;
@@ -38,7 +38,7 @@ class DanModel {
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
     date = json['date'];
     description = json['description'];
-    imgs = json['imgs'].cast<String>();
+    imgs = json['imgs'];
     likes = json['likes'];
     if (json['comments'] != null) {
       comments = <Comment>[];

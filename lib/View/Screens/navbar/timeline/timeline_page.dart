@@ -34,6 +34,11 @@ class TimelinePage extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
+              const SizedBox(height: 8),
+              // userController.curentUserModel.id == null ||
+              //         userController.curentUserModel.id == ""
+              //     ? const SizedBox()
+              //     :
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Container(

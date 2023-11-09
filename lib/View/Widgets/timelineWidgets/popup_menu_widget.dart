@@ -58,7 +58,7 @@ class PostPopUpMenu extends StatelessWidget {
       },
       onSelected: (String result) async {
         await controller.makePopupAction(
-            result, dan.user!.id!, dan.id!, dan.imgs!, "posts");
+            result, dan.user!.id!, dan.id!, dan.imgs ?? [], "posts");
       },
     );
   }

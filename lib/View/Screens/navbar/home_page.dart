@@ -36,9 +36,14 @@ class HomePage extends StatelessWidget {
                     size: 40,
                   ),
                 ),
+                // userController.curentUserModel.id == "" ||
+                //         userController.curentUserModel.id == null
+                //     ? const SizedBox()
+                //     :
                 IconButton(
-                  onPressed: () => Get.toNamed(Routes.profile,
-                      arguments: {"uid": userController.currentUser!.uid}),
+                  onPressed: () => Get.toNamed(Routes.profile, arguments: {
+                    "uid": userController.currentUser?.uid ?? ""
+                  }),
                   icon: const Icon(
                     CupertinoIcons.person,
                     size: 40,

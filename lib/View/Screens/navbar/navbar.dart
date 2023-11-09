@@ -1,3 +1,6 @@
+import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Service/fcm_services.dart';
+import 'package:disan/View/Screens/navbar/chat/register_chat.dart';
 import 'package:disan/View/Screens/navbar/gamesPage/games_page.dart';
 import 'package:disan/View/Screens/navbar/home_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
@@ -14,6 +17,15 @@ class NavBar extends StatefulWidget {
 }
 
 class NavBarState extends State<NavBar> {
+  @override
+  void initState() {
+    Get.put(UserController(), permanent: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FcmServices().initNotification();
+    });
+    super.initState();
+  }
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -98,7 +110,7 @@ class NavBarItemIcon extends StatelessWidget {
 
 var pages = <Widget>[
   HomePage(),
-  HomePage(),
+  ChatRegister(),
   ClipTimeline(),
   NotificationsPage(),
   const GamesPage(),

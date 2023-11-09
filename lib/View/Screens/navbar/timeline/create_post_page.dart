@@ -21,7 +21,7 @@ class CreatePostPage extends StatelessWidget {
           onPressed: () => Get.back(),
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.blue,
+            color: Colors.white,
           ),
         ),
       ),

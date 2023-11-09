@@ -24,7 +24,8 @@ class UserController extends GetxController {
   @override
   void onInit() async {
     currentUser = _auth.currentUser;
-    curentUserModel = await getUserModel(currentUser!.uid).first;
+    curentUserModel = await getUserModel(currentUser?.uid ?? "").first;
+    log("current user is >>>>>>>>>>>>>." + curentUserModel.toString());
     await getMyActiveDans();
     await fetchBlockedUsers();
     ever(
@@ -94,7 +95,7 @@ class UserController extends GetxController {
     }
   }
 
-  save(List<String> imgs) async {
+  save(List<dynamic> imgs) async {
     final status = await Permission.storage.request();
 
     if (status != PermissionStatus.granted) {
@@ -128,7 +129,7 @@ class UserController extends GetxController {
     }
   }
 
-  makePopupAction(String ex, String userId, String postId, List<String> imgs,
+  makePopupAction(String ex, String userId, String postId, List<dynamic> imgs,
       collection) async {
     switch (ex) {
       case "1":

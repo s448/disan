@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:disan/Core/extension/url_launch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +9,7 @@ class ShopLocationWidget extends StatelessWidget {
   ShopLocationWidget({super.key, required this.lat, required this.long});
   final double lat;
   final double long;
-  late GoogleMapController _mapController;
+  late GoogleMapController mapController;
 
   void openLocationInMaps(double latitude, double longitude) async {
     final url =
@@ -30,7 +32,7 @@ class ShopLocationWidget extends StatelessWidget {
         child: GoogleMap(
           initialCameraPosition: initialPosition,
           onMapCreated: (GoogleMapController controller) {
-            _mapController = controller;
+            mapController = controller;
           },
           markers: {
             Marker(

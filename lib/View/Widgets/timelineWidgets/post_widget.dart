@@ -160,7 +160,7 @@ class PostWidget extends StatelessWidget {
         ),
       ),
     );
-    int imgsLength = dan.imgs!.length;
+    int imgsLength = dan.imgs?.length ?? 0;
     var likeButton = Row(
       children: [
         IconButton(

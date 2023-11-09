@@ -66,7 +66,7 @@ class PostController extends GetxController {
   }
 
   getLikeStatus(DanModel dan) {
-    String myId = userController.curentUserModel.id!;
+    String myId = userController.curentUserModel.id ?? "";
 
     if (dan.likers!.contains(myId)) {
       return true;

@@ -10,9 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Get.put(UserController(), permanent: true);
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
-  await FcmServices().initNotification();
+  // Get.put(UserController(), permanent: true);
+  // await FcmServices().initNotification();
   return runApp(DisanApp());
 }
 
