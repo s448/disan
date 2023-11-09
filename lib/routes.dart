@@ -16,6 +16,7 @@ import 'package:disan/View/Screens/navbar/timeline/comments_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';
 import 'package:disan/View/Screens/user/block_list.dart';
+import 'package:disan/View/Screens/user/choose_language.dart';
 import 'package:disan/View/Screens/user/settings.dart';
 import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
@@ -43,6 +44,7 @@ class Routes {
   static String search = '/search';
   static String settings = '/settings';
   static String block = '/block';
+  static String lang = '/lang';
 }
 
 final getPages = [
@@ -129,5 +131,9 @@ final getPages = [
   GetPage(
     name: Routes.block,
     page: () => BlockList(),
+  ),
+  GetPage(
+    name: Routes.lang,
+    page: () => ChooseLangPage(),
   ),
 ];

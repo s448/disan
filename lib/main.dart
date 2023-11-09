@@ -1,4 +1,5 @@
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Core/ultis/translation_sheet.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,19 @@ class DisanApp extends StatelessWidget {
   DisanApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      textDirection: TextDirection.ltr,
-      debugShowCheckedModeBanner: false,
-      initialRoute: _sharedPrefController.userAuthenticated()
-          ? Routes.navbar
-          : Routes.introScreen,
-      getPages: getPages,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: GetMaterialApp(
+        translations: TranslationSheet(),
+        locale: Locale('ar', 'EG'),
+        fallbackLocale: const Locale('en', 'US'),
+        textDirection: TextDirection.ltr,
+        debugShowCheckedModeBanner: false,
+        initialRoute: _sharedPrefController.userAuthenticated()
+            ? Routes.navbar
+            : Routes.introScreen,
+        getPages: getPages,
+      ),
     );
   }
 }

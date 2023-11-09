@@ -1,8 +1,8 @@
 import 'package:disan/Controller/auth_controller.dart';
+import 'package:disan/View/Widgets/settings_item_button.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});
@@ -26,6 +26,15 @@ class SettingsPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.toNamed(Routes.lang),
+            icon: const Icon(
+              Icons.translate_rounded,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(8),
@@ -74,38 +83,6 @@ class SettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SettingsItemButton extends StatelessWidget {
-  const SettingsItemButton({
-    super.key,
-    required this.title,
-    required this.leading,
-    required this.trailing,
-    required this.action,
-  });
-  final String title;
-  final Icon leading;
-  final Icon trailing;
-  final Callback action;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: action,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: ListTile(
-          leading: leading,
-          title: Text(title),
-          trailing: trailing,
         ),
       ),
     );
