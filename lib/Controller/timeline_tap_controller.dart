@@ -6,6 +6,8 @@ import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/comment_model.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/notification_model.dart';
+import 'package:disan/Service/admob/banner_ad.dart';
+import 'package:disan/Service/admob/rewarded_ad.dart';
 import 'package:disan/Service/audio_recorder.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/firebase_services.dart';
@@ -19,6 +21,31 @@ import 'package:uuid/uuid.dart';
 import 'package:toast/toast.dart';
 
 class TimelineTapController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    bannerAdService.bannerAd.load();
+    rewardedAdService.createRewardedAd();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bannerAdService.bannerAd.dispose();
+    rewardedAdService.rewardedAd?.dispose();
+  }
+
+  final bannerAdService = BannerAdService();
+  final rewardedAdService = RewaredeAdService();
+
+  // loadBannerAd() {
+  //   bannerAdService.bannerAd.listener.onAdLoaded;
+  // }
+
+  showRewardedAd() {
+    rewardedAdService.showRewardedAd();
+  }
+
   final FileUploader _imageUploader = FileUploader();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final uuid = const Uuid();

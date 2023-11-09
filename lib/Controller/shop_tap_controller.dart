@@ -1,20 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/user_model.dart';
+import 'package:disan/Service/admob/banner_ad.dart';
+import 'package:disan/Service/admob/rewarded_ad.dart';
 import 'package:get/get.dart';
 
 class ShopTapController extends GetxController {
   @override
+  void dispose() {
+    super.dispose();
+    bannerAdService.bannerAd.dispose();
+    rewardedAdService.rewardedAd?.dispose();
+  }
+
+  final bannerAdService = BannerAdService();
+  final rewardedAdService = RewaredeAdService();
+
+  @override
   void onInit() async {
     trendingProfiles.value = await getTrendingProfiles();
     bestSellingProducts.value = await getBestSelling();
-
-    update();
-    print("trending: =========>");
-    print(trendingProfiles);
-    print("bestselling: =========>");
-    print(bestSellingProducts);
+    bannerAdService.bannerAd.load();
+    rewardedAdService.createRewardedAd();
     super.onInit();
+  }
+
+  showRewardedAd() {
+    rewardedAdService.showRewardedAd();
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

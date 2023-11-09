@@ -5,6 +5,7 @@ import 'package:disan/View/Widgets/grid_tile_tem.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ShopPage extends StatelessWidget {
   ShopPage({super.key});
@@ -28,6 +29,11 @@ class ShopPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 4),
+                  SizedBox(
+                    height: 50,
+                    child: AdWidget(ad: controller.bannerAdService.bannerAd),
+                  ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -58,8 +64,11 @@ class ShopPage extends StatelessWidget {
                               final uid = profile.id;
                               final name = profile.name;
                               return InkWell(
-                                onTap: () => Get.toNamed(Routes.profile,
-                                    arguments: {"uid": uid}),
+                                onTap: () {
+                                  controller.showRewardedAd();
+                                  Get.toNamed(Routes.profile,
+                                      arguments: {"uid": uid});
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(

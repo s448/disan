@@ -8,6 +8,7 @@ import 'package:disan/View/Widgets/timelineWidgets/post_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class TimelinePage extends StatelessWidget {
   TimelinePage({
@@ -50,7 +51,10 @@ class TimelinePage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12.0),
                     child: InkWell(
-                      onTap: () => Get.toNamed(Routes.createPost),
+                      onTap: () {
+                        controller.showRewardedAd();
+                        Get.toNamed(Routes.createPost);
+                      },
                       child: ListTile(
                         leading: CircleAvatar(
                           radius: 32.0,
@@ -77,6 +81,11 @@ class TimelinePage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 50,
+                child: AdWidget(ad: controller.bannerAdService.bannerAd),
               ),
               const SizedBox(
                 height: 15,
