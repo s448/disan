@@ -26,7 +26,7 @@ class _ChatRegisterState extends State<ChatRegister> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Chat register".tr),
+        title: Text("Chat".tr),
         centerTitle: true,
         backgroundColor: Colors.white,
         titleTextStyle: const TextStyle(
