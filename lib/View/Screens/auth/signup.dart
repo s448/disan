@@ -49,7 +49,7 @@ class SignUpPage extends StatelessWidget {
                             validator: (val) =>
                                 (val!.isEmpty) ? "Enter your name".tr : null,
                             decoration: InputDecoration(
-                              labelText: "Name".tr,
+                              labelText: "Your name".tr,
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: enabledBorder,
                               errorBorder: errorBorder,

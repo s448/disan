@@ -48,8 +48,8 @@ class StoryManageController extends GetxController {
       }).toList();
       return bestSellingProducts;
     } catch (e) {
-      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print(e.toString());
+      // print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      // print(e.toString());
       return [];
     }
   }

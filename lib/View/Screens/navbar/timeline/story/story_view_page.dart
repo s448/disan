@@ -13,8 +13,6 @@ class StoryViewPage extends StatelessWidget {
   final DateTimeManager dtManager = DateTimeManager();
   @override
   Widget build(BuildContext context) {
-    print(stories.length);
-    print(stories);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

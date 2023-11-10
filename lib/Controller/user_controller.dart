@@ -47,6 +47,16 @@ class UserController extends GetxController {
     });
   }
 
+  updateUserData() async {
+    try {
+      var result =
+          await _firestore.collection('users').doc(curentUserModel.id).get();
+      curentUserModel = UserModel.fromJson(result.data() ?? {});
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   follow(String? userId) async {
     try {
       final myUserId = currentUser!.uid;
@@ -61,9 +71,9 @@ class UserController extends GetxController {
         'following': FieldValue.arrayUnion([userId]),
       });
 
-      customSnackbar("you are following him".tr, "");
+      customSnackbar("You are following him".tr, "");
     } catch (error) {
-      print('Error following user: $error');
+      // print('Error following user: $error');
     }
   }
 
@@ -77,7 +87,7 @@ class UserController extends GetxController {
       });
       customSnackbar("user is muted".tr, "");
     } catch (error) {
-      print('Error muting user: $error');
+      // print('Error muting user: $error');
     }
   }
 
@@ -252,7 +262,7 @@ class UserController extends GetxController {
       // Update the "blocked" list in Firestore
       await currentUserDoc.update({'blocked': blockedList});
       await fetchBlockedUsers();
-      print("List after unblock >>>>>>>" + blockedList.toString());
+      // print("List after unblock >>>>>>>" + blockedList.toString());
     }
   }
 }

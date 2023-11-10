@@ -1,5 +1,6 @@
 // import 'package:cityinpocket/Controller/shared_prefs_controller.dart';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:disan/Controller/user_controller.dart';
@@ -94,10 +95,10 @@ class FcmServices {
         data: jsonEncode(data),
       );
 
-      print('Notification sent. Response: ${response.statusCode}');
+      log('Notification sent. Response: ${response.statusCode}');
     } catch (error) {
-      print("in fcm page ========");
-      print('Error sending notification: $error');
+      // log("in fcm page ========");
+      log('Error sending notification: $error');
     }
   }
 }

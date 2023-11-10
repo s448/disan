@@ -39,7 +39,7 @@ class OptionsScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        clipModel.user!.name ?? "user unknown",
+                        clipModel.user!.name ?? "unknown".tr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -50,9 +50,9 @@ class OptionsScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () =>
                             controller.followUser(clipModel.user!.id ?? ""),
-                        child: const Text(
-                          'Follow',
-                          style: TextStyle(
+                        child: Text(
+                          'Follow'.tr,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),

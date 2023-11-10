@@ -13,7 +13,7 @@ class AddClipPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Create clip'),
+        title: Text('Create clip'.tr),
         // centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(

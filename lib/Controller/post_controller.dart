@@ -96,7 +96,7 @@ class PostController extends GetxController {
   }
 
   notifyMerchant(DanModel dan) async {
-    print("Notify------merch and save order");
+    // print("Notify------merch and save order");
     String docid = const Uuid().v1();
     String title = "New order".tr;
     String body =

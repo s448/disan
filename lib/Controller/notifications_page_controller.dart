@@ -90,7 +90,7 @@ class NotificationsPageController extends GetxController {
           user.token!,
           userController.curentUserModel.name.toString() +
               "accepted your request".tr,
-          "now you can contact each other".tr);
+          "".tr);
     } catch (e) {
       dangerSnackbar("Cannot accept connection request".tr, e.toString());
     }

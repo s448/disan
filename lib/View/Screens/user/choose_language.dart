@@ -5,10 +5,11 @@ import 'package:get/get.dart';
 
 class ChooseLangPage extends StatelessWidget {
   ChooseLangPage({super.key});
-  final controller = Get.put(LocaleController());
+  final controller = Get.find<LocaleController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Choose langauge".tr),
@@ -26,33 +27,37 @@ class ChooseLangPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          SettingsItemButton(
-            action: () => controller.changeAppLanguage('en', 'US'),
-            // leading: const Icon(
-            //   Icons.block,
-            //   color: Colors.grey,
-            //   size: 35,
-            // ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: Colors.grey,
-              size: 35,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SettingsItemButton(
+              action: () => controller.changeAppLanguage('en', 'US'),
+              // leading: const Icon(
+              //   Icons.block,
+              //   color: Colors.grey,
+              //   size: 35,
+              // ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Colors.grey,
+                size: 35,
+              ),
+              title: "English".tr,
             ),
-            title: "English".tr,
-          ),
-          const SizedBox(height: 12),
-          SettingsItemButton(
-            action: () => controller.changeAppLanguage('ar', 'EG'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: Colors.grey,
-              size: 35,
+            const SizedBox(height: 25),
+            SettingsItemButton(
+              action: () => controller.changeAppLanguage('ar', 'EG'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Colors.grey,
+                size: 35,
+              ),
+              title: "Arabic".tr,
             ),
-            title: "Arabic".tr,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

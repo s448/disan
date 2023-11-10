@@ -53,15 +53,15 @@ class HomePage extends StatelessWidget {
                   width: 10,
                 ),
               ],
-              bottom: const TabBar(
+              bottom: TabBar(
                 tabs: [
                   Tab(
-                    text: 'Timeline',
-                    icon: Icon(Icons.home),
+                    text: 'Timeline'.tr,
+                    icon: const Icon(Icons.home),
                   ),
                   Tab(
-                    text: 'Shop',
-                    icon: Icon(Icons.shopping_bag_sharp),
+                    text: 'Shop'.tr,
+                    icon: const Icon(Icons.shopping_bag_sharp),
                   ),
                 ],
               ),

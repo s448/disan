@@ -85,7 +85,7 @@ class AuthController extends GetxController {
           .set(userModel.toJson());
       return true;
     } catch (e) {
-      dangerSnackbar("cannot save user data".tr, e.toString());
+      dangerSnackbar("Cannot save user data".tr, e.toString());
       return false;
     }
   }
@@ -304,7 +304,7 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       isFacebookLoading.value = false;
-      dangerSnackbar("Error facebook login".tr, e.toString());
+      dangerSnackbar("Login error".tr, e.toString());
     }
   }
 
@@ -313,7 +313,7 @@ class AuthController extends GetxController {
       var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
       profilePicUrl.value = await _filePicker.uploadFile(pickedFile, "images");
     } catch (e) {
-      dangerSnackbar("Error uploading".tr, e.toString());
+      dangerSnackbar("Failed to upload picture".tr, e.toString());
     }
   }
 
@@ -323,7 +323,7 @@ class AuthController extends GetxController {
       backgroundPicUrl.value =
           await _filePicker.uploadFile(pickedFile, "images");
     } catch (e) {
-      dangerSnackbar("Error uploading".tr, e.toString());
+      dangerSnackbar("Failed to upload picture".tr, e.toString());
     }
   }
 
@@ -353,7 +353,7 @@ class AuthController extends GetxController {
       saveButtonLoading.value = false;
       update();
       Get.offAllNamed(Routes.navbar);
-      customSnackbar("Saved your info".tr, "");
+      customSnackbar("Information saved".tr, "");
     } catch (e) {
       saveButtonLoading.value = false;
       // print("Errorrrrrrrrrrrr" + e.toString());
@@ -369,9 +369,9 @@ class AuthController extends GetxController {
   addCatItem(val) {
     if (!selectedCategories.contains(val)) {
       selectedCategories.value = val;
-      print("selected");
+      // print("selected");
     }
     update();
-    print(selectedCategories);
+    // print(selectedCategories);
   }
 }

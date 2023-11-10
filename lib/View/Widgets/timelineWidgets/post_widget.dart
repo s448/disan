@@ -1,4 +1,4 @@
-import 'package:disan/Controller/audio_player_Controller.dart';
+// import 'package:disan/Controller/audio_player_Controller.dart';
 import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
@@ -25,7 +25,7 @@ class PostWidget extends StatelessWidget {
   final bool usedInOrdersPage;
   final bool usedInRatingPage;
   final controller = Get.put(TimelineTapController());
-  final audioContrller = Get.put(AudioController());
+  // final audioContrller = Get.put(AudioController());
   final postController = Get.put(PostController());
 
   final DateTimeManager dateTimeManager = DateTimeManager();

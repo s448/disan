@@ -20,7 +20,7 @@ class CompleteAccountInfo extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         appBar: AppBar(
-          title: Text(isUser ? "Edit user info".tr : "Edit your Shop"),
+          title: Text(isUser ? "Edit user info".tr : "Edit your Shop info".tr),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

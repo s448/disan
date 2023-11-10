@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Model/notification_model.dart';
 import 'package:disan/Model/order_model.dart';
@@ -26,9 +28,9 @@ class FirebaseServices {
           .doc(notification.id)
           .set(notification.toJson());
 
-      print('Notification saved to Firebase');
+      log('Notification saved to Firebase');
     } catch (error) {
-      print('Error saving notification to Firebase: $error');
+      log('Error saving notification to Firebase: $error');
     }
   }
 
@@ -36,9 +38,9 @@ class FirebaseServices {
     try {
       await _firestore.collection('orders').doc(order.id).set(order.toJson());
 
-      print('Order saved to Firebase');
+      log('Order saved to Firebase');
     } catch (error) {
-      print('Error saving Order to Firebase: $error');
+      log('Error saving Order to Firebase: $error');
     }
   }
 }

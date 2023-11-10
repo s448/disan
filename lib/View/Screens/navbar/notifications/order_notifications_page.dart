@@ -57,8 +57,9 @@ class MyOrdersPage extends StatelessWidget {
                           child: Column(
                             children: [
                               ListTile(
-                                title: Text(
-                                    "${order.user!.name!} Requested an order for:"),
+                                title: Text("${order.user!.name!}"
+                                        " Requested an order for:"
+                                    .tr),
                                 subtitle: Text(order.dan!.description ?? ''),
                                 leading: Image.network(
                                   order.dan!.imgs![0],

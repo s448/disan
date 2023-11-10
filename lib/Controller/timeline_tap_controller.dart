@@ -24,15 +24,15 @@ class TimelineTapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    bannerAdService.bannerAd.load();
-    rewardedAdService.createRewardedAd();
+    // bannerAdService.bannerAd.load();
+    // rewardedAdService.createRewardedAd();
   }
 
   @override
   void dispose() {
     super.dispose();
-    bannerAdService.bannerAd.dispose();
-    rewardedAdService.rewardedAd?.dispose();
+    // bannerAdService.bannerAd.dispose();
+    // rewardedAdService.rewardedAd?.dispose();
   }
 
   final bannerAdService = BannerAdService();
@@ -181,7 +181,7 @@ class TimelineTapController extends GetxController {
   }
 
   startRecording() async {
-    print("start record");
+    // print("start record");
     withRecord.value = true;
     isRecording.value = true;
     update();
@@ -191,17 +191,17 @@ class TimelineTapController extends GetxController {
 
   RxBool hasRecord = false.obs;
   stopRecording() async {
-    print("stop record");
+    // print("stop record");
     isRecording.value = false;
     recordFile = await recorder.stop();
     hasRecord.value = true;
     Toast.show("Record saved".tr);
     update();
-    print("the file from controller >>>>> $recordLink");
+    // print("the file from controller >>>>> $recordLink");
   }
 
   deleteRecord() async {
-    print("Delete record");
+    // print("Delete record");
     await recordFile!.delete();
   }
 
@@ -245,8 +245,7 @@ class TimelineTapController extends GetxController {
               .tr);
     } catch (e) {
       print(e);
-      dangerSnackbar(
-          "Cannot add the comment".tr, "check your internet connection".tr);
+      dangerSnackbar("Cannot add the comment".tr, "".tr);
     }
   }
 

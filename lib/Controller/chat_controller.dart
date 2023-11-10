@@ -15,8 +15,10 @@ import 'package:uuid/uuid.dart';
 class ChatController extends GetxController {
   @override
   void onInit() {
-    isUserRegisterd();
     super.onInit();
+    userController.refresh();
+    isUserRegisterd();
+    print(userRegisterd.value);
   }
 
   RxBool hidePhone = false.obs;
@@ -28,7 +30,10 @@ class ChatController extends GetxController {
   final FcmServices _fcm = FcmServices();
   final FirebaseServices _firebaseServices = FirebaseServices();
 
-  flipHideCheckBox() => hidePhone.value = !hidePhone.value;
+  flipHideCheckBox() {
+    hidePhone.value = !hidePhone.value;
+  }
+
   isUserRegisterd() {
     var wa = userController.curentUserModel.whatsappNumber;
     if (wa == null || wa == "") {
@@ -36,17 +41,22 @@ class ChatController extends GetxController {
     } else {
       userRegisterd.value = true;
     }
-    update();
+    refresh();
+    print(userRegisterd.value);
   }
 
   registerChat() async {
+    userRegisterd.value = true;
     try {
       var userId = userController.curentUserModel.id;
-
       await _firestore.collection('users').doc(userId).update({
-        "phone": phone.value,
+        "whatsapp": phone.value,
         "wahiden": hidePhone.value,
       });
+      await userController.updateUserData();
+      // print("whatsapp is  ============");
+      // print(userController.curentUserModel.whatsappNumber);
+      customSnackbar("Register success".tr, '');
     } catch (e) {
       log(e.toString());
     }
@@ -126,7 +136,7 @@ class ChatController extends GetxController {
       );
       //save the notification on firestore
       await _firebaseServices.saveNotificationToFirebase(notificationModel);
-      customSnackbar("Connection is sent to".tr + user.name.toString(),
+      customSnackbar("Connection is sent to ".tr + user.name.toString(),
           "we will let you know if he accepted it".tr);
     } catch (e) {
       dangerSnackbar("Cannot send request", e.toString());

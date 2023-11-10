@@ -1,4 +1,6 @@
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Controller/locale_controller.dart';
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/ultis/translation_sheet.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,7 +14,7 @@ void main(List<String> args) async {
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
-  // Get.put(UserController(), permanent: true);
+  Get.put(UserController(), permanent: true);
   // await FcmServices().initNotification();
   return runApp(DisanApp());
 }
@@ -20,22 +22,32 @@ void main(List<String> args) async {
 class DisanApp extends StatelessWidget {
   final _sharedPrefController =
       Get.put(SharedPrefsController(), permanent: true);
-  DisanApp({super.key});
+
+  DisanApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: GetMaterialApp(
-        translations: TranslationSheet(),
-        locale: Locale('ar', 'EG'),
-        fallbackLocale: const Locale('en', 'US'),
-        textDirection: TextDirection.ltr,
-        debugShowCheckedModeBanner: false,
-        initialRoute: _sharedPrefController.userAuthenticated()
-            ? Routes.navbar
-            : Routes.introScreen,
-        getPages: getPages,
-      ),
+    final localeController = Get.put(LocaleController(), permanent: true);
+    print(_sharedPrefController.prefs.getString('lang'));
+
+    return GetMaterialApp(
+      translations: TranslationSheet(),
+      locale: localeController.initLocale,
+      fallbackLocale: const Locale('en', 'US'),
+      textDirection: TextDirection.ltr,
+      debugShowCheckedModeBanner: false,
+      initialRoute: _sharedPrefController.userAuthenticated()
+          ? Routes.navbar
+          : Routes.introScreen,
+      getPages: getPages,
+      builder: (context, child) {
+        return Directionality(
+          textDirection: localeController.isArabic()
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+          child: child!,
+        );
+      },
     );
   }
 }

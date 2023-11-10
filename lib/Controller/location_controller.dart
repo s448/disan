@@ -25,8 +25,7 @@ class MapController extends GetxController {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          dangerSnackbar("Location permissions are denied".tr,
-              "please enable it first".tr);
+          dangerSnackbar("Location permissions are denied".tr, "".tr);
           throw 'Location permissions are denied.';
         }
       }

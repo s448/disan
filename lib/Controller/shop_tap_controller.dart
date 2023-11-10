@@ -9,8 +9,8 @@ class ShopTapController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    bannerAdService.bannerAd.dispose();
-    rewardedAdService.rewardedAd?.dispose();
+    // bannerAdService.bannerAd.dispose();
+    // rewardedAdService.rewardedAd?.dispose();
   }
 
   final bannerAdService = BannerAdService();
@@ -20,8 +20,8 @@ class ShopTapController extends GetxController {
   void onInit() async {
     trendingProfiles.value = await getTrendingProfiles();
     bestSellingProducts.value = await getBestSelling();
-    bannerAdService.bannerAd.load();
-    rewardedAdService.createRewardedAd();
+    // bannerAdService.bannerAd.load();
+    // rewardedAdService.createRewardedAd();
     super.onInit();
   }
 
@@ -67,8 +67,8 @@ class ShopTapController extends GetxController {
       }).toList();
       return bestSellingProducts;
     } catch (e) {
-      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print(e.toString());
+      // print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      // print(e.toString());
       return [];
     }
   }

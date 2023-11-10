@@ -30,7 +30,7 @@ class FileUploader {
       // Return the download URL
       return imageUrl;
     }
-    dangerSnackbar("Cannot pick the File".tr, 'please try again'.tr);
+    dangerSnackbar("Cannot pick the File".tr, ''.tr);
     return '';
   }
 }

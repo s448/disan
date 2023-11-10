@@ -5,8 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ChatRegister extends StatelessWidget {
-  ChatRegister({super.key});
+class ChatRegister extends StatefulWidget {
+  const ChatRegister({super.key});
+
+  @override
+  State<ChatRegister> createState() => _ChatRegisterState();
+}
+
+class _ChatRegisterState extends State<ChatRegister> {
+  @override
+  void initState() {
+    controller.isUserRegisterd();
+    super.initState();
+  }
+
   final controller = Get.put(ChatController());
 
   @override
@@ -33,9 +45,11 @@ class ChatRegister extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: controller.userRegisterd.value == true
-            ? RegisteredUsersList(controller: controller)
-            : RegisterPage(controller: controller),
+        child: Obx(() {
+          return controller.userRegisterd.value == true
+              ? RegisteredUsersList(controller: controller)
+              : RegisterPage(controller: controller);
+        }),
       ),
     );
   }
@@ -105,78 +119,80 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            Checkbox(
-              value: controller.hidePhone.value,
-              onChanged: (value) => controller.flipHideCheckBox(),
-            ),
-            Text(
-              "Hide phone number".tr,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
+    return Obx(() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Checkbox(
+                value: controller.hidePhone.value,
+                onChanged: (value) => controller.flipHideCheckBox(),
               ),
-            ),
-          ],
-        ),
-        TextFormField(
-          onChanged: (value) {
-            controller.phone.value = value;
-          },
-          style: const TextStyle(
-            color: Colors.black,
+              Text(
+                "Hide phone number".tr,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
-          textInputAction: TextInputAction.send,
-          onFieldSubmitted: (value) => controller.registerChat(),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
+          TextFormField(
+            onChanged: (value) {
+              controller.phone.value = value;
+            },
+            style: const TextStyle(
+              color: Colors.black,
             ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
+            textInputAction: TextInputAction.send,
+            onFieldSubmitted: (value) => controller.registerChat(),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: "Phone number ex (+1) ...",
+              prefixIcon: const Icon(
+                Ionicons.logo_whatsapp,
+                color: Colors.green,
+                size: 40,
+              ),
+              hintStyle: const TextStyle(color: Colors.grey),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            hintText: "Phone number ex (+1) ...",
-            prefixIcon: const Icon(
-              Ionicons.logo_whatsapp,
-              color: Colors.green,
-              size: 40,
-            ),
-            hintStyle: const TextStyle(color: Colors.grey),
           ),
-        ),
-        const SizedBox(height: 14),
-        controller.phone.value.length >= 11
-            ? ElevatedButton(
-                onPressed: () => controller.registerChat(),
-                style: primaryButtonStyle,
-                child: Text("Register".tr),
-              )
-            : const SizedBox(),
-      ],
-    );
+          const SizedBox(height: 14),
+          controller.phone.value.length >= 11
+              ? ElevatedButton(
+                  onPressed: () => controller.registerChat(),
+                  style: primaryButtonStyle,
+                  child: Text("Register".tr),
+                )
+              : const SizedBox(),
+        ],
+      );
+    });
   }
 }

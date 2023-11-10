@@ -11,22 +11,24 @@ class IntroductionPage extends StatelessWidget {
       body: IntroductionScreen(
         pages: [
           PageViewModel(
-            title: 'Title of 1st Page',
-            body: 'Body of 1st Page',
+            title: 'هي منصة تفاعلية مجانية',
+            body:
+                'لجمع و تنظيم و عرض ما يخص متطلبات الأفراح و الملابس للرجال و السيدات و الموضة',
             image: buildImage("images/image_1.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),
           ),
           PageViewModel(
-            title: 'Title of 2nd Page',
-            body: 'Body of 2nd Page',
+            title: 'يتواصل المتجر مع متابعيه عن طريق الرسائل "chat"',
+            body: '',
             image: buildImage("images/image_2.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),
           ),
           PageViewModel(
-            title: 'Title of 3rd Page',
-            body: 'Body of 3rd Page',
+            title:
+                'بقاء محتواك معتمد علي التفاعل علي المنصة، كلما زاد التفاعل زاد مدة بقائه',
+            body: '',
             image: buildImage("images/image_3.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),

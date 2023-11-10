@@ -70,7 +70,7 @@ class ResetPasswordPage extends StatelessWidget {
                           }
                         },
                         style: primaryButtonStyle,
-                        child: Text("Send code".tr),
+                        child: Text("Send email".tr),
                       ),
                     ],
                   ),

@@ -16,7 +16,7 @@ class MediaViewerPage extends GetView<StoryManageController> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Create story'),
+        title: Text('Create story'.tr),
         // centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(

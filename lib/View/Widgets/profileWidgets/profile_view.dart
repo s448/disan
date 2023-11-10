@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/extension/url_launch_service.dart';
 import 'package:disan/View/Widgets/profileWidgets/active_dans_grid_view.dart';
 import 'package:disan/View/Widgets/profileWidgets/shop_location.dart';
 import 'package:disan/View/Widgets/profileWidgets/user_info_tile.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ class ProfilePageTemp extends StatelessWidget {
     required this.userId,
   }) : super(key: key);
   final controller = Get.find<UserController>();
+  final storyController = Get.find<StoryManageController>();
   final String userId;
   @override
   Widget build(BuildContext context) {
@@ -87,7 +90,7 @@ class ProfilePageTemp extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: Text(
-                        userData.name ?? "Unknown",
+                        userData.name ?? "unknown".tr,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -214,7 +217,7 @@ class ProfilePageTemp extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () => storyController.pickStoryMedia(),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue[800]),
                             child: Row(
@@ -231,7 +234,8 @@ class ProfilePageTemp extends StatelessWidget {
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                Get.toNamed(Routes.completeUserInfo),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey[900]),
                             child: Row(
