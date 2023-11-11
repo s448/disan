@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,8 +7,6 @@ import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/comment_model.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/notification_model.dart';
-import 'package:disan/Service/admob/banner_ad.dart';
-import 'package:disan/Service/admob/rewarded_ad.dart';
 import 'package:disan/Service/audio_recorder.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/Service/firebase_services.dart';
@@ -15,37 +14,12 @@ import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:toast/toast.dart';
 
 class TimelineTapController extends GetxController {
-  @override
-  void onInit() {
-    super.onInit();
-    // bannerAdService.bannerAd.load();
-    // rewardedAdService.createRewardedAd();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // bannerAdService.bannerAd.dispose();
-    // rewardedAdService.rewardedAd?.dispose();
-  }
-
-  final bannerAdService = BannerAdService();
-  final rewardedAdService = RewaredeAdService();
-
-  // loadBannerAd() {
-  //   bannerAdService.bannerAd.listener.onAdLoaded;
-  // }
-
-  showRewardedAd() {
-    rewardedAdService.showRewardedAd();
-  }
-
   final FileUploader _imageUploader = FileUploader();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final uuid = const Uuid();
@@ -59,7 +33,7 @@ class TimelineTapController extends GetxController {
   RxString recordLink = "".obs;
   final userController = Get.find<UserController>();
 
-  List<Asset> selectedImages = <Asset>[];
+  // List<Asset> selectedIdmages = <Asset>[];
   var permissionGranted = false.obs;
   RxBool postButtonUploading = false.obs;
   final _picker = ImagePicker();
@@ -73,20 +47,20 @@ class TimelineTapController extends GetxController {
   RxList<String> imgLinks = RxList();
 
   Future<void> pickMultipleImages() async {
-    List<Asset> resultList = <Asset>[];
+    // List<Asset> resultList = <Asset>[];
     await requestPermissions();
     if (permissionGranted.value == true) {
       try {
         images!.value = await _picker.pickMultiImage();
         images!.value = images!.getRange(0, 3).toList();
       } on Exception catch (e) {
-        print(e);
+        log(e.toString());
       }
 
-      if (resultList.isNotEmpty) {
-        selectedImages = resultList;
-        print(selectedImages);
-      }
+      // if (resultList.isNotEmpty) {
+      //   selectedImages = resultList;
+      //   // print(selectedImages);
+      // }
     } else {
       dangerSnackbar("Permissions for Camera & Gallery required".tr,
           "please allow Disan to use them".tr);
@@ -130,13 +104,13 @@ class TimelineTapController extends GetxController {
       postButtonUploading.value = false;
     } catch (e) {
       postButtonUploading.value = false;
-      print(e);
+      // print(e);
     }
   }
 
   uploadPost() async {
     String postId = uuid.v1();
-    print(postId);
+    // print(postId);
     try {
       DanModel dan = DanModel(
         id: postId,

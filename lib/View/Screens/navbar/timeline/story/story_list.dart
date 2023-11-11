@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/story_controller.dart';
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/story_model.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +11,7 @@ import 'package:get/get.dart';
 class StoryBar extends StatelessWidget {
   StoryBar({super.key});
   final storyController = Get.put(StoryManageController(), permanent: true);
-
+  final _prefs = Get.find<SharedPrefsController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -24,7 +28,14 @@ class StoryBar extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: () => storyController.pickStoryMedia(),
+                    onTap: () {
+                      if (_prefs.userAuthenticated()) {
+                        storyController.pickStoryMedia();
+                      } else {
+                        customSnackbar("You are not authorized".tr,
+                            "please sign in first".tr);
+                      }
+                    },
                     child: const CircleAvatar(
                       radius: 30,
                       backgroundColor: Colors.blue,
@@ -51,7 +62,9 @@ class StoryBar extends StatelessWidget {
                 future: storyController.getGroupOfStories(),
                 builder: (context, snapshot) {
                   List<List<Story>> userStoryList = snapshot.data ?? [];
-                  print(userStoryList);
+                  print(
+                      "stories here 888888888---------------------------5555555555555555552------------------------44444444444444444444444444444444444");
+                  log(userStoryList.toString());
                   return ListView.builder(
                       shrinkWrap: true,
                       itemCount: userStoryList.length,

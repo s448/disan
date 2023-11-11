@@ -1,4 +1,5 @@
 import 'package:disan/Controller/clip_controller.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
@@ -14,18 +15,19 @@ class CommentsPage extends StatelessWidget {
   final controller = Get.put(TimelineTapController());
   final DanModel dan = Get.arguments['dan'];
   final DateTimeManager dateTimeManager = DateTimeManager();
+  final _prefs = Get.find<SharedPrefsController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("Dan comments".tr),
+        title: Text("Den comments".tr),
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.blue,
+            color: Colors.white,
           ),
         ),
       ),
@@ -105,14 +107,19 @@ class CommentsPage extends StatelessWidget {
               ),
               trailing: IconButton(
                 onPressed: () {
-                  if (controller.commentController.text.isNotEmpty) {
-                    controller.addCommentToPost(
-                      dan.id!,
-                    );
-                    controller.commentController.text = '';
+                  if (_prefs.userAuthenticated()) {
+                    if (controller.commentController.text.isNotEmpty) {
+                      controller.addCommentToPost(
+                        dan.id!,
+                      );
+                      controller.commentController.text = '';
+                    } else {
+                      customSnackbar(
+                          "Comment is empty".tr, "please write something".tr);
+                    }
                   } else {
                     customSnackbar(
-                        "Comment is empty".tr, "please write something".tr);
+                        "You are not authorized".tr, "please sign in first".tr);
                   }
                 },
                 icon: const Icon(

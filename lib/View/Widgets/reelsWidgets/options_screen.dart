@@ -132,15 +132,12 @@ class OptionsScreen extends StatelessWidget {
                     InkWell(
                       onTap: () => controller.shareReel(
                           clipModel.caption, clipModel.media),
-                      child: Transform(
-                        transform: Matrix4.rotationZ(5.8),
-                        child: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
+                      child: const Icon(
+                        Icons.send,
+                        color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 20),
                     ClipMoreOptionsButton(
                       isMe: controller.isMe(clipModel.user!.id!),
                       clip: clipModel,

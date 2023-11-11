@@ -1,3 +1,4 @@
+import 'package:disan/Controller/ads_controller.dart';
 import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/locale_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
@@ -14,6 +15,7 @@ void main(List<String> args) async {
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
+  // Get.put(AdsController(), permanent: true);
   Get.put(UserController(), permanent: true);
   // await FcmServices().initNotification();
   return runApp(DisanApp());
@@ -28,7 +30,7 @@ class DisanApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeController = Get.put(LocaleController(), permanent: true);
-    print(_sharedPrefController.prefs.getString('lang'));
+    // print(_sharedPrefController.prefs.getString('lang'));
 
     return GetMaterialApp(
       translations: TranslationSheet(),

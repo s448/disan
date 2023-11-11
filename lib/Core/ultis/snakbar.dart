@@ -9,6 +9,8 @@ void customSnackbar(String title, String subtitle) {
     backgroundColor: primaryColor,
     colorText: Colors.white,
     duration: const Duration(seconds: 5),
+    borderColor: Colors.yellow,
+    borderWidth: 2,
   );
 }
 
@@ -19,5 +21,7 @@ void dangerSnackbar(String title, String subtitle) {
     backgroundColor: Colors.redAccent,
     colorText: Colors.white,
     duration: const Duration(seconds: 5),
+    borderColor: Colors.yellow,
+    borderWidth: 2,
   );
 }

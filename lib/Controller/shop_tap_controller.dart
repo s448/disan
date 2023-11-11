@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/user_model.dart';
-import 'package:disan/Service/admob/banner_ad.dart';
-import 'package:disan/Service/admob/rewarded_ad.dart';
+// import 'package:disan/Service/admob/banner_ad.dart';
+// import 'package:disan/Service/admob/rewarded_ad.dart';
 import 'package:get/get.dart';
 
 class ShopTapController extends GetxController {
@@ -13,8 +13,8 @@ class ShopTapController extends GetxController {
     // rewardedAdService.rewardedAd?.dispose();
   }
 
-  final bannerAdService = BannerAdService();
-  final rewardedAdService = RewaredeAdService();
+  // final bannerAdService = BannerAdService();
+  // final rewardedAdService = RewaredeAdService();
 
   @override
   void onInit() async {
@@ -25,9 +25,9 @@ class ShopTapController extends GetxController {
     super.onInit();
   }
 
-  showRewardedAd() {
-    rewardedAdService.showRewardedAd();
-  }
+  // showRewardedAd() {
+  //   rewardedAdService.showRewardedAd();
+  // }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

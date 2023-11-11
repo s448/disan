@@ -1,7 +1,9 @@
 // import 'package:disan/Controller/audio_player_Controller.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/View/Widgets/timelineWidgets/popup_menu_widget.dart';
 import 'package:disan/routes.dart';
@@ -25,8 +27,9 @@ class PostWidget extends StatelessWidget {
   final bool usedInOrdersPage;
   final bool usedInRatingPage;
   final controller = Get.put(TimelineTapController());
-  // final audioContrller = Get.put(AudioController());
+  // final audioContrller = Get.put(enterTheApp();ontroller());
   final postController = Get.put(PostController());
+  final _prefs = Get.find<SharedPrefsController>();
 
   final DateTimeManager dateTimeManager = DateTimeManager();
 
@@ -68,9 +71,14 @@ class PostWidget extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  controller.ratePost(dan.id!);
-                  Get.back();
-                  Get.back();
+                  if (_prefs.userAuthenticated()) {
+                    controller.ratePost(dan.id!);
+                    Get.back();
+                    Get.back();
+                  } else {
+                    customSnackbar(
+                        "You are not authorized".tr, "please sign in first".tr);
+                  }
                 },
                 child: Text("Save".tr),
               )
@@ -361,10 +369,10 @@ class PostWidget extends StatelessWidget {
                       children: [
                         StaggeredGridTile.count(
                           crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
+                          mainAxisCellCount: imgsLength == 1 ? 1 : 2,
                           child: Image.network(
                             dan.imgs![0],
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                         dan.imgs!.length > 1
@@ -465,7 +473,14 @@ class PostWidget extends StatelessWidget {
 
   InkWell shareButton() {
     return InkWell(
-      onTap: () => controller.redanPost(dan),
+      onTap: () {
+        if (_prefs.userAuthenticated()) {
+          controller.redanPost(dan);
+        } else {
+          customSnackbar(
+              "You are not authorized".tr, "please sign in first".tr);
+        }
+      },
       child: const Column(
         children: [
           Icon(
@@ -593,7 +608,7 @@ class InOrdersWidgetRemoveFromOrders extends StatelessWidget {
 }
 
 class AddToCartButton extends StatelessWidget {
-  const AddToCartButton({
+  AddToCartButton({
     super.key,
     required this.postController,
     required this.dan,
@@ -601,12 +616,20 @@ class AddToCartButton extends StatelessWidget {
 
   final PostController postController;
   final DanModel dan;
+  final _prefs = Get.find<SharedPrefsController>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return InkWell(
-        onTap: () => postController.addRemoveCartItem(dan.id),
+        onTap: () {
+          if (_prefs.userAuthenticated()) {
+            postController.addRemoveCartItem(dan.id!);
+          } else {
+            customSnackbar(
+                "You are not authorized".tr, "please sign in first".tr);
+          }
+        },
         child: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(

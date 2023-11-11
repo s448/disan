@@ -1,3 +1,4 @@
+import 'package:disan/Controller/ads_controller.dart';
 import 'package:disan/Controller/post_controller.dart';
 import 'package:disan/Controller/shop_tap_controller.dart';
 import 'package:disan/Core/constants/shop_categories.dart';
@@ -11,6 +12,8 @@ class ShopPage extends StatelessWidget {
   ShopPage({super.key});
   final controller = Get.put(ShopTapController(), permanent: true);
   final postController = Get.put(PostController(), permanent: true);
+  // final adsController = Get.find<AdsController>();
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -18,7 +21,7 @@ class ShopPage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/bckground.jpg"),
-            fit: BoxFit.fill,
+            fit: BoxFit.none,
           ),
         ),
         child: Stack(
@@ -30,10 +33,14 @@ class ShopPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 4),
-                  SizedBox(
-                    height: 50,
-                    child: AdWidget(ad: controller.bannerAdService.bannerAd),
-                  ),
+                  // SizedBox(
+                  //   height: adsController.bannerAdService.bannerAd.size.height
+                  //       .toDouble(),
+                  //   child: StatefulBuilder(
+                  //     builder: (context, setState) =>
+                  //         AdWidget(ad: adsController.bannerAdService.bannerAd),
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -65,7 +72,7 @@ class ShopPage extends StatelessWidget {
                               final name = profile.name;
                               return InkWell(
                                 onTap: () {
-                                  controller.showRewardedAd();
+                                  // adsController.showRewardedAd();
                                   Get.toNamed(Routes.profile,
                                       arguments: {"uid": uid});
                                 },

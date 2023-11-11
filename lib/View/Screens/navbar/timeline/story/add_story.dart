@@ -84,6 +84,9 @@ class MediaViewerPage extends GetView<StoryManageController> {
                             hintText: "Add Caption ..",
                             hintStyle: const TextStyle(color: Colors.white),
                           ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       InkWell(

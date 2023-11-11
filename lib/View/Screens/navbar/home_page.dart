@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
               ),
               title: const Text('Disan'),
               pinned: false,
-              floating: true,
+              floating: false,
               // expandedHeight: Get.height * 0.15,
               actions: [
                 IconButton(

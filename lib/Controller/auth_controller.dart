@@ -47,6 +47,7 @@ class AuthController extends GetxController {
   var currUserId = ''.obs;
 
   var whatsappNumber = "".obs;
+  RxBool hideWa = false.obs;
   RxString bio = "".obs;
   RxDouble locationLat = 0.0.obs;
   RxDouble locationLng = 0.0.obs;
@@ -327,6 +328,10 @@ class AuthController extends GetxController {
     }
   }
 
+  flipHideCheckBox() {
+    hideWa.value = !hideWa.value;
+  }
+
   RxBool saveButtonLoading = false.obs;
   updateUserInfo() async {
     saveButtonLoading.value = true;
@@ -337,6 +342,7 @@ class AuthController extends GetxController {
         background: backgroundPicUrl.value,
         type: accType.value,
         whatsappNumber: whatsappNumber.value,
+        waHiden: hideWa.value,
         id: currUserId.value,
         email: email.value,
         lat: locationLat.value,

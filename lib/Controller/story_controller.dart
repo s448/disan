@@ -43,13 +43,15 @@ class StoryManageController extends GetxController {
           .where('date', isGreaterThan: twentyFourHoursAgo)
           .orderBy('date', descending: true)
           .get();
-      final List<Story> bestSellingProducts = querySnapshot.docs.map((doc) {
+      final List<Story> stories = querySnapshot.docs.map((doc) {
+        print(doc);
         return Story.fromJson(doc.data());
       }).toList();
-      return bestSellingProducts;
+      print("52" + stories.toString());
+      return stories;
     } catch (e) {
-      // print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      // print(e.toString());
+      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      print(e.toString());
       return [];
     }
   }
@@ -59,6 +61,7 @@ class StoryManageController extends GetxController {
   Future<List<List<Story>>> getGroupOfStories() async {
     try {
       var stories = await _getStories();
+      // print("storeis before grouping ================" + stories);
       // Create a map to store the grouped stories
       Map<String, List<Story>> groupedStories = {};
 
@@ -79,6 +82,7 @@ class StoryManageController extends GetxController {
 
       return result;
     } catch (e) {
+      print("Error 87 87 87 87 87 7");
       print(e);
       return [];
     }

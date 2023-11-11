@@ -1,7 +1,10 @@
+import 'package:disan/Controller/ads_controller.dart';
 import 'package:disan/Controller/clip_controller.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_list.dart';
 import 'package:disan/View/Widgets/timelineWidgets/post_widget.dart';
@@ -19,7 +22,8 @@ class TimelinePage extends StatelessWidget {
   final controller = Get.put(TimelineTapController());
   final storyController = Get.put(StoryManageController(), permanent: true);
   final clipController = Get.put(ClipController(), permanent: true);
-
+  // final adsController = Get.find<AdsController>();
+  final _prefs = Get.find<SharedPrefsController>();
   @override
   Widget build(BuildContext context) {
     final currentUserModel = userController.curentUserModel;
@@ -28,7 +32,7 @@ class TimelinePage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/bckground.jpg"),
-            fit: BoxFit.fill,
+            fit: BoxFit.none,
           ),
         ),
         child: SingleChildScrollView(
@@ -52,8 +56,13 @@ class TimelinePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 12.0),
                     child: InkWell(
                       onTap: () {
-                        controller.showRewardedAd();
-                        Get.toNamed(Routes.createPost);
+                        if (_prefs.userAuthenticated()) {
+                          // adsController.showRewardedAd();
+                          Get.toNamed(Routes.createPost);
+                        } else {
+                          customSnackbar("You are not authorized".tr,
+                              "please sign in first".tr);
+                        }
                       },
                       child: ListTile(
                         leading: CircleAvatar(
@@ -83,16 +92,20 @@ class TimelinePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                height: 50,
-                child: AdWidget(ad: controller.bannerAdService.bannerAd),
-              ),
+              // SizedBox(
+              //   height: adsController.bannerAdService.bannerAd.size.height
+              //       .toDouble(),
+              //   child: StatefulBuilder(
+              //     builder: (context, setState) =>
+              //         AdWidget(ad: adsController.bannerAdService.bannerAd),
+              //   ),
+              // ),
               const SizedBox(
-                height: 15,
+                height: 3,
               ),
               StoryBar(),
               const SizedBox(
-                height: 15,
+                height: 3,
               ),
               StreamBuilder<List<DanModel>>(
                 stream: controller.getTimelinePosts(),

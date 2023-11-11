@@ -37,7 +37,7 @@ class BlockList extends StatelessWidget {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/bckground.jpg"),
-                fit: BoxFit.fill,
+                fit: BoxFit.none,
               ),
             ),
             child: Padding(

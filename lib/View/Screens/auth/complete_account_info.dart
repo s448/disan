@@ -75,6 +75,24 @@ class CompleteAccountInfo extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: controller.hideWa.value,
+                      onChanged: (value) => controller.flipHideCheckBox(),
+                    ),
+                    Text(
+                      "Hide phone number".tr,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
                   height: 18,
                 ),
                 TextFormField(

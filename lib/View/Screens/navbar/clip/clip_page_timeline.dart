@@ -1,5 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:disan/Controller/clip_controller.dart';
+import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/clip_model.dart';
 import 'package:disan/View/Widgets/reelsWidgets/reel_page.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:get/get.dart';
 class ClipTimeline extends StatelessWidget {
   ClipTimeline({super.key});
   final controller = Get.put(ClipController(), permanent: true);
+  final _prefs = Get.find<SharedPrefsController>();
   // final SwiperController swController = SwiperController();
   @override
   Widget build(BuildContext context) {
@@ -35,16 +38,18 @@ class ClipTimeline extends StatelessWidget {
                   StreamBuilder<List<ClipModel>>(
                     stream: controller.getClips(),
                     builder: (context, snapshot) {
-                      if (snapshot.data!.isEmpty) {
-                        return Center(
-                          child: Text("No Clips for now".tr),
-                        );
+                      if (snapshot.data == null) {
+                        return const Center(child: CircularProgressIndicator());
                       }
                       return Swiper(
                         itemBuilder: (BuildContext context, int index) {
                           return StreamBuilder<List<ClipModel>>(
                             stream: controller.getClips(),
                             builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
                               return ContentScreen(
                                 clipModel: snapshot.data![index],
                               );
@@ -64,7 +69,14 @@ class ClipTimeline extends StatelessWidget {
               left: (Get.width / 2) - 75,
               child: Center(
                 child: InkWell(
-                  onTap: () => controller.pickClipMedia(),
+                  onTap: () {
+                    if (_prefs.userAuthenticated()) {
+                      controller.pickClipMedia();
+                    } else {
+                      customSnackbar("You are not authorized".tr,
+                          "please sign in first".tr);
+                    }
+                  },
                   child: Container(
                     width: 150,
                     decoration: BoxDecoration(
