@@ -22,7 +22,7 @@ class TimelinePage extends StatelessWidget {
   final controller = Get.put(TimelineTapController());
   final storyController = Get.put(StoryManageController(), permanent: true);
   final clipController = Get.put(ClipController(), permanent: true);
-  // final adsController = Get.find<AdsController>();
+  final adsController = Get.find<AdsController>();
   final _prefs = Get.find<SharedPrefsController>();
   @override
   Widget build(BuildContext context) {
@@ -40,66 +40,65 @@ class TimelinePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 8),
-              // userController.curentUserModel.id == null ||
-              //         userController.curentUserModel.id == ""
-              //     ? const SizedBox()
-              //     :
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  width: Get.width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
-                    child: InkWell(
-                      onTap: () {
-                        if (_prefs.userAuthenticated()) {
-                          // adsController.showRewardedAd();
-                          Get.toNamed(Routes.createPost);
-                        } else {
-                          customSnackbar("You are not authorized".tr,
-                              "please sign in first".tr);
-                        }
-                      },
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 32.0,
-                          backgroundColor: Colors.blue,
-                          backgroundImage: NetworkImage(
-                            currentUserModel.profile.toString(),
-                          ),
+              userController.curentUserModel.id == null ||
+                      userController.curentUserModel.id == ""
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6.0),
                         ),
-                        title: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black54),
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: Text(
-                            "Create a Den .. Here".tr,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                        width: Get.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: InkWell(
+                            onTap: () {
+                              if (_prefs.userAuthenticated()) {
+                                adsController.showRewardedAd();
+                                Get.toNamed(Routes.createPost);
+                              } else {
+                                customSnackbar("You are not authorized".tr,
+                                    "please sign in first".tr);
+                              }
+                            },
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 32.0,
+                                backgroundColor: Colors.blue,
+                                backgroundImage: NetworkImage(
+                                  currentUserModel.profile.toString(),
+                                ),
+                              ),
+                              title: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black54),
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: Text(
+                                  "Create a Den .. Here".tr,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: adsController.bannerAdService.bannerAd.size.height
+                    .toDouble(),
+                child: StatefulBuilder(
+                  builder: (context, setState) =>
+                      AdWidget(ad: adsController.bannerAdService.bannerAd),
                 ),
               ),
-              const SizedBox(height: 8),
-              // SizedBox(
-              //   height: adsController.bannerAdService.bannerAd.size.height
-              //       .toDouble(),
-              //   child: StatefulBuilder(
-              //     builder: (context, setState) =>
-              //         AdWidget(ad: adsController.bannerAdService.bannerAd),
-              //   ),
-              // ),
               const SizedBox(
                 height: 3,
               ),

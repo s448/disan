@@ -12,7 +12,7 @@ class ShopPage extends StatelessWidget {
   ShopPage({super.key});
   final controller = Get.put(ShopTapController(), permanent: true);
   final postController = Get.put(PostController(), permanent: true);
-  // final adsController = Get.find<AdsController>();
+  final adsController = Get.find<AdsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +33,14 @@ class ShopPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 4),
-                  // SizedBox(
-                  //   height: adsController.bannerAdService.bannerAd.size.height
-                  //       .toDouble(),
-                  //   child: StatefulBuilder(
-                  //     builder: (context, setState) =>
-                  //         AdWidget(ad: adsController.bannerAdService.bannerAd),
-                  //   ),
-                  // ),
+                  SizedBox(
+                    height: adsController.bannerAdService.bannerAd.size.height
+                        .toDouble(),
+                    child: StatefulBuilder(
+                      builder: (context, setState) =>
+                          AdWidget(ad: adsController.bannerAdService.bannerAd),
+                    ),
+                  ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
