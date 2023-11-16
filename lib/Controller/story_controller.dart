@@ -78,7 +78,6 @@ class StoryManageController extends GetxController {
 
       return result;
     } catch (e) {
-      print("Error 87 87 87 87 87 7");
       print(e);
       return [];
     }
@@ -111,7 +110,7 @@ class StoryManageController extends GetxController {
 
   Future<void> pickStoryMedia() async {
     if (await isLimitReached()) {
-      customSnackbar("You have reached tha daily limit".tr, "");
+      customSnackbar("You have reached the daily limit".tr, "");
     } else {
       await requestPermissions();
       if (permissionGranted.value == true) {

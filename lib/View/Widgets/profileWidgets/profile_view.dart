@@ -12,18 +12,39 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ProfilePageTemp extends StatelessWidget {
-  ProfilePageTemp({
+class ProfilePageTemp extends StatefulWidget {
+  const ProfilePageTemp({
     Key? key,
     required this.userId,
   }) : super(key: key);
-  final controller = Get.find<UserController>();
-  final storyController = Get.find<StoryManageController>();
+
   final String userId;
+
+  @override
+  State<ProfilePageTemp> createState() => _ProfilePageTempState();
+}
+
+class _ProfilePageTempState extends State<ProfilePageTemp> {
+  @override
+  void initState() {
+    controller.getMyActiveDans(widget.userId);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.myActiveDans.clear();
+    super.dispose();
+  }
+
+  final controller = Get.find<UserController>();
+
+  final storyController = Get.find<StoryManageController>();
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: controller.getUserModel(userId),
+      stream: controller.getUserModel(widget.userId),
       builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -33,7 +54,7 @@ class ProfilePageTemp extends StatelessWidget {
         final userData = controller.userModel;
         log(userData.toJson().toString());
         bool isUser = userData.type == "USER";
-        bool isMe = userId == controller.currentUser!.uid;
+        bool isMe = widget.userId == controller.currentUser!.uid;
         return Container(
           decoration: BoxDecoration(color: Colors.grey.shade200),
           // padding: const EdgeInsets.only(left: 6, right: 6),
@@ -92,10 +113,12 @@ class ProfilePageTemp extends StatelessWidget {
                       child: Text(
                         userData.name ?? "unknown".tr,
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -184,7 +207,7 @@ class ProfilePageTemp extends StatelessWidget {
                           ),
                         ),
                       ),
-                !isUser
+                !isUser && userData.lat != 0.0
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: ShopLocationWidget(

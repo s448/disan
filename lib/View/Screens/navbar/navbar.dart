@@ -1,11 +1,10 @@
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/View/Screens/navbar/chat/register_chat.dart';
-import 'package:disan/View/Screens/navbar/gamesPage/games_page.dart';
 import 'package:disan/View/Screens/navbar/home_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/notifications_page.dart';
 import 'package:disan/View/Screens/navbar/clip/clip_page_timeline.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:disan/View/Screens/user/current_user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,11 +76,11 @@ class NavBarState extends State<NavBar> {
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.notifications),
-              label: 'Notifications'.tr,
+              label: 'Notifies'.tr,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.gamecontroller_fill),
-              label: 'Games'.tr,
+              icon: const Icon(Icons.person),
+              label: 'My Profile'.tr,
             ),
           ],
           currentIndex: _selectedIndex,
@@ -110,8 +109,8 @@ class NavBarItemIcon extends StatelessWidget {
 
 var pages = <Widget>[
   HomePage(),
-  ChatRegister(),
+  const ChatRegister(),
   ClipTimeline(),
   NotificationsPage(),
-  const GamesPage(),
+  CurrentUserProfile(),
 ];

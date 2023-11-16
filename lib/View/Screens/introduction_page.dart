@@ -14,14 +14,14 @@ class IntroductionPage extends StatelessWidget {
             title: 'هي منصة تفاعلية مجانية',
             body:
                 'لجمع و تنظيم و عرض ما يخص متطلبات الأفراح و الملابس للرجال و السيدات و الموضة',
-            image: buildImage("images/image_1.png"),
+            image: buildImage("assets/logo.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),
           ),
           PageViewModel(
             title: 'يتواصل المتجر مع متابعيه عن طريق الرسائل "chat"',
             body: '',
-            image: buildImage("images/image_2.png"),
+            image: buildImage("assets/logo.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),
           ),
@@ -29,7 +29,7 @@ class IntroductionPage extends StatelessWidget {
             title:
                 'بقاء محتواك معتمد علي التفاعل علي المنصة، كلما زاد التفاعل زاد مدة بقائه',
             body: '',
-            image: buildImage("images/image_3.png"),
+            image: buildImage("assets/logo.png"),
             //getPageDecoration, a method to customise the page style
             decoration: getPageDecoration(),
           ),

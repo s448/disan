@@ -6,8 +6,8 @@ class SearchPageController extends GetxController {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> get searchResults =>
       FirebaseFirestore.instance
-          .collection('posts')
-          .where('description', isGreaterThanOrEqualTo: searchQuery.value)
+          .collection('users')
+          .where('name', isGreaterThanOrEqualTo: searchQuery.value)
           .snapshots();
 
   void updateSearchQuery(String query) {

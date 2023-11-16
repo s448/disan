@@ -1,16 +1,17 @@
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/View/Widgets/profileWidgets/profile_view.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
-  final userId = Get.arguments['uid'];
+class CurrentUserProfile extends StatelessWidget {
+  CurrentUserProfile({super.key});
+  final _userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile".tr),
+        title: Text("My Profile".tr),
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: const Icon(
@@ -30,7 +31,8 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(width: 12),
         ],
       ),
-      body: ProfilePageTemp(userId: userId),
+      body: ProfilePageTemp(
+          userId: _userController.curentUserModel.id.toString()),
     );
   }
 }

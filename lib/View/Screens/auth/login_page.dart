@@ -135,7 +135,10 @@ class LoginPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Don't you hav an account ? ".tr),
+                            Text(
+                              "Don't you have an account ? ".tr,
+                              style: TextStyle(fontSize: 18),
+                            ),
                             InkWell(
                               onTap: () => Get.toNamed(Routes.signup),
                               child: Text(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/search_controller.dart';
-import 'package:disan/Model/dan_model.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,17 +54,14 @@ class SearchPage extends StatelessWidget {
                   return Column(
                     children: [
                       InkWell(
-                        onTap: () => Get.toNamed(Routes.productDetails,
-                            arguments: {
-                              'dan': DanModel.fromJson(document.data())
-                            }),
+                        onTap: () => Get.toNamed(Routes.profile,
+                            arguments: {'uid': document['id']}),
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(document['user.profile']),
+                            backgroundImage: NetworkImage(document['profile']),
                           ),
-                          title: Text(document['user.name']),
-                          subtitle: Text(document['description']),
+                          title: Text(document['name']),
+                          // subtitle: Text(document['description']),
                         ),
                       ),
                       Divider()

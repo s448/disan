@@ -28,7 +28,7 @@ class UserController extends GetxController {
     currentUser = _auth.currentUser;
     curentUserModel = await getUserModel(currentUser?.uid ?? "").first;
     log("current user is >>>>>>>>>>>>>." + curentUserModel.toString());
-    await getMyActiveDans();
+    await getMyActiveDans(curentUserModel.id.toString());
     await fetchBlockedUsers();
     ever(
       blockedUsers,
@@ -172,7 +172,7 @@ class UserController extends GetxController {
 
   int activeDansLength = 0;
   List<DanModel> myActiveDans = [];
-  getMyActiveDans() async {
+  Future<List<DanModel>> getMyActiveDans(String userId) async {
     try {
       final currentTime = DateTime.now();
 
@@ -181,16 +181,18 @@ class UserController extends GetxController {
 
       var result = await _firestore
           .collection('posts')
-          .where('user.id', isEqualTo: curentUserModel.id)
+          .where('user.id', isEqualTo: userId)
           .where('date', isGreaterThan: fifteenDaysAgo)
           .get();
       myActiveDans = result.docs.map((doc) {
         return DanModel.fromJson(doc.data());
       }).toList();
       activeDansLength = myActiveDans.length;
+      return myActiveDans;
     } catch (e) {
       activeDansLength = 0;
       log(e.toString());
+      return [];
     }
   }
 
