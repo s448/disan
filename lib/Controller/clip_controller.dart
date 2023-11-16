@@ -42,7 +42,7 @@ class ClipController extends GetxController {
     await requestPermissions();
     if (permissionGranted.value == true) {
       try {
-        file.value = await _picker.pickVideo(source: ImageSource.camera);
+        file.value = await _picker.pickVideo(source: ImageSource.gallery);
         Get.to(() => AddClipPage());
       } on Exception catch (e) {
         log(e.toString());

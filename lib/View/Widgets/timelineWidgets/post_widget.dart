@@ -266,7 +266,8 @@ class PostWidget extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
-                                  dateTimeManager.getTimeDifference(dan.date!),
+                                  dateTimeManager.getTimeDifference(
+                                      dan.date!, 15),
                                 ),
                               ),
                               PostPopUpMenu(
@@ -329,8 +330,8 @@ class PostWidget extends StatelessWidget {
                                 border: Border.all(color: Colors.yellow),
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: Text(dateTimeManager
-                                  .getTimeDifference(dan.date!))),
+                              child: Text(dateTimeManager.getTimeDifference(
+                                  dan.date!, 15))),
                           PostPopUpMenu(
                             dan: dan,
                             isMe: postController.isItMyPost(dan.user!.id!),

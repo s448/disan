@@ -85,7 +85,7 @@ class OptionsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        dateTimeManager.getTimeDifference(clipModel.date!),
+                        dateTimeManager.getTimeDifference(clipModel.date!, 5),
                       ),
                     ),
                     const SizedBox(height: 12),

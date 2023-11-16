@@ -137,7 +137,7 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Text(
                               "Don't you have an account ? ".tr,
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 15),
                             ),
                             InkWell(
                               onTap: () => Get.toNamed(Routes.signup),
@@ -209,9 +209,10 @@ class LoginPage extends StatelessWidget {
                 top: Get.height * 0.08,
                 left: 0,
                 right: 0,
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 50,
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.white,
+                  child: Image.asset('assets/logo.png'),
                 ),
               ),
             ],

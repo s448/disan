@@ -34,8 +34,7 @@ class ShopPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 4),
                   SizedBox(
-                    height: adsController.bannerAdService.bannerAd.size.height
-                        .toDouble(),
+                    height: 50,
                     child: StatefulBuilder(
                       builder: (context, setState) =>
                           AdWidget(ad: adsController.bannerAdService.bannerAd),

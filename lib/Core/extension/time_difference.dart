@@ -6,11 +6,11 @@ class DateTimeManager {
   final dateF = DateFormat('yyyy-MM-dd');
   final timeF = DateFormat('hh:mm');
   final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-  getTimeDifference(Timestamp startTimestamp) {
+  getTimeDifference(Timestamp startTimestamp, int d) {
     initializeDateFormatting();
     final DateTime customTimestamp =
         formatter.parse(startTimestamp.toDate().toString());
-    final DateTime targetDate = customTimestamp.add(const Duration(days: 15));
+    final DateTime targetDate = customTimestamp.add(Duration(days: d));
     final Duration difference = targetDate.difference(DateTime.now());
     final int days = difference.inDays;
     final int hours = difference.inHours.remainder(24);

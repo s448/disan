@@ -81,9 +81,10 @@ class ResetPasswordPage extends StatelessWidget {
               top: Get.height * 0.28,
               left: 0,
               right: 0,
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 50,
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.white,
+                child: Image.asset('assets/logo.png'),
               ),
             ),
             Positioned(
