@@ -93,7 +93,10 @@ class ShopPage extends StatelessWidget {
                             },
                           ),
                         ),
-                  const SizedBox(height: 6),
+                  const SizedBox(
+                    height: 10,
+                    child: Divider(),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -122,17 +125,26 @@ class ShopPage extends StatelessWidget {
                             ),
                             width: Get.width / 2,
                             // height: Get.height / 6,
-                            child: GridTileItem(
-                              networking: false,
-                              name: category['name'].toString(),
-                              img:
-                                  "assets/categories/${category['img'].toString()}.jpg",
+                            child: InkWell(
+                              onTap: () => Get.toNamed(Routes.category,
+                                  arguments: {
+                                    "cat": category['name'].toString()
+                                  }),
+                              child: GridTileItem(
+                                networking: false,
+                                name: category['name'].toString(),
+                                img:
+                                    "assets/categories/${category['img'].toString()}.jpg",
+                              ),
                             ),
                           ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(
+                    height: 10,
+                    child: Divider(),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -186,7 +198,7 @@ class ShopPage extends StatelessWidget {
                             },
                           ),
                         ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

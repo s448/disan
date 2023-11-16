@@ -87,7 +87,7 @@ class ChatController extends GetxController {
     }
   }
 
-  Future<List<UserModel>> getOtherRegisteredUsers() async {
+  Future<List<UserModel>> getOtherRegisteredUsers(String type) async {
     List<UserModel> users = [];
     // var myUserId = userController.curentUserModel.id;
 
@@ -95,6 +95,7 @@ class ChatController extends GetxController {
         .collection('users')
         .where('whatsapp', isNotEqualTo: "")
         .where('whatsapp', isNotEqualTo: null)
+        .where('type', isEqualTo: type)
         .get();
     print(snapshot.docs.length);
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {

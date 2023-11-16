@@ -179,6 +179,7 @@ class TranslationSheet extends Translations {
           "Add to cart": "Add to cart",
           "Position was selected": "Position was selected",
           "Pick Location": "Pick Location",
+          "Conversations are via whatsapp": "Conversations are via whatsapp",
         },
         'ar_EG': {
           "Choose langauge": "اختر لغة",
@@ -351,6 +352,7 @@ class TranslationSheet extends Translations {
           "Add to cart": "أضف الى السلة",
           "Position was selected": "تم حفظ الموقع",
           "Pick Location": "تحديد الموقع",
+          "Conversations are via whatsapp": "المحادثت عن طريق واتساب"
         },
       };
 }

@@ -41,7 +41,6 @@ class ShopTapController extends GetxController {
           .collection('users')
           .where('type', isEqualTo: 'MERCHANT')
           .orderBy('rating', descending: true)
-          .limit(25)
           .get();
       final List<UserModel> topRatingProfiles = querySnapshot.docs.map((doc) {
         return UserModel.fromJson(doc.data());
@@ -69,6 +68,23 @@ class ShopTapController extends GetxController {
     } catch (e) {
       // print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
       // print(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<UserModel>> getCategoryMembers(String cat) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('categories', arrayContains: cat)
+          .orderBy('rating', descending: true)
+          .get();
+      final List<UserModel> catUsers = querySnapshot.docs.map((doc) {
+        return UserModel.fromJson(doc.data());
+      }).toList();
+      return catUsers;
+    } catch (e) {
+      print(e.toString());
       return [];
     }
   }

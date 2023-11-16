@@ -106,7 +106,7 @@ class ClipController extends GetxController {
     return _firestore
         .collection('clip')
         .orderBy('date', descending: true)
-        // .where('date', isGreaterThan: fiveDaysAgo)
+        .where('date', isGreaterThan: fiveDaysAgo)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

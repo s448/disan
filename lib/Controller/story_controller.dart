@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/enum/media_types.dart';
@@ -43,11 +45,9 @@ class StoryManageController extends GetxController {
         print(doc);
         return Story.fromJson(doc.data());
       }).toList();
-      print("52" + stories.toString());
       return stories;
     } catch (e) {
-      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print(e.toString());
+      log(e.toString());
       return [];
     }
   }
@@ -110,18 +110,22 @@ class StoryManageController extends GetxController {
   // }
 
   Future<void> pickStoryMedia() async {
-    await requestPermissions();
-    if (permissionGranted.value == true) {
-      try {
-        file.value = await _picker.pickMedia();
-        setMedia(file.value!);
-        Get.to(() => MediaViewerPage());
-      } on Exception catch (e) {
-        print(e);
-      }
+    if (await isLimitReached()) {
+      customSnackbar("You have reached tha daily limit".tr, "");
     } else {
-      dangerSnackbar("Permissions for Camera & Gallery required".tr,
-          "please allow Disan to use them".tr);
+      await requestPermissions();
+      if (permissionGranted.value == true) {
+        try {
+          file.value = await _picker.pickMedia();
+          setMedia(file.value!);
+          Get.to(() => MediaViewerPage());
+        } on Exception catch (e) {
+          print(e);
+        }
+      } else {
+        dangerSnackbar("Permissions for Camera & Gallery required".tr,
+            "please allow Disan to use them".tr);
+      }
     }
   }
 
@@ -142,7 +146,6 @@ class StoryManageController extends GetxController {
       storyUploading.value = false;
       update();
       Get.back();
-
       return true;
     } catch (e) {
       dangerSnackbar("cannot save the Story".tr, e.toString());
@@ -166,6 +169,15 @@ class StoryManageController extends GetxController {
       permissionGranted.value = false;
     }
     update();
+  }
+
+  isLimitReached() async {
+    List<Story> stories = await _getStories();
+    if (stories.length > 3) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   //delete story

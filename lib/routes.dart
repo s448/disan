@@ -9,6 +9,7 @@ import 'package:disan/View/Screens/navbar/notifications/order_notifications_page
 import 'package:disan/View/Screens/navbar/notifications/rating_notifications_page.dart';
 import 'package:disan/View/Screens/navbar/search_page.dart';
 import 'package:disan/View/Screens/navbar/shop/cart_page.dart';
+import 'package:disan/View/Screens/navbar/shop/category_page.dart';
 import 'package:disan/View/Screens/navbar/shop/orders_page.dart';
 import 'package:disan/View/Screens/navbar/shop/product_details.dart';
 import 'package:disan/View/Screens/navbar/clip/add_clip.dart';
@@ -47,6 +48,7 @@ class Routes {
   static String block = '/block';
   static String lang = '/lang';
   static String imgview = "/imgview";
+  static String category = "/cat";
 }
 
 final getPages = [
@@ -141,5 +143,9 @@ final getPages = [
   GetPage(
     name: Routes.imgview,
     page: () => const ImgView(),
+  ),
+  GetPage(
+    name: Routes.category,
+    page: () => CategoryPage(),
   ),
 ];
