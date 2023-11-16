@@ -46,16 +46,16 @@ class ShopPage extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "Trending profile".tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
-                          color: Colors.yellow),
+                          color: Colors.yellow[600]),
                     ),
                   ),
                   // const SizedBox(height: 6),
                   // ignore: invalid_use_of_protected_member
                   controller.trendingProfiles.value.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const SizedBox()
                       : SizedBox(
                           width: Get.width,
                           height: Get.height * 0.2,
@@ -159,7 +159,7 @@ class ShopPage extends StatelessWidget {
                   // const SizedBox(height: 6),
                   // ignore: invalid_use_of_protected_member
                   controller.bestSellingProducts.value.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const SizedBox()
                       : SizedBox(
                           width: Get.width,
                           height: Get.height * 0.2,

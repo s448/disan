@@ -51,7 +51,7 @@ class ShopTapController extends GetxController {
     try {
       final querySnapshot = await _firestore
           .collection('users')
-          .where('type', isEqualTo: 'MERCHANT')
+          .where('ratescount', isGreaterThanOrEqualTo: 30)
           .orderBy('rating', descending: true)
           .get();
       final List<UserModel> topRatingProfiles = querySnapshot.docs.map((doc) {
@@ -81,8 +81,6 @@ class ShopTapController extends GetxController {
       }).toList();
       return bestSellingOwners;
     } catch (e) {
-      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print(e.toString());
       return [];
     }
   }

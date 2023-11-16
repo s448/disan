@@ -131,7 +131,9 @@ class TimelinePage extends StatelessWidget {
                     );
                   } else if (snapshot.hasError) {
                     print(snapshot.error);
-                    return Text('Error: ${snapshot.error}');
+                    return const SizedBox();
+                  } else if (!snapshot.hasData) {
+                    return const SizedBox();
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
