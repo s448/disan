@@ -14,9 +14,6 @@ class StoryManageController extends GetxController {
   final FileUploader _uploader = FileUploader();
   final _picker = ImagePicker();
   final userController = Get.find<UserController>();
-  // RxList<XFile>? images = RxList<XFile>();
-  // RxList<String> imgLinks = RxList();
-  // XFile? media;
   var file = Rx<XFile?>(null);
 
   RxString caption = ''.obs;
@@ -24,7 +21,6 @@ class StoryManageController extends GetxController {
   final uuid = const Uuid();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // List<Asset> selectedImages = <Asset>[];
   var permissionGranted = false.obs;
   //get stories
 

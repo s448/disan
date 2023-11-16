@@ -17,7 +17,7 @@ class StoryBar extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SizedBox(
-        height: 70,
+        height: 100,
         width: Get.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -36,20 +36,20 @@ class StoryBar extends StatelessWidget {
                             "please sign in first".tr);
                       }
                     },
-                    child: const CircleAvatar(
-                      radius: 30,
+                    child: CircleAvatar(
+                      radius: 50,
                       backgroundColor: Colors.blue,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.add_a_photo_sharp,
                             color: Colors.white,
                           ),
                           Text(
-                            "Add",
-                            style: TextStyle(color: Colors.white),
+                            "Add tale".tr,
+                            style: const TextStyle(color: Colors.white),
                           )
                         ],
                       ),
@@ -62,8 +62,6 @@ class StoryBar extends StatelessWidget {
                 future: storyController.getGroupOfStories(),
                 builder: (context, snapshot) {
                   List<List<Story>> userStoryList = snapshot.data ?? [];
-                  print(
-                      "stories here 888888888---------------------------5555555555555555552------------------------44444444444444444444444444444444444");
                   log(userStoryList.toString());
                   return ListView.builder(
                       shrinkWrap: true,
@@ -80,7 +78,7 @@ class StoryBar extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: CircleAvatar(
-                              radius: 29,
+                              radius: 42,
                               backgroundColor: Colors.blue,
                               backgroundImage: NetworkImage(
                                 stories[0].img.toString(),

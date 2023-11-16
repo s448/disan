@@ -19,7 +19,7 @@ class NavBar extends StatefulWidget {
 class NavBarState extends State<NavBar> {
   @override
   void initState() {
-    Get.put(UserController(), permanent: true);
+    Get.put(UserController(), permanent: true).initUser();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FcmServices().initNotification();
     });

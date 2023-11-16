@@ -11,8 +11,8 @@ class PostPopUpMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert_rounded),
-      iconSize: 35,
+      icon: const Icon(Icons.more_vert),
+      iconSize: 28,
       itemBuilder: (BuildContext context) {
         var list = <PopupMenuEntry<String>>[
           PopupMenuItem<String>(

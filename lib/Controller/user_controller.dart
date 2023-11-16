@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/user_model.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class UserController extends GetxController {
@@ -20,6 +22,7 @@ class UserController extends GetxController {
   User? currentUser;
   UserModel userModel = UserModel();
   UserModel curentUserModel = UserModel();
+  final prefs = Get.find<SharedPrefsController>();
 
   @override
   void onInit() async {
@@ -33,6 +36,10 @@ class UserController extends GetxController {
       (callback) => fetchBlockedUsers(),
     );
     super.onInit();
+  }
+
+  initUser() async {
+    curentUserModel = await getUserModel(prefs.getItem("userId")).first;
   }
 
   Stream<UserModel> getUserModel(String userId) {

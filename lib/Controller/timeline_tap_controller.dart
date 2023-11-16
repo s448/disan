@@ -180,9 +180,12 @@ class TimelineTapController extends GetxController {
   }
 
   Stream<List<DanModel>> getTimelinePosts() {
+    final currentTime = DateTime.now();
+    final fifteenDaysAgo = currentTime.subtract(const Duration(days: 15));
     return _firestore
         .collection('posts')
         .orderBy('date', descending: true)
+        .where('date', isGreaterThan: fifteenDaysAgo)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

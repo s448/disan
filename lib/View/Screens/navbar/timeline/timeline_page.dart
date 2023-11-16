@@ -79,7 +79,7 @@ class TimelinePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           child: Text(
-                            "Din a Dan .. Here".tr,
+                            "Create a Den .. Here".tr,
                             style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,

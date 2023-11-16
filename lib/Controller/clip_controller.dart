@@ -101,9 +101,12 @@ class ClipController extends GetxController {
   //get clips
 
   Stream<List<ClipModel>> getClips() {
+    final currentTime = DateTime.now();
+    final fiveDaysAgo = currentTime.subtract(const Duration(days: 5));
     return _firestore
         .collection('clip')
         .orderBy('date', descending: true)
+        // .where('date', isGreaterThan: fiveDaysAgo)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

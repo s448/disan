@@ -187,12 +187,12 @@ class PostWidget extends StatelessWidget {
       ],
     );
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: Container(
         width: Get.width,
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.0), color: Colors.white),
+            borderRadius: BorderRadius.circular(0.0), color: Colors.white),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,46 +211,73 @@ class PostWidget extends StatelessWidget {
             ///user info row
             ///
             isMerchant
-                ? ListTile(
-                    trailing: SizedBox(
-                      width: 110,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              border: Border.all(color: Colors.yellow),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              dateTimeManager.getTimeDifference(dan.date!),
-                            ),
-                          ),
-                          PostPopUpMenu(
-                            dan: dan,
-                            isMe: postController.isItMyPost(dan.user!.id!),
-                          )
-                        ],
-                      ),
-                    ),
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: dan.user!.profile == ''
-                          ? ClipRRect(
+                ?
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Row(
+                //       children: [
+
+                //       ],
+                //     ),
+                //     Column()
+                //   ],
+                // )
+                SizedBox(
+                    width: Get.width,
+                    // height: 150,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: const Icon(
-                                Ionicons.person_circle_outline,
-                                color: Colors.grey,
-                                size: 50,
-                              ),
-                            )
-                          : Image.network(
-                              dan.user!.profile.toString(),
+                              child: dan.user!.profile == ''
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        Ionicons.person_circle_outline,
+                                        color: Colors.grey,
+                                        size: 50,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      dan.user!.profile.toString(),
+                                    ),
                             ),
+                            title: Text(dan.user!.name.toString()),
+                            subtitle:
+                                Text(dateTimeManager.getDateTime(dan.date!)),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  border: Border.all(color: Colors.yellow),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  dateTimeManager.getTimeDifference(dan.date!),
+                                ),
+                              ),
+                              PostPopUpMenu(
+                                dan: dan,
+                                isMe: postController.isItMyPost(dan.user!.id!),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    title: Text(dan.user!.name.toString()),
-                    subtitle: Text(dateTimeManager.getDateTime(dan.date!)),
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -355,50 +382,96 @@ class PostWidget extends StatelessWidget {
             ///
             ///images
             ///
-            dan.imgs!.isNotEmpty
+            imgsLength == 3
                 ? SizedBox(
-                    height: Get.height * 0.4,
                     child: StaggeredGrid.count(
-                      crossAxisCount: imgsLength == 3
-                          ? 4
-                          : imgsLength == 2
-                              ? 2
-                              : 1,
+                      crossAxisCount: 4,
                       mainAxisSpacing: 2,
                       crossAxisSpacing: 2,
                       children: [
                         StaggeredGridTile.count(
                           crossAxisCellCount: 2,
-                          mainAxisCellCount: imgsLength == 1 ? 1 : 2,
-                          child: Image.network(
-                            dan.imgs![0],
-                            fit: BoxFit.fill,
+                          mainAxisCellCount: 2,
+                          child: InkWell(
+                            onTap: () => Get.toNamed(Routes.imgview,
+                                arguments: {"img": dan.imgs![0]}),
+                            child: Image.network(
+                              dan.imgs![0],
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
-                        dan.imgs!.length > 1
-                            ? StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 1,
+                        StaggeredGridTile.count(
+                          crossAxisCellCount: 2,
+                          mainAxisCellCount: 1,
+                          child: InkWell(
+                            onTap: () => Get.toNamed(Routes.imgview,
+                                arguments: {"img": dan.imgs![1]}),
+                            child: Image.network(
+                              dan.imgs![1],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        StaggeredGridTile.count(
+                          crossAxisCellCount: 2,
+                          mainAxisCellCount: 1,
+                          child: InkWell(
+                            onTap: () => Get.toNamed(Routes.imgview,
+                                arguments: {"img": dan.imgs![2]}),
+                            child: Image.network(
+                              dan.imgs![2],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : imgsLength == 2
+                    ? SizedBox(
+                        child: StaggeredGrid.count(
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2,
+                          children: [
+                            StaggeredGridTile.count(
+                              crossAxisCellCount: 2,
+                              mainAxisCellCount: 2,
+                              child: InkWell(
+                                onTap: () => Get.toNamed(Routes.imgview,
+                                    arguments: {"img": dan.imgs![0]}),
+                                child: Image.network(
+                                  dan.imgs![0],
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            StaggeredGridTile.count(
+                              crossAxisCellCount: 2,
+                              mainAxisCellCount: 2,
+                              child: InkWell(
+                                onTap: () => Get.toNamed(Routes.imgview,
+                                    arguments: {"img": dan.imgs![1]}),
                                 child: Image.network(
                                   dan.imgs![1],
                                   fit: BoxFit.cover,
                                 ),
-                              )
-                            : const SizedBox(),
-                        dan.imgs!.length > 2
-                            ? StaggeredGridTile.count(
-                                crossAxisCellCount: 2,
-                                mainAxisCellCount: 1,
-                                child: Image.network(
-                                  dan.imgs![2],
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
-                    ),
-                  )
-                : const SizedBox(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : imgsLength == 1
+                        ? InkWell(
+                            onTap: () => Get.toNamed(Routes.imgview,
+                                arguments: {"img": dan.imgs![0]}),
+                            child: Image.network(
+                              dan.imgs![0],
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : const SizedBox(),
             const Divider(
               thickness: 1.5,
             ),

@@ -28,7 +28,7 @@ class OptionsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 110),
+                  const SizedBox(height: 160),
                   Row(
                     children: [
                       CircleAvatar(

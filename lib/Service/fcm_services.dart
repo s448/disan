@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:disan/Controller/user_controller.dart';
+// import 'package:disan/Controller/user_controller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
 handleBackgroundMessage(RemoteMessage msg) async {
   // if (kDebugMode) {
@@ -17,7 +17,7 @@ handleBackgroundMessage(RemoteMessage msg) async {
 }
 
 class FcmServices {
-  final userController = Get.find<UserController>();
+  // final userController = Get.find<UserController>();
   final _fcm = FirebaseMessaging.instance;
   static var _token = '';
 

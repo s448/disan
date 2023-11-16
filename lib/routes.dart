@@ -20,6 +20,7 @@ import 'package:disan/View/Screens/user/choose_language.dart';
 import 'package:disan/View/Screens/user/settings.dart';
 import 'package:disan/View/Screens/user/user_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
+import 'package:disan/View/Widgets/timelineWidgets/img_view.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -45,6 +46,7 @@ class Routes {
   static String settings = '/settings';
   static String block = '/block';
   static String lang = '/lang';
+  static String imgview = "/imgview";
 }
 
 final getPages = [
@@ -135,5 +137,9 @@ final getPages = [
   GetPage(
     name: Routes.lang,
     page: () => ChooseLangPage(),
+  ),
+  GetPage(
+    name: Routes.imgview,
+    page: () => const ImgView(),
   ),
 ];
