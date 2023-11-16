@@ -32,7 +32,19 @@ class ShopTapController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   RxList<UserModel> trendingProfiles = <UserModel>[].obs;
-  RxList<DanModel> bestSellingProducts = <DanModel>[].obs;
+  RxList<UserModel> bestSellingProducts = <UserModel>[].obs;
+
+  _getListOfBestSelling() async {
+    var querySnapshot = await _firestore
+        .collection('posts')
+        .where('addtocartcount', isGreaterThanOrEqualTo: 15)
+        .get();
+
+    final List<DanModel> bestSellingProducts = querySnapshot.docs.map((doc) {
+      return DanModel.fromJson(doc.data());
+    }).toList();
+    return bestSellingProducts;
+  }
 
   //top rating merchant profiles
   Future<List<UserModel>> getTrendingProfiles() async {
@@ -53,21 +65,24 @@ class ShopTapController extends GetxController {
   }
 
   //best selling products
-  getBestSelling() async {
+  Future<List<UserModel>> getBestSelling() async {
     try {
-      final querySnapshot = await _firestore
-          .collection('posts')
-          .where('isredan', isEqualTo: false)
-          .where('user.type', isEqualTo: 'MERCHANT')
-          .orderBy('rating', descending: true)
-          .get();
-      final List<DanModel> bestSellingProducts = querySnapshot.docs.map((doc) {
-        return DanModel.fromJson(doc.data());
+      List<DanModel> bestSellingProducts = await _getListOfBestSelling();
+      List<String> ids = [];
+      for (var uid in bestSellingProducts) {
+        ids.add(uid.user!.id ?? "");
+      }
+
+      var res =
+          await _firestore.collection('users').where('id', whereIn: ids).get();
+
+      final List<UserModel> bestSellingOwners = res.docs.map((doc) {
+        return UserModel.fromJson(doc.data());
       }).toList();
-      return bestSellingProducts;
+      return bestSellingOwners;
     } catch (e) {
-      // print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      // print(e.toString());
+      print("Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      print(e.toString());
       return [];
     }
   }

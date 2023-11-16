@@ -170,17 +170,17 @@ class ShopPage extends StatelessWidget {
                                 // ignore: invalid_use_of_protected_member
                                 controller.bestSellingProducts.value.length,
                             itemBuilder: (context, index) {
-                              final product =
+                              final user =
                                   // ignore: invalid_use_of_protected_member
                                   controller.bestSellingProducts.value[index];
-                              final productImgUrl = product.imgs!.isNotEmpty
-                                  ? product.imgs![0]
+                              final productImgUrl = user.profile!.isNotEmpty
+                                  ? user.profile![0]
                                   : "";
-                              final name = product.description;
+                              final name = user.name;
 
                               return InkWell(
-                                onTap: () => Get.toNamed(Routes.productDetails,
-                                    arguments: {"dan": product}),
+                                onTap: () => Get.toNamed(Routes.profile,
+                                    arguments: {"uid": user.id}),
                                 child: Container(
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/user_controller.dart';
@@ -11,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class PostController extends GetxController {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   RxBool isPlaying = false.obs;
   final player = AudioPlayer();
   final prefs = Get.find<SharedPreferences>();
@@ -122,12 +126,32 @@ class PostController extends GetxController {
     update();
   }
 
+  increaseConfrimOrderCount(String postId) async {
+    try {
+      //get the post
+      var result = await _firestore.collection('posts').doc(postId).get();
+      DanModel danModel = DanModel.fromJson(result.data()!);
+
+      //edit the post
+      danModel.addToCartCount = danModel.addToCartCount ?? 0 + 1;
+      //save the post
+      await _firestore
+          .collection("posts")
+          .doc(postId)
+          .update(danModel.toJson());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   void addRemoveOrderItem(DanModel dan) async {
     var documentId = dan.id;
     if (!orders.contains(documentId)) {
       await notifyMerchant(dan);
       orders.add(documentId!);
       cart.remove(documentId);
+      increaseConfrimOrderCount(documentId);
+
       customSnackbar("Good news".tr, "Your order is sent to the merchant".tr);
     } else {
       cart.add(documentId!);

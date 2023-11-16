@@ -21,8 +21,8 @@ import 'package:toast/toast.dart';
 
 class TimelineTapController extends GetxController {
   final FileUploader _imageUploader = FileUploader();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final uuid = const Uuid();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final FcmServices _fcm = FcmServices();
   final FirebaseServices _firebaseServices = FirebaseServices();
@@ -273,6 +273,8 @@ class TimelineTapController extends GetxController {
         var totalRating = (rate.value + currentRating) / totalRaters;
         danModel.raters!.add(userController.userModel.id!);
         danModel.rating = totalRating;
+
+        danModel.ratesCount = danModel.ratesCount ?? 0 + 1;
       }
       await _firestore
           .collection("posts")
