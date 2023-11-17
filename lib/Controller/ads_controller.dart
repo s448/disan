@@ -6,14 +6,16 @@ class AdsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    bannerAdService.bannerAd.load();
+    bannerAdService.homePageAdBanner.load();
+    bannerAdService.timelinePageAdBanner.load();
     rewardedAdService.createRewardedAd();
   }
 
   @override
   void dispose() {
     super.dispose();
-    bannerAdService.bannerAd.dispose();
+    bannerAdService.homePageAdBanner.dispose();
+    bannerAdService.timelinePageAdBanner.dispose();
     rewardedAdService.rewardedAd?.dispose();
   }
 
@@ -21,7 +23,8 @@ class AdsController extends GetxController {
   final rewardedAdService = RewaredeAdService();
 
   loadBannerAd() {
-    bannerAdService.bannerAd.listener.onAdLoaded;
+    bannerAdService.homePageAdBanner.listener.onAdLoaded;
+    bannerAdService.timelinePageAdBanner.listener.onAdLoaded;
   }
 
   // isBannerAdLoaded() => bannerAdService.adLoaded;

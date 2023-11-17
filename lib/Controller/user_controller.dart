@@ -167,8 +167,8 @@ class UserController extends GetxController {
     }
   }
 
-  getMyFollowers() => curentUserModel.followers!.length;
-  getMyFollowing() => curentUserModel.following!.length;
+  getMyFollowers() => curentUserModel.followers?.length ?? 0;
+  getMyFollowing() => curentUserModel.following?.length ?? 0;
 
   int activeDansLength = 0;
   List<DanModel> myActiveDans = [];

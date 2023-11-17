@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
                 statusBarColor: Colors.transparent, // Status bar
               ),
               title: const Text('Disan'),
-              pinned: false,
+              pinned: true,
               floating: false,
               // expandedHeight: Get.height * 0.15,
               actions: [

@@ -312,6 +312,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                                   num: userData.whatsappNumber.toString(),
                                 ),
                               ),
+                        SizedBox(height: 14),
                         UserInfoTile(
                           ic: const Icon(
                             Icons.podcasts,
@@ -389,14 +390,18 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                   }),
                 ),
                 const SizedBox(height: 8),
-                Obx(
-                  () {
-                    return ActiveDansGridView(
-                      activeDans: controller.myActiveDans,
-                      isGListView: controller.isListView.value,
-                    );
-                  },
-                ),
+                controller.activeDansLength == 0
+                    ? Center(
+                        child: Text("No active dans".tr),
+                      )
+                    : Obx(
+                        () {
+                          return ActiveDansGridView(
+                            activeDans: controller.myActiveDans,
+                            isGListView: controller.isListView.value,
+                          );
+                        },
+                      ),
                 const SizedBox(height: 30),
               ],
             ),

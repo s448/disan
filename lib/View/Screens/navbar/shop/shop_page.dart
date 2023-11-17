@@ -36,8 +36,9 @@ class ShopPage extends StatelessWidget {
                   SizedBox(
                     height: 50,
                     child: StatefulBuilder(
-                      builder: (context, setState) =>
-                          AdWidget(ad: adsController.bannerAdService.bannerAd),
+                      builder: (context, setState) => AdWidget(
+                        ad: adsController.bannerAdService.homePageAdBanner,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
