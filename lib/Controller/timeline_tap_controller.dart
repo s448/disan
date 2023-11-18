@@ -126,7 +126,7 @@ class TimelineTapController extends GetxController {
         withRecord: withRecord.value,
         user: userController.curentUserModel,
         isReDaned: false,
-        reDanner: "",
+        reDanner: null,
       );
 
       await _firestore.collection('posts').doc(postId).set(dan.toJson());
@@ -143,7 +143,7 @@ class TimelineTapController extends GetxController {
 
     try {
       dan.isReDaned = true;
-      dan.reDanner = userController.userModel.name;
+      dan.reDanner = userController.userModel;
       await _firestore.collection('posts').doc(postId).set(dan.toJson());
       customSnackbar("You shared the dan".tr, "");
       return true;

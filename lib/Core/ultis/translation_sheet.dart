@@ -185,6 +185,8 @@ class TranslationSheet extends Translations {
           "Merchants": "Merchants"
         },
         'ar_EG': {
+          "Added": "تم الاضافة",
+          "Login": "تسجيل دخول",
           "Choose langauge": "اختر لغة",
           "Cannot save user data": "لم نتمكن من حفظ البيانات",
           "Register success": "تم التسجيل بنجاح",
@@ -268,7 +270,6 @@ class TranslationSheet extends Translations {
           "Password": "كلمة المرور",
           "Remember me": "تذكرني",
           "Forgot password": "نسيت كلمة المرور",
-          "Login": "Login",
           "Don't you hav an account ? ": "ليس لديك حساب ؟ ",
           "Register": "تسجيل",
           "Or": "أو",
@@ -360,7 +361,9 @@ class TranslationSheet extends Translations {
           "My Profile": "حسابي",
           "Merchants": "المتاجر",
           "Users": "المستخدمين",
-          "Add tale": "أضف قصة"
+          "Add tale": "أضف قصة",
+          "Show more": "عرض المزيد",
+          "Show less": "عرض أقل"
         },
       };
 }

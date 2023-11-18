@@ -6,6 +6,7 @@ import 'package:disan/View/Widgets/reelsWidgets/showbottomsheetmodal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:rich_readmore/rich_readmore.dart';
 
 class OptionsScreen extends StatelessWidget {
   OptionsScreen({super.key, required this.clipModel});
@@ -61,13 +62,29 @@ class OptionsScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 6),
-                  Text(
-                    clipModel.caption.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
+                  RichReadMoreText(
+                    TextSpan(
+                      text: clipModel.caption.toString(),
+                    ),
+                    settings: LineModeSettings(
+                      trimLines: 3,
+                      trimCollapsedText: 'Show more'.tr,
+                      trimExpandedText: 'Show less'.tr,
+                      onPressReadMore: () {
+                        /// specific method to be called on press to show more
+                      },
+                      onPressReadLess: () {
+                        /// specific method to be called on press to show less
+                      },
                     ),
                   ),
+                  // Text(
+                  //   clipModel.caption.toString(),
+                  //   style: const TextStyle(
+                  //     color: Colors.white,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                 ],
               ),

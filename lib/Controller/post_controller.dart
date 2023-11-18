@@ -81,8 +81,12 @@ class PostController extends GetxController {
 
   getPlayBtnStatus() => isPlaying.value;
 
-  isItMyPost(String userId) {
-    return userId == userController.curentUserModel.id;
+  isItMyPost(DanModel dan) {
+    if (dan.isReDaned == false) {
+      return dan.user?.id == userController.curentUserModel.id;
+    } else {
+      return dan.reDanner?.id == userController.curentUserModel.id;
+    }
   }
 
   ///cart
@@ -210,5 +214,13 @@ class PostController extends GetxController {
         return DanModel.fromJson(data);
       }).toList();
     });
+  }
+
+  deleteRedan(String danID) async {
+    try {
+      _firestore.collection('posts').doc(danID).delete();
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

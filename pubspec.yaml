@@ -54,6 +54,7 @@ dependencies:
   flutter_swipe_detector: ^2.0.0
   google_mobile_ads: ^3.1.0
   flutter_launcher_icons: ^0.13.1
+  rich_readmore: ^1.0.6
 
   
 

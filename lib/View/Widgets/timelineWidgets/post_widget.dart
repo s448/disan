@@ -272,7 +272,7 @@ class PostWidget extends StatelessWidget {
                               ),
                               PostPopUpMenu(
                                 dan: dan,
-                                isMe: postController.isItMyPost(dan.user!.id!),
+                                isMe: postController.isItMyPost(dan),
                               )
                             ],
                           ),
@@ -334,7 +334,7 @@ class PostWidget extends StatelessWidget {
                                   dan.date!, 15))),
                           PostPopUpMenu(
                             dan: dan,
-                            isMe: postController.isItMyPost(dan.user!.id!),
+                            isMe: postController.isItMyPost(dan),
                           )
                         ],
                       ),
@@ -746,7 +746,7 @@ class ShareSign extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: dan.reDanner,
+            text: dan.reDanner?.name,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -754,7 +754,7 @@ class ShareSign extends StatelessWidget {
             ),
           ),
           TextSpan(
-              text: " Shared this Dan:".tr,
+              text: " Shared this Den:".tr,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w300,

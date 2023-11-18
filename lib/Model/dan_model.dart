@@ -13,7 +13,7 @@ class DanModel {
   double? rating;
   bool? withRecord;
   bool? isReDaned;
-  String? reDanner;
+  UserModel? reDanner;
   List<dynamic>? likers = [];
   List<dynamic>? raters = [];
   int? ratesCount;

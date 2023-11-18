@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/constants/shop_categories.dart';
@@ -128,9 +130,11 @@ class AuthController extends GetxController {
     }
   }
 
-  isUserAuthenticated() {
+  isUserAuthenticated() async {
     //if true then user authenticaed
-    return _auth.currentUser != null;
+    return await _auth.currentUser != null
+        // && _sharedPrefController.userAuthenticated()
+        ;
   }
 
   sendResetPasswordLink() async {
@@ -182,13 +186,17 @@ class AuthController extends GetxController {
   }
 
   logout() async {
-    await _auth.signOut();
-    _sharedPrefController.clearUserCredentials();
-    Get.offAllNamed(Routes.login);
-    customSnackbar(
-      "Logout success".tr,
-      '',
-    );
+    try {
+      await _auth.signOut();
+      await _sharedPrefController.clearUserCredentials();
+      Get.offAllNamed(Routes.login);
+      customSnackbar(
+        "Logout success".tr,
+        '',
+      );
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   //google auth
