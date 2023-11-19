@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/extension/url_launch_service.dart';
@@ -37,7 +36,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
     super.dispose();
   }
 
-  final controller = Get.find<UserController>();
+  final controller = Get.put(UserController());
 
   final storyController = Get.find<StoryManageController>();
 
@@ -54,10 +53,9 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
         final userData = controller.userModel;
         log(userData.toJson().toString());
         bool isUser = userData.type == "USER";
-        bool isMe = widget.userId == controller.currentUser!.uid;
+        bool isMe = widget.userId == controller.curentUserModel.id;
         return Container(
           decoration: BoxDecoration(color: Colors.grey.shade200),
-          // padding: const EdgeInsets.only(left: 6, right: 6),
           constraints: const BoxConstraints.expand(),
           child: SingleChildScrollView(
             child: Column(
@@ -257,8 +255,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () =>
-                                Get.toNamed(Routes.completeUserInfo),
+                            onPressed: () => Get.toNamed(Routes.editPrifle,
+                                arguments: {"user": userData}),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey[900]),
                             child: Row(

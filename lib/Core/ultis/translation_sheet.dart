@@ -353,7 +353,6 @@ class TranslationSheet extends Translations {
           "Rating": "تقييم",
           "Back to cart": "أعد الى السلة",
           "Confirm order": "تأكيد الطلب",
-          "Added": "تمت الاضافة",
           "Add to cart": "أضف الى السلة",
           "Position was selected": "تم حفظ الموقع",
           "Pick Location": "تحديد الموقع",

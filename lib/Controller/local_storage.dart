@@ -1,7 +1,16 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    log(getItem('userId'));
+    log(getItem('userEmail'));
+  }
+
   final prefs = Get.find<SharedPreferences>();
 
   Future<void> saveUserCredentials(String userId, String userEmail) async {
@@ -22,8 +31,13 @@ class SharedPrefsController extends GetxController {
   }
 
   Future<void> clearUserCredentials() async {
-    await prefs.remove('userId');
-    await prefs.remove('userEmail');
+    try {
+      await prefs.remove('userId');
+      await prefs.remove('userEmail');
+      log(userAuthenticated().toString());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   //if true then user is authorized

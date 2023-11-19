@@ -101,10 +101,9 @@ class AuthController extends GetxController {
         password: password.value,
       );
       if (isUserAuthenticated()) {
-        if (rememberMe.value) {
-          await _sharedPrefController.saveUserCredentials(
-              credential.user!.uid, credential.user!.email!);
-        }
+        await _sharedPrefController.saveUserCredentials(
+            credential.user!.uid, credential.user!.email!);
+
         if (await saveUserData()) {
           customSnackbar("Register success".tr, "");
         }
@@ -130,9 +129,9 @@ class AuthController extends GetxController {
     }
   }
 
-  isUserAuthenticated() async {
+  isUserAuthenticated() {
     //if true then user authenticaed
-    return await _auth.currentUser != null
+    return _auth.currentUser != null
         // && _sharedPrefController.userAuthenticated()
         ;
   }

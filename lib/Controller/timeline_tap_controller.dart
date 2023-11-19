@@ -33,7 +33,6 @@ class TimelineTapController extends GetxController {
   RxString recordLink = "".obs;
   final userController = Get.find<UserController>();
 
-  // List<Asset> selectedIdmages = <Asset>[];
   var permissionGranted = false.obs;
   RxBool postButtonUploading = false.obs;
   final _picker = ImagePicker();
@@ -55,6 +54,9 @@ class TimelineTapController extends GetxController {
         images!.value = images!.getRange(0, 3).toList();
       } on Exception catch (e) {
         log(e.toString());
+      }
+      for (var element in images ?? []) {
+        log(element);
       }
 
       // if (resultList.isNotEmpty) {

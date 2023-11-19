@@ -62,20 +62,33 @@ class OptionsScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 6),
-                  RichReadMoreText(
-                    TextSpan(
-                      text: clipModel.caption.toString(),
-                    ),
-                    settings: LineModeSettings(
-                      trimLines: 3,
-                      trimCollapsedText: 'Show more'.tr,
-                      trimExpandedText: 'Show less'.tr,
-                      onPressReadMore: () {
-                        /// specific method to be called on press to show more
-                      },
-                      onPressReadLess: () {
-                        /// specific method to be called on press to show less
-                      },
+                  SizedBox(
+                    // height: 80,
+                    width: Get.width * 0.7,
+                    child: RichReadMoreText(
+                      TextSpan(
+                        text: clipModel.caption.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      settings: LineModeSettings(
+                        trimLines: 1,
+                        trimCollapsedText: 'Show more'.tr,
+                        trimExpandedText: 'Show less'.tr,
+                        moreStyle: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        lessStyle: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        onPressReadMore: () {
+                          /// specific method to be called on press to show more
+                        },
+                        onPressReadLess: () {
+                          /// specific method to be called on press to show less
+                        },
+                      ),
                     ),
                   ),
                   // Text(

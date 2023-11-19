@@ -13,7 +13,7 @@ class StoryBar extends StatelessWidget {
   StoryBar({super.key});
   final storyController = Get.put(StoryManageController(), permanent: true);
   final _prefs = Get.find<SharedPrefsController>();
-  final adsController = Get.find<AdsController>();
+  // final adsController = Get.find<AdsController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,7 +33,7 @@ class StoryBar extends StatelessWidget {
                     onTap: () {
                       if (_prefs.userAuthenticated()) {
                         storyController.pickStoryMedia();
-                        adsController.showRewardedAd();
+                        // adsController.showRewardedAd();
                       } else {
                         customSnackbar("You are not authorized".tr,
                             "please sign in first".tr);

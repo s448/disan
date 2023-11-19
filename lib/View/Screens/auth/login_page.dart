@@ -215,6 +215,18 @@ class LoginPage extends StatelessWidget {
                   child: Image.asset('assets/logo.png'),
                 ),
               ),
+              Positioned(
+                top: 25,
+                right: 25,
+                child: IconButton(
+                  onPressed: () => Get.toNamed(Routes.lang),
+                  icon: const Icon(
+                    Icons.translate_rounded,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
+                ),
+              )
             ],
           ),
         );

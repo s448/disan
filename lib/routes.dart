@@ -18,6 +18,7 @@ import 'package:disan/View/Screens/navbar/timeline/create_post_page.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/story_view_page.dart';
 import 'package:disan/View/Screens/user/block_list.dart';
 import 'package:disan/View/Screens/user/choose_language.dart';
+import 'package:disan/View/Screens/user/edit_profile.dart';
 import 'package:disan/View/Screens/user/settings.dart';
 import 'package:disan/View/Screens/user/generic_profile.dart';
 import 'package:disan/View/Widgets/google_maps_window.dart';
@@ -26,6 +27,7 @@ import 'package:get/get.dart';
 
 class Routes {
   static String introScreen = "/intro";
+  static String editPrifle = "/editprofile";
   static String login = '/login';
   static String signup = '/signup';
   static String reset = '/reset';
@@ -147,5 +149,9 @@ final getPages = [
   GetPage(
     name: Routes.category,
     page: () => CategoryPage(),
+  ),
+  GetPage(
+    name: Routes.editPrifle,
+    page: () => EditProfile(),
   ),
 ];
