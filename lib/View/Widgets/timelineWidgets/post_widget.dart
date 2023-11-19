@@ -5,6 +5,7 @@ import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/View/Screens/user/generic_profile.dart';
 import 'package:disan/View/Widgets/timelineWidgets/popup_menu_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
@@ -233,20 +234,25 @@ class PostWidget extends StatelessWidget {
                         Expanded(
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(0),
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: dan.user!.profile == ''
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: const Icon(
-                                        Ionicons.person_circle_outline,
-                                        color: Colors.grey,
-                                        size: 50,
+                            leading: InkWell(
+                              onTap: () => Get.toNamed(Routes.profile,
+                                  arguments: {'uid': dan.user?.id ?? ""}),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: dan.user!.profile == ''
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: const Icon(
+                                          Ionicons.person_circle_outline,
+                                          color: Colors.grey,
+                                          size: 50,
+                                        ),
+                                      )
+                                    : Image.network(
+                                        dan.user!.profile.toString(),
                                       ),
-                                    )
-                                  : Image.network(
-                                      dan.user!.profile.toString(),
-                                    ),
+                              ),
                             ),
                             title: Text(dan.user!.name.toString()),
                             subtitle:
@@ -291,24 +297,28 @@ class PostWidget extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: dan.user!.profile == ''
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: const Icon(
-                                      Ionicons.person_circle_outline,
-                                      color: Colors.grey,
-                                      size: 50,
+                          InkWell(
+                            onTap: () => Get.toNamed(Routes.profile,
+                                arguments: {'uid': dan.user?.id ?? ""}),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: dan.user!.profile == ''
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        Ionicons.person_circle_outline,
+                                        color: Colors.grey,
+                                        size: 50,
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 32.0,
+                                      backgroundColor: Colors.blue,
+                                      backgroundImage: NetworkImage(
+                                        dan.user!.profile.toString(),
+                                      ),
                                     ),
-                                  )
-                                : CircleAvatar(
-                                    radius: 32.0,
-                                    backgroundColor: Colors.blue,
-                                    backgroundImage: NetworkImage(
-                                      dan.user!.profile.toString(),
-                                    ),
-                                  ),
+                            ),
                           ),
                           const SizedBox(
                             height: 4,

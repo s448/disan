@@ -6,6 +6,7 @@ import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/comment_model.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,11 +53,15 @@ class CommentsPage extends StatelessWidget {
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 20.0,
-                            backgroundColor: Colors.blue,
-                            backgroundImage: NetworkImage(
-                              dan.user!.profile.toString(),
+                          leading: InkWell(
+                            onTap: () => Get.toNamed(Routes.profile,
+                                arguments: {'uid': dan.user?.id ?? ""}),
+                            child: CircleAvatar(
+                              radius: 20.0,
+                              backgroundColor: Colors.blue,
+                              backgroundImage: NetworkImage(
+                                dan.user!.profile.toString(),
+                              ),
                             ),
                           ),
                           title: Text(

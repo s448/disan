@@ -3,6 +3,7 @@ import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Model/clip_model.dart';
 import 'package:disan/View/Widgets/reelsWidgets/more_options.dart';
 import 'package:disan/View/Widgets/reelsWidgets/showbottomsheetmodal.dart';
+import 'package:disan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
@@ -32,10 +33,14 @@ class OptionsScreen extends StatelessWidget {
                   const SizedBox(height: 160),
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundImage: NetworkImage(
-                          clipModel.user!.profile.toString(),
+                      InkWell(
+                        onTap: () => Get.toNamed(Routes.profile,
+                            arguments: {'uid': clipModel.user?.id ?? ""}),
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundImage: NetworkImage(
+                            clipModel.user!.profile.toString(),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 6),
