@@ -6,6 +6,7 @@ import 'package:disan/Service/fcm_services.dart';
 import 'package:disan/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,10 @@ class DisanApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final localeController = Get.put(LocaleController(), permanent: true);
     // print(_sharedPrefController.prefs.getString('lang'));
-
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent, // Navigation bar color
+      statusBarColor: Colors.transparent, // Status bar color
+    ));
     return GetMaterialApp(
       translations: TranslationSheet(),
       locale: localeController.initLocale,

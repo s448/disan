@@ -727,28 +727,32 @@ class ShareSign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: dan.reDanner?.name,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-            ),
-          ),
-          TextSpan(
-              text: " Shared this Den:".tr,
+    return InkWell(
+      onTap: () =>
+          Get.toNamed(Routes.profile, arguments: {'uid': dan.user?.id ?? ""}),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: dan.reDanner?.name,
               style: const TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w700,
                 color: Colors.black,
-              ))
-        ],
+              ),
+            ),
+            TextSpan(
+                text: " Shared this Den:".tr,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ))
+          ],
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
     );
   }
 }

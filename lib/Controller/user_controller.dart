@@ -167,14 +167,7 @@ class UserController extends GetxController {
     Dio dio = Dio();
     var vidName = const Uuid().v1();
     try {
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      String downloadsPath = '${appDocDir.path}/Downloads';
-
-      // Create the Downloads directory if it doesn't exist
-      await Directory(downloadsPath).create(recursive: true);
-
-      String filePath = '$downloadsPath/$vidName.mp4';
-
+      String filePath = '/storage/emulated/0/Download/$vidName.mp4';
       Response response = await dio.download(
         videoUrl,
         filePath,
@@ -185,7 +178,7 @@ class UserController extends GetxController {
         },
       );
 
-      print("Download complete");
+      customSnackbar("Video saved".tr, "");
       print("Saved at: ${response.data}");
     } catch (e) {
       print("Error during download: $e");
@@ -196,7 +189,6 @@ class UserController extends GetxController {
     final status = await Permission.storage.request();
 
     if (status != PermissionStatus.granted) {
-      dangerSnackbar("Microphone permission not granted".tr, "");
       return;
     }
     try {

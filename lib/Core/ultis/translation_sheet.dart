@@ -324,7 +324,7 @@ class TranslationSheet extends Translations {
           "Add photo": "أضف صورة",
           "Post": "نشر",
           "Create a Den .. Here": "أنشىء تدوينة .. هنا",
-          "Timeline": "Timeline",
+          "Timeline": "قائمة التدوينات",
           "Shop": "المتاجر",
           "Home": "الرئيسية",
           "Chat": "Chat",
@@ -362,7 +362,8 @@ class TranslationSheet extends Translations {
           "Users": "المستخدمين",
           "Add tale": "أضف قصة",
           "Show more": "عرض المزيد",
-          "Show less": "عرض أقل"
+          "Show less": "عرض أقل",
+          "Video saved": "تم حفظ الفيديو"
         },
       };
 }
