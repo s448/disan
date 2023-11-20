@@ -61,7 +61,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
           constraints: const BoxConstraints.expand(),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
                   height: 10,
@@ -407,26 +407,30 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
 
                 Container(
                   width: Get.width,
-                  // height: Get.height * 0.15,
+                  height: Get.height * 0.15,
                   child: FutureBuilder(
                     future: controller.getMyActiveStories(userData.id ?? ""),
                     builder: (context, snapshot) {
-                      List<Story> clips = snapshot.data ?? [];
-                      if (clips.length != 0) {
+                      List<Story> tales = snapshot.data ?? [];
+                      if (tales.length != 0) {
                         return ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 5,
+                          itemCount: tales.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[500],
-                                  borderRadius: BorderRadius.circular(8),
+                            return InkWell(
+                              onTap: () =>
+                                  Get.toNamed(Routes.viewStory, arguments: {
+                                'stories': tales,
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: CircleAvatar(
+                                  radius: 42,
+                                  backgroundColor: Colors.blue,
+                                  backgroundImage: NetworkImage(
+                                    tales[0].img.toString(),
+                                  ),
                                 ),
-                                width: Get.width * 0.2,
-                                height: Get.height * 0.15,
-                                child: Text("data"),
                               ),
                             );
                           },

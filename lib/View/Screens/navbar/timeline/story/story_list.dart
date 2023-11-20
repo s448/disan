@@ -62,35 +62,35 @@ class StoryBar extends StatelessWidget {
               ),
             ),
             FutureBuilder(
-                future: storyController.getGroupOfStories(),
-                builder: (context, snapshot) {
-                  List<List<Story>> userStoryList = snapshot.data ?? [];
-                  log(userStoryList.toString());
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: userStoryList.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        List<Story> stories = userStoryList[index];
+              future: storyController.getGroupOfStories(),
+              builder: (context, snapshot) {
+                List<List<Story>> userStoryList = snapshot.data ?? [];
+                log(userStoryList.toString());
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: userStoryList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      List<Story> stories = userStoryList[index];
 
-                        return InkWell(
-                          onTap: () =>
-                              Get.toNamed(Routes.viewStory, arguments: {
-                            'stories': stories,
-                          }),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CircleAvatar(
-                              radius: 42,
-                              backgroundColor: Colors.blue,
-                              backgroundImage: NetworkImage(
-                                stories[0].img.toString(),
-                              ),
+                      return InkWell(
+                        onTap: () => Get.toNamed(Routes.viewStory, arguments: {
+                          'stories': stories,
+                        }),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: CircleAvatar(
+                            radius: 42,
+                            backgroundColor: Colors.blue,
+                            backgroundImage: NetworkImage(
+                              stories[0].img.toString(),
                             ),
                           ),
-                        );
-                      });
-                })
+                        ),
+                      );
+                    });
+              },
+            )
           ],
         ),
       ),

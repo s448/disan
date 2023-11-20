@@ -7,6 +7,7 @@ import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/story_model.dart';
 import 'package:disan/Service/uploda_file_to_firebase.dart';
 import 'package:disan/View/Screens/navbar/timeline/story/add_story.dart';
+import 'package:disan/routes.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -143,14 +144,12 @@ class StoryManageController extends GetxController {
       );
       await _firestore.collection('story').doc(storyId).set(story.toJson());
       storyUploading.value = false;
-      update();
-      Get.back();
+      Get.offAndToNamed(Routes.navbar);
       return true;
     } catch (e) {
       dangerSnackbar("cannot save the Story".tr, e.toString());
       print(e);
       storyUploading.value = false;
-      update();
       Get.back();
       return false;
     }
