@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/extension/url_launch_service.dart';
+import 'package:disan/Model/clip_model.dart';
+import 'package:disan/Model/story_model.dart';
 import 'package:disan/View/Widgets/profileWidgets/active_dans_grid_view.dart';
 import 'package:disan/View/Widgets/profileWidgets/shop_location.dart';
 import 'package:disan/View/Widgets/profileWidgets/user_info_tile.dart';
@@ -403,10 +405,88 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
 
                 ///user active tales
 
+                Container(
+                  width: Get.width,
+                  // height: Get.height * 0.15,
+                  child: FutureBuilder(
+                    future: controller.getMyActiveStories(userData.id ?? ""),
+                    builder: (context, snapshot) {
+                      List<Story> clips = snapshot.data ?? [];
+                      if (clips.length != 0) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[500],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                width: Get.width * 0.2,
+                                height: Get.height * 0.15,
+                                child: Text("data"),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: Text("No active tales".tr),
+                        );
+                      }
+                    },
+                  ),
+                ),
+
                 const SizedBox(height: 12),
 
                 ///user active clips
-
+                Container(
+                  height: Get.height * 0.15,
+                  width: Get.width,
+                  // height: Get.height * 0.15,
+                  child: FutureBuilder(
+                    future: controller.getMyActiveClips(userData.id ?? ""),
+                    builder: (context, snapshot) {
+                      List<ClipModel> clips = snapshot.data ?? [];
+                      if (clips.length != 0) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: clips.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: InkWell(
+                                onTap: () => Get.toNamed(Routes.viewClip,
+                                    arguments: {"clip": clips[index]}),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue[300],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  width: Get.width * 0.2,
+                                  height: Get.height * 0.15,
+                                  child: Center(
+                                    child: Text(
+                                      clips[index].caption.toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: Text("No active clips".tr),
+                        );
+                      }
+                    },
+                  ),
+                ),
                 const SizedBox(height: 12),
 
                 ///user active dens

@@ -4,6 +4,7 @@ import 'package:disan/View/Screens/auth/reset_password.dart';
 import 'package:disan/View/Screens/auth/select_account_type.dart';
 import 'package:disan/View/Screens/auth/signup.dart';
 import 'package:disan/View/Screens/introduction_page.dart';
+import 'package:disan/View/Screens/navbar/clip/view_single_clip.dart';
 import 'package:disan/View/Screens/navbar/navbar.dart';
 import 'package:disan/View/Screens/navbar/notifications/order_notifications_page.dart';
 import 'package:disan/View/Screens/navbar/notifications/rating_notifications_page.dart';
@@ -51,6 +52,7 @@ class Routes {
   static String lang = '/lang';
   static String imgview = "/imgview";
   static String category = "/cat";
+  static String viewClip = "/viewclip";
 }
 
 final getPages = [
@@ -153,5 +155,9 @@ final getPages = [
   GetPage(
     name: Routes.editPrifle,
     page: () => EditProfile(),
+  ),
+  GetPage(
+    name: Routes.viewClip,
+    page: () => ViewClipPage(),
   ),
 ];

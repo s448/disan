@@ -6,7 +6,9 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
+import 'package:disan/Model/clip_model.dart';
 import 'package:disan/Model/dan_model.dart';
+import 'package:disan/Model/story_model.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -319,6 +321,50 @@ class UserController extends GetxController {
       await currentUserDoc.update({'blocked': blockedList});
       await fetchBlockedUsers();
       // print("List after unblock >>>>>>>" + blockedList.toString());
+    }
+  }
+
+  Future<List<ClipModel>> getMyActiveClips(String userId) async {
+    final currentTime = DateTime.now();
+    final fiveDaysAgo = currentTime.subtract(const Duration(days: 5));
+
+    try {
+      var result = await _firestore
+          .collection('clip')
+          .orderBy('date', descending: true)
+          .where('user.id', isEqualTo: userId)
+          .where('date', isGreaterThan: fiveDaysAgo)
+          .get();
+
+      final List<ClipModel> myClips = result.docs.map((doc) {
+        return ClipModel.fromJson(doc.data());
+      }).toList();
+      return myClips;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<Story>> getMyActiveStories(String userId) async {
+    final currentTime = DateTime.now();
+    final twentyFourHoures = currentTime.subtract(const Duration(hours: 24));
+
+    try {
+      var result = await _firestore
+          .collection('story')
+          .orderBy('date', descending: true)
+          .where('user.id', isEqualTo: userId)
+          .where('date', isGreaterThan: twentyFourHoures)
+          .get();
+
+      final List<Story> myTales = result.docs.map((doc) {
+        return Story.fromJson(doc.data());
+      }).toList();
+      return myTales;
+    } catch (e) {
+      log(e.toString());
+      return [];
     }
   }
 }
