@@ -187,6 +187,26 @@ class PostWidget extends StatelessWidget {
         Text("${dan.likes}")
       ],
     );
+    var postTrailing = Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            border: Border.all(color: Colors.yellow, width: 2),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            dateTimeManager.getTimeDifference(dan.date!, 15),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        PostPopUpMenu(
+          dan: dan,
+          isMe: postController.isItMyPost(dan),
+        )
+      ],
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: Container(
@@ -212,19 +232,7 @@ class PostWidget extends StatelessWidget {
             ///user info row
             ///
             isMerchant
-                ?
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Row(
-                //       children: [
-
-                //       ],
-                //     ),
-                //     Column()
-                //   ],
-                // )
-                SizedBox(
+                ? SizedBox(
                     width: Get.width,
                     // height: 150,
                     child: Row(
@@ -259,30 +267,7 @@ class PostWidget extends StatelessWidget {
                                 Text(dateTimeManager.getDateTime(dan.date!)),
                           ),
                         ),
-                        SizedBox(
-                          width: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  border: Border.all(color: Colors.yellow),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Text(
-                                  dateTimeManager.getTimeDifference(
-                                      dan.date!, 15),
-                                ),
-                              ),
-                              PostPopUpMenu(
-                                dan: dan,
-                                isMe: postController.isItMyPost(dan),
-                              )
-                            ],
-                          ),
-                        ),
+                        SizedBox(width: 100, child: postTrailing),
                       ],
                     ),
                   )
@@ -295,59 +280,49 @@ class PostWidget extends StatelessWidget {
                           Text(dateTimeManager.getTime(dan.date!)),
                         ],
                       ),
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () => Get.toNamed(Routes.profile,
-                                arguments: {'uid': dan.user?.id ?? ""}),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: dan.user!.profile == ''
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: const Icon(
-                                        Ionicons.person_circle_outline,
-                                        color: Colors.grey,
-                                        size: 50,
+                      SizedBox(
+                        width: Get.width * 0.4,
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () => Get.toNamed(Routes.profile,
+                                  arguments: {'uid': dan.user?.id ?? ""}),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: dan.user!.profile == ''
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: const Icon(
+                                          Ionicons.person_circle_outline,
+                                          color: Colors.grey,
+                                          size: 50,
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 32.0,
+                                        backgroundColor: Colors.blue,
+                                        backgroundImage: NetworkImage(
+                                          dan.user!.profile.toString(),
+                                        ),
                                       ),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 32.0,
-                                      backgroundColor: Colors.blue,
-                                      backgroundImage: NetworkImage(
-                                        dan.user!.profile.toString(),
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            dan.user!.name.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(color: Colors.yellow),
-                                borderRadius: BorderRadius.circular(6),
                               ),
-                              child: Text(dateTimeManager.getTimeDifference(
-                                  dan.date!, 15))),
-                          PostPopUpMenu(
-                            dan: dan,
-                            isMe: postController.isItMyPost(dan),
-                          )
-                        ],
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              dan.user!.name.toString(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
+                      postTrailing,
                     ],
                   ),
             const SizedBox(
@@ -572,7 +547,7 @@ class PostWidget extends StatelessWidget {
             color: Colors.blue,
           ),
           Text(
-            "ReDan",
+            "ReDen",
           ),
         ],
       ),

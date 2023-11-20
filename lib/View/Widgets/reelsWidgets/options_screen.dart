@@ -30,7 +30,7 @@ class OptionsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 160),
+                  SizedBox(height: Get.height * 0.36),
                   Row(
                     children: [
                       InkWell(
@@ -106,80 +106,85 @@ class OptionsScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                 ],
               ),
-              Obx(() {
-                var likers = controller.isLiked.value
-                    ? clipModel.likers!.length + 1
-                    : clipModel.likers!.length;
-                return Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        border: Border.all(color: Colors.yellow),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        dateTimeManager.getTimeDifference(clipModel.date!, 5),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    InkWell(
-                      onTap: () => controller.likeReel(clipModel.id ?? ""),
-                      child: controller.isLiked.value
-                          ? const Icon(
-                              Ionicons.heart,
-                              color: Colors.red,
-                            )
-                          : const Icon(
-                              Icons.favorite_outline,
-                              color: Colors.white,
-                            ),
-                    ),
-                    Text(
-                      likers.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    InkWell(
-                      onTap: () => showModalBottomSheet(
-                        context: context,
-                        builder: (context) => CommentsPageBody(
-                          controller: controller,
-                          clipId: clipModel.id ?? "",
-                          comments: clipModel.comments ?? [],
+              Obx(
+                () {
+                  var likers = controller.isLiked.value
+                      ? clipModel.likers!.length + 1
+                      : clipModel.likers!.length;
+                  return Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(color: Colors.yellow, width: 2),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          dateTimeManager.getTimeDifference(clipModel.date!, 5),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: const Icon(
-                        Icons.comment_rounded,
-                        color: Colors.white,
+                      const SizedBox(height: 12),
+                      InkWell(
+                        onTap: () => controller.likeReel(clipModel.id ?? ""),
+                        child: controller.isLiked.value
+                            ? const Icon(
+                                Ionicons.heart,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.favorite_outline,
+                                color: Colors.white,
+                              ),
                       ),
-                    ),
-                    Text(
-                      clipModel.comments!.length.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
+                      Text(
+                        likers.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    InkWell(
-                      onTap: () => controller.shareReel(
-                          clipModel.caption, clipModel.media),
-                      child: const Icon(
-                        Icons.send,
-                        color: Colors.white,
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () => showModalBottomSheet(
+                          context: context,
+                          builder: (context) => CommentsPageBody(
+                            controller: controller,
+                            clipId: clipModel.id ?? "",
+                            comments: clipModel.comments ?? [],
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.comment_rounded,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ClipMoreOptionsButton(
-                      isMe: controller.isMe(clipModel.user!.id!),
-                      clip: clipModel,
-                    )
-                  ],
-                );
-              })
+                      Text(
+                        clipModel.comments!.length.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () => controller.shareReel(
+                            clipModel.caption, clipModel.media),
+                        child: const Icon(
+                          Icons.send,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ClipMoreOptionsButton(
+                        isMe: controller.isMe(clipModel.user!.id!),
+                        clip: clipModel,
+                      ),
+                      SizedBox(height: Get.height * 0.03)
+                    ],
+                  );
+                },
+              )
             ],
           ),
         ],

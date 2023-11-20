@@ -407,33 +407,27 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
 
                 Container(
                   width: Get.width,
-                  height: Get.height * 0.15,
+                  height: Get.height * 0.12,
                   child: FutureBuilder(
                     future: controller.getMyActiveStories(userData.id ?? ""),
                     builder: (context, snapshot) {
                       List<Story> tales = snapshot.data ?? [];
                       if (tales.length != 0) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: tales.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () =>
-                                  Get.toNamed(Routes.viewStory, arguments: {
-                                'stories': tales,
-                              }),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: CircleAvatar(
-                                  radius: 42,
-                                  backgroundColor: Colors.blue,
-                                  backgroundImage: NetworkImage(
-                                    tales[0].img.toString(),
-                                  ),
-                                ),
+                        return InkWell(
+                          onTap: () =>
+                              Get.toNamed(Routes.viewStory, arguments: {
+                            'stories': tales,
+                          }),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.blue,
+                              backgroundImage: NetworkImage(
+                                tales[0].img.toString(),
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         );
                       } else {
                         return Center(

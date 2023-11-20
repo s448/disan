@@ -29,7 +29,7 @@ class _ContentScreenState extends State<ContentScreen> {
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       autoPlay: true,
-      showControls: true,
+      showControls: false,
       looping: true,
     );
     setState(() {});
@@ -74,7 +74,7 @@ class _ContentScreenState extends State<ContentScreen> {
         //   ),
         OptionsScreen(
           clipModel: widget.clipModel,
-        )
+        ),
       ],
     );
   }
