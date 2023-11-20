@@ -189,7 +189,7 @@ class ClipController extends GetxController {
   }
 
   followUser(String userId) async {
-    await userController.follow(userId);
+    await userController.followunfollow(userId);
     customSnackbar("You are following this user", "");
   }
 

@@ -67,6 +67,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                 Stack(
                   alignment: isUser ? Alignment.topCenter : Alignment.topLeft,
                   children: [
+                    ///background
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 140,
@@ -82,6 +83,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                         ),
                       ),
                     ),
+
+                    ///profile pic
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -103,25 +106,65 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9),
-                      child: Text(
+
+                ///username
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    // alignment: WrapAlignment.center,
+                    // crossAxisAlignment: WrapCrossAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
                         userData.name ?? "unknown".tr,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
-                        maxLines: 3,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ],
+
+                      ///follow
+                      !isMe
+                          ? SizedBox()
+                          : InkWell(
+                              onTap: () {
+                                controller.followunfollow(userData.id);
+                                userData.followers?.length++;
+                              },
+                              child: Container(
+                                width: Get.width * 0.3,
+                                padding: EdgeInsets.all(6),
+                                decoration:
+                                    BoxDecoration(color: Colors.blue[50]),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(controller.isFollowing(
+                                            userData.followers ?? [])
+                                        ? "Unfollow"
+                                        : "Follow".tr),
+                                    Icon(
+                                      controller.isFollowing(
+                                              userData.followers ?? [])
+                                          ? Icons.remove_circle_outline
+                                          : Icons.add,
+                                      color: Colors.blue,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
                 ),
+
+                ///rating bar for merchants
                 !isUser
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -189,6 +232,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                         ],
                       )
                     : const SizedBox(),
+
+                ///user bio
                 userData.bio == "" || userData.bio == null
                     ? const SizedBox(
                         height: 5,
@@ -205,6 +250,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                           ),
                         ),
                       ),
+
+                ///merchant location on maps
                 !isUser && userData.lat != 0.0
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -213,6 +260,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                             long: userData.long ?? 0.0),
                       )
                     : const SizedBox(),
+
+                ///merch categories
                 !isUser
                     ? Wrap(
                         alignment: WrapAlignment.center,
@@ -233,6 +282,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                         ],
                       )
                     : const SizedBox(),
+
+                ///add to story & edit profile for me
                 isMe
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -284,6 +335,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                   ),
                 ),
                 const SizedBox(height: 12),
+
+                ///user info
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Container(
@@ -318,7 +371,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                             size: 32,
                           ),
                           title: "Follower".tr,
-                          num: controller.getMyFollowers().toString(),
+                          num: userData.followers?.length.toString() ??
+                              0.toString(),
                         ),
                         const SizedBox(height: 8),
                         UserInfoTile(
@@ -328,7 +382,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                             size: 32,
                           ),
                           title: "Following".tr,
-                          num: controller.getMyFollowing().toString(),
+                          num: userData.following?.length.toString() ??
+                              0.toString(),
                         ),
                         const SizedBox(height: 8),
                         UserInfoTile(
@@ -345,6 +400,16 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                   ),
                 ),
                 const SizedBox(height: 12),
+
+                ///user active tales
+
+                const SizedBox(height: 12),
+
+                ///user active clips
+
+                const SizedBox(height: 12),
+
+                ///user active dens
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Obx(() {

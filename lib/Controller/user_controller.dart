@@ -63,25 +63,73 @@ class UserController extends GetxController {
     }
   }
 
-  follow(String? userId) async {
+  followunfollow(String? userId) async {
     try {
       final myUserId = currentUser!.uid;
 
+      UserModel user = await getUserModel(userId ?? "").first;
+
+      List<dynamic> followers = user.followers ?? [];
       // Update the other user's list of followers
-      await _firestore.collection('users').doc(userId).update({
-        'followers': FieldValue.arrayUnion([myUserId]),
-      });
 
-      // Update the current user's list of following
-      await _firestore.collection('users').doc(myUserId).update({
-        'following': FieldValue.arrayUnion([userId]),
-      });
+      if (followers.contains(myUserId)) {
+        //unfollow
+        // Update the other user's list of followers
+        await _firestore.collection('users').doc(userId).update({
+          'followers': FieldValue.arrayRemove([myUserId]),
+        });
 
-      customSnackbar("You are following him".tr, "");
+        // Update the current user's list of following
+        await _firestore.collection('users').doc(myUserId).update({
+          'following': FieldValue.arrayRemove([userId]),
+        });
+        customSnackbar("You unfollowed him".tr, "");
+      } else {
+        //follow
+        await _firestore.collection('users').doc(userId).update({
+          'followers': FieldValue.arrayUnion([myUserId]),
+        });
+
+        // Update the current user's list of following
+        await _firestore.collection('users').doc(myUserId).update({
+          'following': FieldValue.arrayUnion([userId]),
+        });
+        customSnackbar("You are following him".tr, "");
+      }
     } catch (error) {
       // print('Error following user: $error');
     }
   }
+
+  isFollowing(List<dynamic> followList) {
+    final myUserId = currentUser!.uid;
+
+    if (followList.contains(myUserId)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // unfollow(String? userId) async {
+  //   try {
+  //     final myUserId = currentUser!.uid;
+
+  //     // Update the other user's list of followers
+  //     await _firestore.collection('users').doc(userId).update({
+  //       'followers': FieldValue.arrayRemove([myUserId]),
+  //     });
+
+  //     // Update the current user's list of following
+  //     await _firestore.collection('users').doc(myUserId).update({
+  //       'following': FieldValue.arrayRemove([userId]),
+  //     });
+
+  //     customSnackbar("You are following him".tr, "");
+  //   } catch (error) {
+  //     // print('Error following user: $error');
+  //   }
+  // }
 
   mute(String? userId) async {
     try {
@@ -152,7 +200,7 @@ class UserController extends GetxController {
         await save(imgs);
         break;
       case "2":
-        await follow(userId);
+        await followunfollow(userId);
         break;
       case "3":
         await mute(userId);
@@ -167,8 +215,8 @@ class UserController extends GetxController {
     }
   }
 
-  getMyFollowers() => curentUserModel.followers?.length ?? 0;
-  getMyFollowing() => curentUserModel.following?.length ?? 0;
+  // getMyFollowers() => curentUserModel.followers?.length ?? 0;
+  // getMyFollowing() => curentUserModel.following?.length ?? 0;
 
   int activeDansLength = 0;
   List<DanModel> myActiveDans = [];
