@@ -79,7 +79,7 @@ class CommentsPageBody extends StatelessWidget {
                 ),
                 fillColor: const Color.fromARGB(255, 194, 192, 192),
                 filled: true,
-                hintText: "Add comment ..",
+                hintText: "Add comment ..".tr,
               ),
             ),
             trailing: IconButton(

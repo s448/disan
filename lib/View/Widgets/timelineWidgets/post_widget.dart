@@ -5,7 +5,6 @@ import 'package:disan/Controller/timeline_tap_controller.dart';
 import 'package:disan/Core/extension/time_difference.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/dan_model.dart';
-import 'package:disan/View/Screens/user/generic_profile.dart';
 import 'package:disan/View/Widgets/timelineWidgets/popup_menu_widget.dart';
 import 'package:disan/routes.dart';
 import 'package:flutter/cupertino.dart';
@@ -239,7 +238,8 @@ class PostWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Expanded(
+                        SizedBox(
+                          width: Get.width * 0.55,
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(0),
                             leading: InkWell(

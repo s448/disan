@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,9 +12,10 @@ import 'package:disan/Model/dan_model.dart';
 import 'package:disan/Model/story_model.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
@@ -161,7 +163,36 @@ class UserController extends GetxController {
     }
   }
 
-  save(List<dynamic> imgs) async {
+  void downloadVideo(videoUrl) async {
+    Dio dio = Dio();
+    var vidName = const Uuid().v1();
+    try {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String downloadsPath = '${appDocDir.path}/Downloads';
+
+      // Create the Downloads directory if it doesn't exist
+      await Directory(downloadsPath).create(recursive: true);
+
+      String filePath = '$downloadsPath/$vidName.mp4';
+
+      Response response = await dio.download(
+        videoUrl,
+        filePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            print((received / total * 100).toStringAsFixed(2) + "%");
+          }
+        },
+      );
+
+      print("Download complete");
+      print("Saved at: ${response.data}");
+    } catch (e) {
+      print("Error during download: $e");
+    }
+  }
+
+  save(List<dynamic> imgs, String collection) async {
     final status = await Permission.storage.request();
 
     if (status != PermissionStatus.granted) {
@@ -169,16 +200,20 @@ class UserController extends GetxController {
       return;
     }
     try {
-      for (var img in imgs) {
-        var response = await Dio()
-            .get(img, options: Options(responseType: ResponseType.bytes));
-        final result = await ImageGallerySaver.saveImage(
-          Uint8List.fromList(response.data),
-          quality: 60,
-          name: const Uuid().v1(),
-        );
-        customSnackbar("Post images was saved to gallery", "");
-        log(result);
+      if (collection == "clip") {
+        downloadVideo(imgs[0]);
+      } else {
+        for (var img in imgs) {
+          var response = await Dio()
+              .get(img, options: Options(responseType: ResponseType.bytes));
+          final result = await ImageGallerySaver.saveImage(
+            Uint8List.fromList(response.data),
+            quality: 60,
+            name: const Uuid().v1(),
+          );
+          customSnackbar("Post images was saved to gallery", "");
+          log(result);
+        }
       }
     } catch (e) {
       log(e.toString());
@@ -199,7 +234,7 @@ class UserController extends GetxController {
       collection) async {
     switch (ex) {
       case "1":
-        await save(imgs);
+        await save(imgs, collection);
         break;
       case "2":
         await followunfollow(userId);

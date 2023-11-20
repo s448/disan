@@ -29,7 +29,7 @@ class _ContentScreenState extends State<ContentScreen> {
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       autoPlay: true,
-      showControls: false,
+      showControls: true,
       looping: true,
     );
     setState(() {});
