@@ -14,9 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
   await Get.putAsync(() => SharedPreferences.getInstance(), permanent: true);
-  // Get.put(AdsController(), permanent: true);
+  Get.put(AdsController(), permanent: true);
   // Get.put(UserController(), permanent: true);
   await FcmServices().initNotification();
   return runApp(DisanApp());

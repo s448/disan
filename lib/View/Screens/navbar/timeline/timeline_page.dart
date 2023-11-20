@@ -22,7 +22,7 @@ class TimelinePage extends StatelessWidget {
   final controller = Get.put(TimelineTapController());
   final storyController = Get.put(StoryManageController(), permanent: true);
   final clipController = Get.put(ClipController(), permanent: true);
-  // final adsController = Get.find<AdsController>();
+  final adsController = Get.find<AdsController>();
   final _prefs = Get.find<SharedPrefsController>();
   @override
   Widget build(BuildContext context) {
@@ -40,10 +40,6 @@ class TimelinePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 8),
-              // userController.curentUserModel.id == null ||
-              //         userController.curentUserModel.id == ""
-              //     ? const SizedBox()
-              //     :
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Container(
@@ -57,7 +53,7 @@ class TimelinePage extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         if (_prefs.userAuthenticated()) {
-                          // adsController.showRewardedAd();
+                          adsController.showRewardedAd();
                           Get.toNamed(Routes.createPost);
                         } else {
                           customSnackbar("You are not authorized".tr,
@@ -92,13 +88,13 @@ class TimelinePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              // SizedBox(
-              //   height: 50,
-              //   child: StatefulBuilder(
-              //     builder: (context, setState) =>
-              //         AdWidget(ad: adsController.timelineAdBanner),
-              //   ),
-              // ),
+              SizedBox(
+                height: 50,
+                child: StatefulBuilder(
+                  builder: (context, setState) =>
+                      AdWidget(ad: adsController.timelineAdBanner),
+                ),
+              ),
               const SizedBox(
                 height: 3,
               ),
