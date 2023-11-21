@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +14,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 

@@ -16,7 +16,6 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userController.refresh();
     isUserRegisterd();
     print(userRegisterd.value);
   }
@@ -50,7 +49,7 @@ class ChatController extends GetxController {
     try {
       var userId = userController.curentUserModel.id;
       await _firestore.collection('users').doc(userId).update({
-        "whatsapp": phone.value,
+        "whatsapp": "+2${phone.value}",
         "wahiden": hidePhone.value,
       });
       await userController.updateUserData();

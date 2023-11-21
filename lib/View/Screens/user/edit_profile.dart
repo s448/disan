@@ -32,7 +32,6 @@ class EditProfile extends StatelessWidget {
                   height: 22,
                 ),
                 TextFormField(
-                  keyboardType: TextInputType.emailAddress,
                   onChanged: (val) {
                     controller.name.value = val;
                   },
@@ -60,6 +59,7 @@ class EditProfile extends StatelessWidget {
                   onChanged: (val) {
                     controller.whatsappNumber.value = val;
                   },
+                  initialValue: controller.whatsappNumber.value,
                   validator: (val) =>
                       (val!.isEmpty) ? "Enter your Whatsapp number".tr : null,
                   decoration: InputDecoration(
@@ -101,6 +101,7 @@ class EditProfile extends StatelessWidget {
                   onChanged: (val) {
                     controller.bio.value = val;
                   },
+                  initialValue: controller.bio.value,
                   validator: (val) =>
                       (val!.isEmpty) ? "Enter your bio".tr : null,
                   decoration: InputDecoration(
@@ -132,13 +133,15 @@ class EditProfile extends StatelessWidget {
                           child: ListTile(
                             iconColor: Colors.blue,
                             leading: const Icon(Icons.location_on_outlined),
-                            title: Text(_mapController.position == null
+                            title: Text(controller.locationLat == 0.0
                                 ? "Location".tr
                                 : "Position selected".tr),
                             subtitle: Text(
-                              _mapController.position == null
+                              controller.locationLat == 0.0 &&
+                                      _mapController.position == null
                                   ? "Select your location on google maps".tr
-                                  : "Tap to change it".tr,
+                                  : "Lat: ${controller.locationLat} \n Long: ${controller.locationLng}"
+                                      .tr,
                             ),
                             // trailing: Text((_mapController.position ?? 0.0).toString()),
                           ),

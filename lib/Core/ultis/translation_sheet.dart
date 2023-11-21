@@ -284,7 +284,7 @@ class TranslationSheet extends Translations {
           "I hav an account ? ": "لدي حساب؟ ",
           "Chat register": "تسجيل في الشات",
           "Hide phone number": "اخفاء الرقم",
-          "Phone number ex (+1) ...": "رقم الواتساب مثل (+1) ...",
+          "Phone number": "رقم الواتساب",
           "Create clip": "انشاء كليب",
           "Add Caption ..": "أضف وصف ..",
           "Upload": "رفع",
@@ -327,7 +327,7 @@ class TranslationSheet extends Translations {
           "Timeline": "قائمة التدوينات",
           "Shop": "المتاجر",
           "Home": "الرئيسية",
-          "Chat": "Chat",
+          "Chat": "الدردشة",
           "Don't you have an account ? ": "ليس لديك حساب ؟ ",
           "Search...": "بحث...",
           "No data found": "لا يوجد بيانات",
@@ -356,14 +356,16 @@ class TranslationSheet extends Translations {
           "Add to cart": "أضف الى السلة",
           "Position was selected": "تم حفظ الموقع",
           "Pick Location": "تحديد الموقع",
-          "Conversations are via whatsapp": "المحادثت عن طريق واتساب",
+          "Conversations are via whatsapp": "المحادثات عن طريق واتساب",
           "My Profile": "حسابي",
           "Merchants": "المتاجر",
           "Users": "المستخدمين",
           "Add tale": "أضف قصة",
           "Show more": "عرض المزيد",
           "Show less": "عرض أقل",
-          "Video saved": "تم حفظ الفيديو"
+          "Video saved": "تم حفظ الفيديو",
+          "You have to sign in to be able to use this page":
+              "يجب تسجيل الدخول أولا لكي تستطيع استخدام هذه الصفحة"
         },
       };
 }

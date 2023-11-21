@@ -107,7 +107,9 @@ class AuthController extends GetxController {
         if (await saveUserData()) {
           customSnackbar("Register success".tr, "");
         }
-        Get.offAllNamed(Routes.selectAccType);
+        Get.offAllNamed(Routes.editPrifle);
+
+        // Get.offAllNamed(Routes.selectAccType);
 
         // print("auth success >>>>>>>>>>>>>>>>");
       } else {
@@ -243,7 +245,8 @@ class AuthController extends GetxController {
             //   customSnackbar("Login success", "");
             // }
             isGoogleLoading.value = false;
-            Get.offAllNamed(Routes.selectAccType);
+            Get.offAllNamed(Routes.editPrifle);
+            // Get.offAllNamed(Routes.selectAccType);
           } catch (e) {
             // print("?????????can't save the user data");
             isGoogleLoading.value = false;
@@ -304,8 +307,9 @@ class AuthController extends GetxController {
               .collection("users")
               .doc(user.uid)
               .set(userData.toJson());
+          Get.offAllNamed(Routes.editPrifle);
 
-          Get.offAllNamed(Routes.selectAccType);
+          // Get.offAllNamed(Routes.selectAccType);
         } else {
           Get.offAllNamed(Routes.navbar);
         }

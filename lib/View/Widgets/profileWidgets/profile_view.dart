@@ -35,6 +35,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
   @override
   void dispose() {
     controller.myActiveDans.clear();
+    controller.dispose();
     super.dispose();
   }
 
@@ -132,7 +133,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                       ),
 
                       ///follow
-                      !isMe
+                      isMe
                           ? SizedBox()
                           : InkWell(
                               onTap: () {
@@ -349,7 +350,8 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                     ),
                     child: Column(
                       children: [
-                        userData.whatsappNumber!.isEmpty
+                        userData.whatsappNumber == "" ||
+                                userData.whatsappNumber == null
                             ? const SizedBox()
                             : InkWell(
                                 onTap: () => UrlLauncherService.launch(

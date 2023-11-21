@@ -1,6 +1,9 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/constants/shop_categories.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
@@ -10,6 +13,25 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileController extends GetxController {
+  final userModel = Get.find<UserController>().curentUserModel;
+  @override
+  void onInit() {
+    name.value = userModel.name ?? "";
+    whatsappNumber.value = userModel.whatsappNumber ?? "";
+    hideWa.value = userModel.waHiden ?? false;
+    bio.value = userModel.bio ?? "";
+    locationLat.value = userModel.lat ?? 0.0;
+    locationLng.value = userModel.long ?? 0.0;
+    profilePicUrl.value = userModel.profile ?? "";
+    backgroundPicUrl.value = userModel.background ?? "";
+    for (var element in userModel.categories ?? []) {
+      selectedCategories.value.add(element);
+    }
+    print(selectedCategories.value);
+    print(whatsappNumber.value);
+    super.onInit();
+  }
+
   var name = "".obs;
   RxString accType = "USER".obs;
   var whatsappNumber = "".obs;

@@ -1,4 +1,5 @@
 import 'package:disan/Controller/chat_controller.dart';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Core/style/button_style.dart';
 import 'package:disan/Model/user_model.dart';
 import 'package:flutter/material.dart';
@@ -19,62 +20,69 @@ class _ChatRegisterState extends State<ChatRegister> {
     super.initState();
   }
 
+  final _prefs = Get.find<SharedPrefsController>();
+
   final controller = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () {
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              title: Text("Chat".tr),
-              centerTitle: true,
-              backgroundColor: Colors.white,
-              titleTextStyle: const TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              bottom: controller.userRegisterd.value == true
-                  ? TabBar(
-                      labelColor: Colors.green,
-                      indicatorColor: Colors.green,
-                      tabs: [
-                        Tab(
-                          text: 'Users'.tr,
-                          //  icon: const Icon(Icons.home),
-                        ),
-                        Tab(
-                          text: 'Merchants'.tr,
-                          // icon: const Icon(Icons.shopping_bag_sharp),
-                        ),
-                      ],
-                    )
-                  : null,
-            ),
-            body: Container(
-              padding: const EdgeInsets.all(0),
-              width: Get.width,
-              height: Get.height,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/bckground.jpg"),
-                  fit: BoxFit.none,
+        return _prefs.userAuthenticated()
+            ? DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    title: Text("Chat".tr),
+                    centerTitle: true,
+                    backgroundColor: Colors.white,
+                    titleTextStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    bottom: controller.userRegisterd.value == true
+                        ? TabBar(
+                            labelColor: Colors.green,
+                            indicatorColor: Colors.green,
+                            tabs: [
+                              Tab(
+                                text: 'Users'.tr,
+                                //  icon: const Icon(Icons.home),
+                              ),
+                              Tab(
+                                text: 'Merchants'.tr,
+                                // icon: const Icon(Icons.shopping_bag_sharp),
+                              ),
+                            ],
+                          )
+                        : null,
+                  ),
+                  body: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: Get.width,
+                    height: Get.height,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/bckground.jpg"),
+                        fit: BoxFit.none,
+                      ),
+                    ),
+                    child: Obx(
+                      () {
+                        return controller.userRegisterd.value == true
+                            ? RegisteredUsersList(controller: controller)
+                            : RegisterPage(controller: controller);
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              child: Obx(
-                () {
-                  return controller.userRegisterd.value == true
-                      ? RegisteredUsersList(controller: controller)
-                      : RegisterPage(controller: controller);
-                },
-              ),
-            ),
-          ),
-        );
+              )
+            : Center(
+                child:
+                    Text("You have to sign in to be able to use this page".tr),
+              );
       },
     );
   }
@@ -252,7 +260,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: "Phone number ex (+1) ...",
+                      hintText: "Phone number".tr,
                       prefixIcon: const Icon(
                         Icons.phone,
                         color: Colors.black,
