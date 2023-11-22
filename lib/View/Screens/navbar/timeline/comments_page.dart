@@ -55,12 +55,14 @@ class CommentsPage extends StatelessWidget {
                         child: ListTile(
                           leading: InkWell(
                             onTap: () => Get.toNamed(Routes.profile,
-                                arguments: {'uid': dan.user?.id ?? ""}),
+                                arguments: {
+                                  'uid': comments[index].user?.id ?? ""
+                                }),
                             child: CircleAvatar(
                               radius: 20.0,
                               backgroundColor: Colors.blue,
                               backgroundImage: NetworkImage(
-                                dan.user!.profile.toString(),
+                                comments[index].user!.profile.toString(),
                               ),
                             ),
                           ),

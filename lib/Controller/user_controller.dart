@@ -27,7 +27,7 @@ class UserController extends GetxController {
 
   @override
   void onInit() async {
-    currentUser = _auth.currentUser;
+    currentUser = await _auth.currentUser;
     curentUserModel = await getUserModel(currentUser?.uid ?? "").first;
     log("current user is >>>>>>>>>>>>>." + curentUserModel.toString());
     await getMyActiveDans(curentUserModel.id.toString());
@@ -67,7 +67,7 @@ class UserController extends GetxController {
 
   followunfollow(String? userId) async {
     try {
-      final myUserId = currentUser!.uid;
+      final myUserId = currentUser?.uid;
 
       UserModel user = await getUserModel(userId ?? "").first;
 
@@ -104,7 +104,7 @@ class UserController extends GetxController {
   }
 
   isFollowing(List<dynamic> followList) {
-    final myUserId = currentUser!.uid;
+    final myUserId = currentUser?.uid;
 
     if (followList.contains(myUserId)) {
       return true;

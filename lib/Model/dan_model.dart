@@ -55,7 +55,8 @@ class DanModel {
     likers = json['likers'];
     raters = json['raters'];
     isReDaned = json['isredan'];
-    reDanner = json['redanner'];
+    reDanner =
+        json['redanner'] != null ? UserModel.fromJson(json['redanner']) : null;
     ratesCount = json['ratescount'];
     addToCartCount = json['addtocartcount'];
   }
@@ -78,7 +79,9 @@ class DanModel {
     data['likers'] = this.likers;
     data['raters'] = this.raters;
     data['isredan'] = this.isReDaned;
-    data['redanner'] = this.reDanner;
+    if (reDanner != null) {
+      data['redanner'] = reDanner!.toJson();
+    }
     data['ratescount'] = this.ratesCount;
     data['addtocartcount'] = this.addToCartCount;
     return data;

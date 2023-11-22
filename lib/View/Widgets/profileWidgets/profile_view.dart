@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:disan/Controller/local_storage.dart';
 import 'package:disan/Controller/story_controller.dart';
 import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/extension/url_launch_service.dart';
@@ -35,11 +36,11 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
   @override
   void dispose() {
     controller.myActiveDans.clear();
-    controller.dispose();
     super.dispose();
   }
 
-  final controller = Get.put(UserController());
+  final controller = Get.find<UserController>();
+  final _prefs = Get.find<SharedPrefsController>();
 
   final storyController = Get.find<StoryManageController>();
 
@@ -133,7 +134,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                       ),
 
                       ///follow
-                      isMe
+                      isMe || !_prefs.userAuthenticated()
                           ? SizedBox()
                           : InkWell(
                               onTap: () {

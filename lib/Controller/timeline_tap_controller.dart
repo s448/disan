@@ -145,7 +145,7 @@ class TimelineTapController extends GetxController {
 
     try {
       dan.isReDaned = true;
-      dan.reDanner = userController.userModel;
+      dan.reDanner = userController.curentUserModel;
       await _firestore.collection('posts').doc(postId).set(dan.toJson());
       customSnackbar("You shared the dan".tr, "");
       return true;

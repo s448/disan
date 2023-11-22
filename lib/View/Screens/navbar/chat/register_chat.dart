@@ -26,10 +26,10 @@ class _ChatRegisterState extends State<ChatRegister> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        return _prefs.userAuthenticated()
-            ? DefaultTabController(
+    return _prefs.userAuthenticated()
+        ? Obx(
+            () {
+              return DefaultTabController(
                 length: 2,
                 child: Scaffold(
                   resizeToAvoidBottomInset: false,
@@ -78,13 +78,12 @@ class _ChatRegisterState extends State<ChatRegister> {
                     ),
                   ),
                 ),
-              )
-            : Center(
-                child:
-                    Text("You have to sign in to be able to use this page".tr),
               );
-      },
-    );
+            },
+          )
+        : Center(
+            child: Text("You have to sign in to be able to use this page".tr),
+          );
   }
 }
 

@@ -365,7 +365,8 @@ class TranslationSheet extends Translations {
           "Show less": "عرض أقل",
           "Video saved": "تم حفظ الفيديو",
           "You have to sign in to be able to use this page":
-              "يجب تسجيل الدخول أولا لكي تستطيع استخدام هذه الصفحة"
+              "يجب تسجيل الدخول أولا لكي تستطيع استخدام هذه الصفحة",
+          "Request": "طلب",
         },
       };
 }

@@ -61,7 +61,7 @@ class SettingsPage extends StatelessWidget {
                   color: Colors.grey,
                   size: 35,
                 ),
-                title: "Block List".tr,
+                title: "Block list".tr,
               ),
               const SizedBox(height: 12),
               SettingsItemButton(

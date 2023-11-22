@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disan/Controller/local_storage.dart';
+import 'package:disan/Controller/user_controller.dart';
 import 'package:disan/Core/constants/shop_categories.dart';
 import 'package:disan/Core/ultis/snakbar.dart';
 import 'package:disan/Model/user_model.dart';
@@ -107,9 +108,8 @@ class AuthController extends GetxController {
         if (await saveUserData()) {
           customSnackbar("Register success".tr, "");
         }
-        Get.offAllNamed(Routes.editPrifle);
 
-        // Get.offAllNamed(Routes.selectAccType);
+        Get.offAllNamed(Routes.selectAccType);
 
         // print("auth success >>>>>>>>>>>>>>>>");
       } else {
@@ -190,6 +190,7 @@ class AuthController extends GetxController {
     try {
       await _auth.signOut();
       await _sharedPrefController.clearUserCredentials();
+      Get.delete<UserController>(force: true);
       Get.offAllNamed(Routes.login);
       customSnackbar(
         "Logout success".tr,
@@ -245,8 +246,7 @@ class AuthController extends GetxController {
             //   customSnackbar("Login success", "");
             // }
             isGoogleLoading.value = false;
-            Get.offAllNamed(Routes.editPrifle);
-            // Get.offAllNamed(Routes.selectAccType);
+            Get.offAllNamed(Routes.selectAccType);
           } catch (e) {
             // print("?????????can't save the user data");
             isGoogleLoading.value = false;
@@ -307,9 +307,8 @@ class AuthController extends GetxController {
               .collection("users")
               .doc(user.uid)
               .set(userData.toJson());
-          Get.offAllNamed(Routes.editPrifle);
 
-          // Get.offAllNamed(Routes.selectAccType);
+          Get.offAllNamed(Routes.selectAccType);
         } else {
           Get.offAllNamed(Routes.navbar);
         }

@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileController extends GetxController {
-  final userModel = Get.find<UserController>().curentUserModel;
+  final userModel = Get.put(UserController()).curentUserModel;
   @override
   void onInit() {
     name.value = userModel.name ?? "";

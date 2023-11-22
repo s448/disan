@@ -76,7 +76,8 @@ class ChatController extends GetxController {
 
   amIAllowedToContactHim(UserModel user) {
     if (user.waHiden == true) {
-      if (user.waAllowed!.contains(userController.curentUserModel.id)) {
+      List allowed = user.waAllowed ?? [];
+      if (allowed.contains(userController.curentUserModel.id)) {
         return true;
       } else {
         return false;
