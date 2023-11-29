@@ -151,7 +151,7 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                                   children: [
                                     Text(controller.isFollowing(
                                             userData.followers ?? [])
-                                        ? "Unfollow"
+                                        ? "Unfollow".tr
                                         : "Follow".tr),
                                     Icon(
                                       controller.isFollowing(

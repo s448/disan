@@ -703,7 +703,7 @@ class AddToCartButton extends StatelessWidget {
               ),
               Text(
                 postController.isAddedToCart(dan.id!)
-                    ? "Added"
+                    ? "Added".tr
                     : "Add to cart".tr,
                 style: const TextStyle(
                   color: Colors.white,

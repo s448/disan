@@ -38,7 +38,7 @@ class ActiveDansGridView extends StatelessWidget {
               final item = activeDans[index];
               return GridTileItem(
                 name: item.description.toString(),
-                img: item.imgs![0],
+                img: item.imgs?[0],
                 networking: true,
               );
             },

@@ -367,6 +367,8 @@ class TranslationSheet extends Translations {
           "You have to sign in to be able to use this page":
               "يجب تسجيل الدخول أولا لكي تستطيع استخدام هذه الصفحة",
           "Request": "طلب",
+          " Shared this Den:": "شارك :",
+          "Unfollow": "الغاء المتابعة"
         },
       };
 }
