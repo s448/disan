@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:disan/Model/clip_model.dart';
 import 'package:disan/View/Widgets/reelsWidgets/options_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 import 'package:video_player/video_player.dart';
 
 class ContentScreen extends StatefulWidget {

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 class ClipTimeline extends StatelessWidget {
   ClipTimeline({super.key});
-  final controller = Get.put(ClipController(), permanent: true);
+  final controller = Get.put(ClipController());
   final _prefs = Get.find<SharedPrefsController>();
   // final SwiperController swController = SwiperController();
   @override
