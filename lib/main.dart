@@ -37,11 +37,44 @@ class DisanApp extends StatelessWidget {
       statusBarColor: Colors.transparent, // Status bar color
     ));
     return GetMaterialApp(
+      title: 'Disan',
       translations: TranslationSheet(),
       locale: localeController.initLocale,
       fallbackLocale: const Locale('en', 'US'),
       textDirection: TextDirection.ltr,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.blue),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+          indicatorColor: Colors.white,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+            textStyle: MaterialStateProperty.all(
+              TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+          backgroundColor: Colors.blue,
+          actionsIconTheme: IconThemeData(color: Colors.white),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.blue)),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: MaterialStateProperty.all(
+              Colors.blue,
+            ),
+          ),
+        ),
+      ),
       initialRoute: _sharedPrefController.userAuthenticated()
           ? Routes.navbar
           : Routes.introScreen,

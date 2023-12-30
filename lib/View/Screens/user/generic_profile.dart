@@ -20,7 +20,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     log(Get.arguments['uid']);
   }
@@ -35,20 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () => Get.back(),
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.white,
+            color: Colors.blue,
           ),
         ),
-        // actions: [
-        //   InkWell(
-        //     onTap: () => Get.toNamed(Routes.settings),
-        //     child: const Icon(
-        //       Icons.settings,
-        //       color: Colors.white,
-        //       size: 35,
-        //     ),
-        //   ),
-        //   const SizedBox(width: 12),
-        // ],
       ),
       body: ProfilePageTemp(userId: userId),
     );

@@ -163,6 +163,7 @@ class CreatePostPage extends StatelessWidget {
                       )
                     : Text(
                         "Post".tr,
+                        style: TextStyle(color: Colors.white),
                       ),
               )
             ],

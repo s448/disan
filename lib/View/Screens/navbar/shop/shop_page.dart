@@ -8,10 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class ShopPage extends StatelessWidget {
+class ShopPage extends StatefulWidget {
   ShopPage({super.key});
+
+  @override
+  State<ShopPage> createState() => _ShopPageState();
+}
+
+class _ShopPageState extends State<ShopPage> {
+  @override
+  void didChangeDependencies() {
+    adsController.loadShopBanner();
+    super.didChangeDependencies();
+  }
+
   final controller = Get.put(ShopTapController(), permanent: true);
+
   final postController = Get.put(PostController(), permanent: true);
+
   final adsController = Get.find<AdsController>();
 
   @override
@@ -33,14 +47,16 @@ class ShopPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 4),
-                  SizedBox(
-                    height: 50,
-                    child: StatefulBuilder(
-                      builder: (context, setState) => AdWidget(
-                        ad: adsController.shopAdBanner,
-                      ),
-                    ),
-                  ),
+                  adsController.shopBannerLoaded.value
+                      ? SizedBox(
+                          height: 50,
+                          child: StatefulBuilder(
+                            builder: (context, setState) => AdWidget(
+                              ad: adsController.shopBanner!,
+                            ),
+                          ),
+                        )
+                      : SizedBox(height: 0),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

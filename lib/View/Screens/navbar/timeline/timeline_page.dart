@@ -13,17 +13,40 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class TimelinePage extends StatelessWidget {
+class TimelinePage extends StatefulWidget {
   TimelinePage({
     super.key,
   });
 
+  @override
+  State<TimelinePage> createState() => _TimelinePageState();
+}
+
+class _TimelinePageState extends State<TimelinePage> {
+  @override
+  void didChangeDependencies() async {
+    await adsController.loadShopBanner();
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    adsController.loadShopBanner();
+    super.initState();
+  }
+
   final userController = Get.put(UserController(), permanent: true);
+
   final controller = Get.put(TimelineTapController());
+
   final storyController = Get.put(StoryManageController(), permanent: true);
+
   final clipController = Get.put(ClipController(), permanent: true);
+
   final adsController = Get.find<AdsController>();
+
   final _prefs = Get.find<SharedPrefsController>();
+
   @override
   Widget build(BuildContext context) {
     final currentUserModel = userController.curentUserModel;
@@ -88,13 +111,16 @@ class TimelinePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                height: 50,
-                child: StatefulBuilder(
-                  builder: (context, setState) =>
-                      AdWidget(ad: adsController.timelineAdBanner),
-                ),
-              ),
+              adsController.shopBannerLoaded.value
+                  ? SizedBox(
+                      height: 50,
+                      child: StatefulBuilder(
+                        builder: (context, setState) => AdWidget(
+                          ad: adsController.shopBanner!,
+                        ),
+                      ),
+                    )
+                  : SizedBox(height: 0),
               const SizedBox(
                 height: 3,
               ),

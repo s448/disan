@@ -60,11 +60,13 @@ class MyOrdersPage extends StatelessWidget {
                                 title: Text("${order.user!.name!}"
                                         " Requested an order for:"
                                     .tr),
-                                subtitle: Text(order.dan!.description ?? ''),
-                                leading: Image.network(
-                                  order.dan!.imgs![0],
-                                  fit: BoxFit.cover,
-                                ),
+                                subtitle: Text(order.dan?.description ?? ''),
+                                leading: order.dan?.imgs?.length != 0
+                                    ? Image.network(
+                                        order.dan?.imgs?[0] ?? "",
+                                        fit: BoxFit.cover,
+                                      )
+                                    : SizedBox(),
                                 trailing:
                                     Text(dateTimeManager.getTime(order.date!)),
                               ),

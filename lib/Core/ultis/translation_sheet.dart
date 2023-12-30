@@ -320,7 +320,7 @@ class TranslationSheet extends Translations {
           "Comment is empty": "التعليق فارغ",
           "please write something": "أكتب شيئا",
           "Create post": "انشاء تدوينة",
-          "What's on your mind ?": "ماذا يدور فيعقلك ?",
+          "What's on your mind ?": "ماذا يدور في عقلك ?",
           "Add photo": "أضف صورة",
           "Post": "نشر",
           "Create a Den .. Here": "أنشىء تدوينة .. هنا",

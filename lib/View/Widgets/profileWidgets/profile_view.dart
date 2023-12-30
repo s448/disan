@@ -295,14 +295,22 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                           ElevatedButton(
                             onPressed: () => storyController.pickStoryMedia(),
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue[800]),
+                              backgroundColor: Colors.blue[800],
+                            ),
                             child: Row(
                               children: [
-                                const Icon(Icons.add_circle_rounded),
+                                const Icon(
+                                  Icons.add_circle_rounded,
+                                  color: Colors.white,
+                                ),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text('Add to story'.tr)
+                                Text(
+                                  'Add to story'.tr,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                )
                               ],
                             ),
                           ),
@@ -316,11 +324,18 @@ class _ProfilePageTempState extends State<ProfilePageTemp> {
                                 backgroundColor: Colors.grey[900]),
                             child: Row(
                               children: [
-                                const Icon(Icons.edit),
+                                const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text('Edit profile'.tr)
+                                Text(
+                                  'Edit profile'.tr,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                )
                               ],
                             ),
                           ),

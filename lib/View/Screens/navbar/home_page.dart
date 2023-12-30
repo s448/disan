@@ -34,6 +34,7 @@ class HomePage extends StatelessWidget {
                   icon: const Icon(
                     CupertinoIcons.search_circle,
                     size: 40,
+                    color: Colors.white,
                   ),
                 ),
                 // userController.curentUserModel.id == "" ||
@@ -45,6 +46,7 @@ class HomePage extends StatelessWidget {
                   icon: const Icon(
                     Icons.translate_rounded,
                     size: 40,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(

@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.deleteOldPosts = functions.pubsub
-    .schedule("*/1 * * * *")
+    .schedule("0 */6 * * *")
     .timeZone("UTC")
     .onRun(async (context) => {
       const db = admin.firestore();
